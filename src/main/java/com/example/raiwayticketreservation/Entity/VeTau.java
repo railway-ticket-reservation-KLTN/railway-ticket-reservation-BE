@@ -1,15 +1,16 @@
 package com.example.raiwayticketreservation.Entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Data
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "vetau")
 public class VeTau {
     @Id

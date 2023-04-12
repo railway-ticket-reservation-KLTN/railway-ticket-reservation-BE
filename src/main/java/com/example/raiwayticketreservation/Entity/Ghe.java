@@ -3,8 +3,7 @@ package com.example.raiwayticketreservation.Entity;
 import com.example.raiwayticketreservation.dtos.GheResponse;
 import com.example.raiwayticketreservation.dtos.ToaTheoTauResponse;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Set;
 @NamedNativeQuery(name = "Ghe.getGheByToaId",
@@ -18,6 +17,9 @@ import java.util.Set;
 @Entity
 @Data
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "ghe")
 public class Ghe {
     @Id

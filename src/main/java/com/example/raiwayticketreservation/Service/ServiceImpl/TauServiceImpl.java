@@ -25,7 +25,6 @@ public class TauServiceImpl implements TauService {
 
     @Override
     public ArrayList<ToaTheoTauResponse> getToaTauByHanhTrinhIDTauID(Long hanhTrinhID) {
-        System.out.println(tauRepo.getToaByMaHanhTrinhMaTau(hanhTrinhID));
         return tauRepo.getToaByMaHanhTrinhMaTau(hanhTrinhID);
     }
 }

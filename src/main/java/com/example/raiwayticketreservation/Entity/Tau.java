@@ -13,7 +13,7 @@ import java.util.Set;
         query = "SELECT d.ma_hanh_trinh as maHanhTrinh, t.ten_tau as tenTau, d.so_toa as soToa, " +
                 "c.ten_toa as tenToa, c.mo_ta_toa as moTaToa, c.so_luong_ghe as soLuongGhe" +
                 " FROM Tau t, Toa c, CTTauToa d " +
-                "WHERE t.id = d.ma_tau AND c.id = d.ma_tau AND d.ma_hanh_trinh = ?",
+                "WHERE t.id = d.ma_tau AND c.id = d.ma_toa AND d.ma_hanh_trinh = ?",
         resultSetMapping = "Mapping.ToaTheoTauResponse")
 @SqlResultSetMapping(name = "Mapping.ToaTheoTauResponse",
         classes = @ConstructorResult(targetClass = ToaTheoTauResponse.class,

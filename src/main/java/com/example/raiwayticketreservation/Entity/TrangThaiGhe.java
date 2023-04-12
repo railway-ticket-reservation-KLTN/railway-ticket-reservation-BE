@@ -1,8 +1,15 @@
 package com.example.raiwayticketreservation.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Data
+@ToString
+@Table(name = "trangthaighe")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TrangThaiGhe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
