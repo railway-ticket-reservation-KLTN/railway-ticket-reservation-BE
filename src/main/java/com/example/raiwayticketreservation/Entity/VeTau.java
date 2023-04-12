@@ -36,4 +36,7 @@ public class VeTau {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private HanhTrinh hanhTrinh;
+
+    @OneToMany(mappedBy = "veTau")
+    private Set<TrangThaiGhe> trangThaiGhes;
 }

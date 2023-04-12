@@ -23,13 +23,11 @@ public class HanhTrinh {
     private String gioDi;
     private String gioDen;
     private int trangThai;
+    private double giaVe;
 
     @OneToMany(mappedBy = "hanhTrinh")
     private Set<VeTau> veTaus;
 
     @OneToMany(mappedBy = "hanhTrinh")
     private Set<CTHanhTrinhTau> ctHanhTrinhTaus;
-
-    @OneToMany(mappedBy = "hanhTrinh")
-    private Set<TrangThaiGhe> trangThaiGhes;
 }

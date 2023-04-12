@@ -6,8 +6,8 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class HanhTrinhGheKey implements Serializable {
-    @Column(name = "maHanhTrinh")
+public class VeTauGheKey implements Serializable {
+    @Column(name = "maVe")
     private Long maHanhTrinh;
     @Column(name = "maGhe")
     private Long maGhe;

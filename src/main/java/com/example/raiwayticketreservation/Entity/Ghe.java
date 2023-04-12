@@ -1,11 +1,20 @@
 package com.example.raiwayticketreservation.Entity;
 
+import com.example.raiwayticketreservation.dtos.GheResponse;
+import com.example.raiwayticketreservation.dtos.ToaTheoTauResponse;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
 import java.util.Set;
-
+@NamedNativeQuery(name = "Ghe.getGheByToaId",
+        query = "SELECT id, loai_ghe as loaiGhe, so_ghe as soGhe FROM railwayticketdb.ghe WHERE ma_toa = ?",
+        resultSetMapping = "Mapping.GheResponse")
+@SqlResultSetMapping(name = "Mapping.GheResponse",
+        classes = @ConstructorResult(targetClass = GheResponse.class,
+                columns = {@ColumnResult(name = "id"),
+                        @ColumnResult(name = "loaiGhe"),
+                        @ColumnResult(name = "soGhe")}))
 @Entity
 @Data
 @ToString

@@ -9,12 +9,15 @@ public class TrangThaiGhe {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "maHanhTrinh")
-    private HanhTrinh hanhTrinh;
+    @JoinColumn(name = "maVe")
+    private VeTau veTau;
 
     @ManyToOne
     @JoinColumn(name = "maGhe")
     private Ghe ghe;
+
+    private String gaDi;
+    private String gaDen;
 
     private String trangThai;
 }

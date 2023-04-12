@@ -23,7 +23,4 @@ public class Toa {
 
     @OneToMany(mappedBy = "toa")
     private Set<Ghe> ghes;
-
-    @OneToOne(mappedBy = "toa")
-    private  BangGiaVe bangGiaVe;
 }
