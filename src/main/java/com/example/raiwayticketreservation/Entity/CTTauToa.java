@@ -11,10 +11,9 @@ import lombok.ToString;
 @Table(name = "cttautoa")
 public class CTTauToa {
 
-    @EmbeddedId
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private TauToaKey tauToaKey;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @MapsId("maTau")
@@ -25,4 +24,7 @@ public class CTTauToa {
     @MapsId("maToa")
     @JoinColumn(name = "maToa")
     private Toa toa;
+
+    private String soToa;
+    private Long maHanhTrinh;
 }

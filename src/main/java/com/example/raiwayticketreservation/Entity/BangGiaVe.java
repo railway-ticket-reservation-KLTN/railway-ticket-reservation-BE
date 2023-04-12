@@ -12,7 +12,7 @@ public class BangGiaVe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String tenToa;
+    private String tenTo;
 
     @OneToOne
     @JoinColumn(name = "loaiToa")
