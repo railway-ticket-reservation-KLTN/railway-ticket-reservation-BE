@@ -2,13 +2,13 @@ package com.example.raiwayticketreservation.Controller;
 
 import com.example.raiwayticketreservation.Entity.TrangThaiGhe;
 import com.example.raiwayticketreservation.Service.GheService;
-import com.example.raiwayticketreservation.dtos.DatChoResponse;
-import com.example.raiwayticketreservation.dtos.GheResponse;
-import com.example.raiwayticketreservation.dtos.ToaRequest;
-import com.example.raiwayticketreservation.dtos.TrangThaiGheRequest;
+import com.example.raiwayticketreservation.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
 
+import java.text.ParseException;
 import java.util.Set;
 
 @RestController
@@ -24,10 +24,8 @@ public class GheController {
     }
 
     @PostMapping("/datcho")
-    public boolean datChoTam(@RequestBody TrangThaiGheRequest trangThaiGheRequest) {
-        if(gheService.datChoTam(trangThaiGheRequest))
-            return true;
-        return false;
+    public ResponseEntity datChoTam(@RequestBody TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
+        return gheService.datChoTam(trangThaiGheRequest);
     }
 
     @RequestMapping(value = "/tracho", method = RequestMethod.DELETE)

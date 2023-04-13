@@ -12,4 +12,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL5Dialect
+#springdoc:
+#  swagger-ui.path: /openapi/swagger-ui.html
+#  api-docs.path: /openapi/v3/api-docs
+#  packagesToScan: com.example.raiwayticketreservation.Controller
+#  pathsToMatch: /**

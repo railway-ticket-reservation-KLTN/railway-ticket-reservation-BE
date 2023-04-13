@@ -1,18 +1,18 @@
 package com.example.raiwayticketreservation.dtos;
 
-import com.example.raiwayticketreservation.Entity.TrangThaiGhe;
 import lombok.Data;
 
 @Data
-public class TrangThaiGheRequest extends TrangThaiGhe {
-    private String gaDi;
+public class TrangThaiGheResponse {
+    private Long id;
     private String gaDen;
+    private String gaDi;
+    private String trangThai;
     private Long maGhe;
     private Long maVe;
     private String ngayDi;
     private String gioDi;
     private String gioDen;
-    private int soToa;
     private String tenTau;
-    private String trangThai;
+    private int soToa;
 }
