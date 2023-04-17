@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ public class CTHD {
     @EmbeddedId
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     private HoaDonVeTauKey id;
 
     @ManyToOne
@@ -25,7 +27,5 @@ public class CTHD {
     @MapsId("maVeTau")
     @JoinColumn(name = "maVeTau")
     private VeTau veTau;
-
-    private int soLuong;
     private double donGia;
 }

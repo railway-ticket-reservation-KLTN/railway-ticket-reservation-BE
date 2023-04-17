@@ -25,8 +25,6 @@ public class HanhTrinhTauController {
 
     @GetMapping("/hanhtrinhtau")
     public ResponseEntity getHanhTrinhTauByGaDiGaDenNgayDiNgayDen(@RequestBody TimChuyenTauRequest timChuyenTauRequest) {
-        System.out.println(timChuyenTauRequest.getLoaiHanhTrinh());
-        System.out.println(timChuyenTauRequest.getLoaiHanhTrinh().equals("MOT_CHIEU"));
         if (timChuyenTauRequest.getLoaiHanhTrinh().equals("MOT_CHIEU")) {
             HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
             if(hanhTrinh != null) {

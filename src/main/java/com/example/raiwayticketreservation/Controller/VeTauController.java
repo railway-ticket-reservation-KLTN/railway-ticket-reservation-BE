@@ -47,32 +47,38 @@ public class VeTauController {
                 id(khachDatVeService.getIDKhachDat(muaVeRequest.getKhachDatVe()))
                 .build();
 
-           HoaDon hoaDon = new HoaDon();
-           if(muaVeRequest.getHinhThucThanhToan() == "TRA_SAU") {
-               hoaDon.builder().hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
-                       .ngayLap(muaVeRequest.getNgayLap())
-                       .khachDatVe(khachDatVeID)
-                       .trangThai(1)
-                       .tinhTrang("CHUA_THANH_TOAN")
-                       .maDatCho(UUID.randomUUID())
-                       .build();
-           } else if (muaVeRequest.getHinhThucThanhToan() == "THANH_TOAN_ONLINE"){
-               hoaDon.builder().hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
-                       .ngayLap(muaVeRequest.getNgayLap())
-                       .khachDatVe(khachDatVeID)
-                       .trangThai(1)
-                       .tinhTrang("CHUA_THANH_TOAN")
-                       .tinhTrang("DA_THANH_TOAN")
-                       .maDatVe(UUID.randomUUID())
-                       .build();
-           }
+        String maDatVe = "";
+        String maDatCho = "";
+        String tinhTrang = "";
 
+        if(muaVeRequest.getHinhThucThanhToan().equals("TRA_SAU")) {
+            maDatCho = UUID.randomUUID().toString();
+            tinhTrang = "CHUA_THANH_TOAN";
+            maDatVe = null;
+
+        } else if (muaVeRequest.getHinhThucThanhToan().equals("THANH_TOAN_ONLINE")){
+            maDatVe = UUID.randomUUID().toString();
+            maDatCho = null;
+            tinhTrang = "DA_THANH_TOAN";
+        }
+
+        HoaDon hoaDon = HoaDon.builder()
+                .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
+                .ngayLap(muaVeRequest.getNgayLap())
+                .khachDatVe(khachDatVeID)
+                .maDatVe(maDatVe)
+                .maDatCho(maDatCho)
+                .tinhTrang(tinhTrang)
+                .trangThai(1)
+                .build();
         HoaDon hoaDonSaved = hoaDonService.themHoaDon(hoaDon);
 
+        Set<VeTau> veTauDis = new HashSet<>();
         HoaDon hoaDonID = HoaDon.builder()
                 .id(hoaDonService.getIDHoaDon(muaVeRequest.getNgayLap(), khachDatVeID.getId()))
                 .build();
-        Set<VeTau> veTauDis = new HashSet<>();
+
+        String finalTinhTrang = tinhTrang;
         muaVeRequest.getVeTaus().forEach(veTau -> {
                 HanhTrinh hanhTrinh = HanhTrinh.builder()
                         .gaDi(veTau.getGaDi())
@@ -88,6 +94,7 @@ public class VeTauController {
                         .loaiVe(veTau.getLoaiVe())
                         .soGiayTo(veTau.getSoGiayTo())
                         .tenHanhKhach(veTau.getTenHanhKhach())
+                        .tinhTrang(finalTinhTrang)
                         .trangThai(1)
                         .hanhTrinh(hanhTrinhID)
                         .khachDatVe(khachDatVeID)
@@ -105,7 +112,7 @@ public class VeTauController {
                     .build();
             cthds.add(cthd);
         });
-//        cthdService.themCTHD(cthds);
+        cthdService.themCTHD(cthds);
 
         MuaVeResponse muaVeResponse = MuaVeResponse.builder()
                 .veTaus(veTauSaved)

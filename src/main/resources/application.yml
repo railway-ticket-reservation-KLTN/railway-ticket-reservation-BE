@@ -6,14 +6,9 @@ spring:
     username: root
     password: 123456789
   jpa:
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create
     generate-ddl: true
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-#springdoc:
-#  swagger-ui.path: /openapi/swagger-ui.html
-#  api-docs.path: /openapi/v3/api-docs
-#  packagesToScan: com.example.raiwayticketreservation.Controller
-#  pathsToMatch: /**

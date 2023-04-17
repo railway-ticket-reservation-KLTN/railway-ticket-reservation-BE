@@ -21,6 +21,7 @@ public class VeTau {
     private double donGia;
     private String loaiVe;
     private String doiTuong;
+    private String tinhTrang;
     private int trangThai;
 
     @OneToMany(mappedBy = "veTau")

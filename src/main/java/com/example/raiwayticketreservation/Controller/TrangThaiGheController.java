@@ -14,11 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1")
 public class TrangThaiGheController {
-    @Autowired
-    private TrangThaiGheService trangThaiGheService;
-    @GetMapping("/trangthaighes")
-    public List<TrangThaiGheResponse> getTrangThaiGhes(@RequestBody TrangThaiGheRequest trangThaiGheRequest) {
-        return trangThaiGheService.getTrangThaiGhesByMaGheTenTauNgayDi(trangThaiGheRequest);
-    }
+//    @Autowired
+//    private TrangThaiGheService trangThaiGheService;
+//    @GetMapping("/trangthaighes")
+//    public List<TrangThaiGheResponse> getTrangThaiGhes(@RequestBody TrangThaiGheRequest trangThaiGheRequest) {
+//        return trangThaiGheService.getTrangThaiGhesByMaGheTenTauNgayDi(trangThaiGheRequest);
+//    }
 }
 

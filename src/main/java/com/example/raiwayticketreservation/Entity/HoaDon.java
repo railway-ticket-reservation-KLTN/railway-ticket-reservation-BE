@@ -1,7 +1,9 @@
 package com.example.raiwayticketreservation.Entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 import java.util.Set;
@@ -25,8 +27,10 @@ public class HoaDon {
     private KhachDatVe khachDatVe;
     private String ngayLap;
     private String hinhThucThanhToan;
-    private UUID maDatVe;
-    private UUID maDatCho;
+    @Column(columnDefinition = "VARCHAR(40)")
+    private String maDatVe;
+    @Column(columnDefinition = "VARCHAR(40)")
+    private String maDatCho;
     private String tinhTrang;
     private int trangThai;
 
