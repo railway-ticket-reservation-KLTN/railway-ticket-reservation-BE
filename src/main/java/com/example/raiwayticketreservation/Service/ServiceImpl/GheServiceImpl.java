@@ -44,11 +44,12 @@ public class GheServiceImpl implements GheService {
         if (kiemTraDatCho(trangThaiGheResponses, trangThaiGheRequest)) {
             Ghe ghe = Ghe.builder().id(trangThaiGheRequest.getMaGhe()).build();
 
-            VeTau veTau = VeTau.builder().id(trangThaiGheRequest.getMaVe()).build();
+//            VeTau veTau = VeTau.builder().id(trangThaiGheRequest.getMaVe()).build();
 
-            TrangThaiGhe trangThaiGhe = TrangThaiGhe.builder().gaDi(trangThaiGheRequest.getGaDi())
+            TrangThaiGhe trangThaiGhe = TrangThaiGhe.builder()
+                    .ghe(ghe)
+                    .gaDi(trangThaiGheRequest.getGaDi())
                     .gaDen(trangThaiGheRequest.getGaDen())
-                    .ghe(ghe).veTau(veTau)
                     .ngayDi(trangThaiGheRequest.getNgayDi())
                     .tenTau(trangThaiGheRequest.getTenTau())
                     .soToa(trangThaiGheRequest.getSoToa())
@@ -67,9 +68,6 @@ public class GheServiceImpl implements GheService {
             DateFormat dateFormat = new SimpleDateFormat("hh:mm");
             Date gioDiRequest =  dateFormat.parse(trangThaiGheRequest.getGioDi());
             Date gioDenResponse =  dateFormat.parse(trangThaiGheResponses.get(i).getGioDen());
-            System.out.println(trangThaiGheRequest.getGaDi().equals(trangThaiGheResponses.get(i).getGaDi()));
-            System.out.println(trangThaiGheRequest.getGaDen() == trangThaiGheResponses.get(i).getGaDen());
-            System.out.println( gioDiRequest.before(gioDenResponse));
             if(trangThaiGheRequest.getGaDi().equals(trangThaiGheResponses.get(i).getGaDi())
                     || trangThaiGheRequest.getGaDen().equals(trangThaiGheResponses.get(i).getGaDen())
                     || gioDiRequest.before(gioDenResponse)){

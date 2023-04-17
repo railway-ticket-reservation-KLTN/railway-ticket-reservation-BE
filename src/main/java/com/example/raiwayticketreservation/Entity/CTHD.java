@@ -1,13 +1,14 @@
 package com.example.raiwayticketreservation.Entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Data
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "CTHD")
 public class CTHD {
     @EmbeddedId

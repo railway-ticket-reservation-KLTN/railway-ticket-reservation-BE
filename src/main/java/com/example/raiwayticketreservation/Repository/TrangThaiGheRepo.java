@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface TrangThaiGheRepo extends JpaRepository <TrangThaiGhe, Long> {
-    @Query(value = "SELECT id FROM railwayticketdb.trangthaighe\n" +
+    @Query(value = "SELECT id FROM railwayticketreservationdb.trangthaighe\n" +
             "WHERE ga_di = ? AND ga_den = ? AND ma_ghe = ? AND ma_ve = ? AND trang_thai = ?", nativeQuery = true)
     public Long getIdByTrangThaiGheRequest(String gaDi, String gaDen, Long maGhe, Long maVe, String trangThai);
 

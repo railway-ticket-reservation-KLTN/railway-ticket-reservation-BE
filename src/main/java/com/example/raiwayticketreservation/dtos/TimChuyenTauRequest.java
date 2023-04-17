@@ -7,5 +7,6 @@ public class TimChuyenTauRequest {
     private String gaDi;
     private String gaDen;
     private String ngayDi;
-    private String loaiChuyenDi;
+    private String ngayVe;
+    private String loaiHanhTrinh;
 }

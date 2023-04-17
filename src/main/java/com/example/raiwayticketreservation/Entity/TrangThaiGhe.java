@@ -8,7 +8,7 @@ import lombok.*;
                 "trang_thai as trangThai, ma_ghe as maGhe, ma_ve as maVe, " +
                 "ngay_di as ngayDi, gio_di as gioDi, gio_den as gioDen, " +
                 "ten_tau as tenTau, so_toa as soToa" +
-                " FROM railwayticketdb.trangthaighe" +
+                " FROM railwayticketreservationdb.trangthaighe" +
                 " WHERE ma_ghe = ? AND ten_tau = ? AND ngay_di = ? AND so_toa = ?",
         resultSetMapping = "Mapping.TrangThaiGheResponse")
 @SqlResultSetMapping(name = "Mapping.TrangThaiGheResponse",
@@ -36,9 +36,9 @@ public class TrangThaiGhe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "maVe")
-    private VeTau veTau;
+//    @ManyToOne
+//    @JoinColumn(name = "maVe")
+//    private VeTau veTau;
 
     @ManyToOne
     @JoinColumn(name = "maGhe")

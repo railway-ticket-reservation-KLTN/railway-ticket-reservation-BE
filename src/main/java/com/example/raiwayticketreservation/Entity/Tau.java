@@ -1,6 +1,7 @@
 package com.example.raiwayticketreservation.Entity;
 
 import com.example.raiwayticketreservation.dtos.ToaTheoTauResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -35,8 +36,10 @@ public class Tau {
     private int soLuongToa;
 
     @OneToMany(mappedBy = "tau")
+    @JsonIgnore
     private Set<CTHanhTrinhTau> ctHanhTrinhTaus;
 
     @OneToMany(mappedBy = "tau")
+    @JsonIgnore
     private Set<CTTauToa> ctTauToas;
 }

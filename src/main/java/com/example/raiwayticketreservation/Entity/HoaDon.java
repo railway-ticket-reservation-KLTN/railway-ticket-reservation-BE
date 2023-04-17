@@ -1,15 +1,17 @@
 package com.example.raiwayticketreservation.Entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "hoadon")
 @ToString
 public class HoaDon {
@@ -21,8 +23,11 @@ public class HoaDon {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private KhachDatVe khachDatVe;
-    private Date ngayLap;
+    private String ngayLap;
     private String hinhThucThanhToan;
+    private UUID maDatVe;
+    private UUID maDatCho;
+    private String tinhTrang;
     private int trangThai;
 
     @OneToMany(mappedBy = "hoaDon")

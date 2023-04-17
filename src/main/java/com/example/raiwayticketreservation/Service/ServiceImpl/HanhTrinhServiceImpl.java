@@ -15,4 +15,9 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
     public HanhTrinh getHanhTrinh(String gaDi, String gaDen, String ngayDi) {
         return hanhTrinhRepo.getHanhTrinhByGaDiGaDenNgayDiNgayDen(gaDi, gaDen, ngayDi);
     }
+
+    @Override
+    public Long getIDHanhTrinh(HanhTrinh hanhTrinh) {
+        return hanhTrinhRepo.getIdHanhTrinh(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), hanhTrinh.getNgayDi());
+    }
 }

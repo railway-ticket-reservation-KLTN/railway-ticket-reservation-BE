@@ -32,12 +32,13 @@ public class VeTau {
     @ToString.Exclude
     private KhachDatVe khachDatVe;
 
+
     @ManyToOne
     @JoinColumn(name = "maHanhTrinh")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private HanhTrinh hanhTrinh;
 
-    @OneToMany(mappedBy = "veTau")
-    private Set<TrangThaiGhe> trangThaiGhes;
+//    @OneToMany(mappedBy = "veTau")
+//    private Set<TrangThaiGhe> trangThaiGhes;
 }

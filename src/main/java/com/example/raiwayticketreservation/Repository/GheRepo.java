@@ -10,7 +10,7 @@ import java.util.Set;
 public interface GheRepo extends JpaRepository<Ghe, Long> {
     @Query(nativeQuery = true)
     public Set<GheResponse> getGheByToaId(Long id);
-    @Query(value = "INSERT INTO `railwayticketdb`.`trang_thai_ghe` (`ga_di`, `ga_den`, `ma_ghe`, `ma_ve`, `trang_thai`) " +
+    @Query(value = "INSERT INTO `railwayticketreservationdb`.`trang_thai_ghe` (`ga_di`, `ga_den`, `ma_ghe`, `ma_ve`, `trang_thai`) " +
             "VALUES (?, ?, ?, ?, ?)", nativeQuery = true)
     public DatChoResponse datCho(String gaDi, String gaDen, Long maGhe, Long maVe, String trangThai);
 }

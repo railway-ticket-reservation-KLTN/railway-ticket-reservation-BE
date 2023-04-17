@@ -7,7 +7,7 @@ import lombok.*;
 
 import java.util.Set;
 @NamedNativeQuery(name = "Ghe.getGheByToaId",
-        query = "SELECT id, loai_ghe as loaiGhe, so_ghe as soGhe FROM railwayticketdb.ghe WHERE ma_toa = ?",
+        query = "SELECT id, loai_ghe as loaiGhe, so_ghe as soGhe FROM railwayticketreservationdb.ghe WHERE ma_toa = ?",
         resultSetMapping = "Mapping.GheResponse")
 @SqlResultSetMapping(name = "Mapping.GheResponse",
         classes = @ConstructorResult(targetClass = GheResponse.class,
