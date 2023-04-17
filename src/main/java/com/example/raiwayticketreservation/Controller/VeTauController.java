@@ -4,6 +4,7 @@ import com.example.raiwayticketreservation.Entity.*;
 import com.example.raiwayticketreservation.Service.*;
 import com.example.raiwayticketreservation.dtos.MuaVeRequest;
 import com.example.raiwayticketreservation.dtos.MuaVeResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.invoke.MethodHandles;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +35,10 @@ public class VeTauController {
     @Autowired
     private KhachDatVeService khachDatVeService;
 
+    @Operation(summary = "Mua vé",
+            description = "Sau khi hoàn thành các buớc mua vé thì API này thực thi" +
+                    " để lưu vé và thông tin khách đặt vào DB",
+            tags = "API Mua vé")
     @PostMapping("/muave")
     public ResponseEntity muaVe(@RequestBody MuaVeRequest muaVeRequest) {
         KhachDatVe khachDatVe = KhachDatVe.builder().hoTen(muaVeRequest.getKhachDatVe().getHoTen())

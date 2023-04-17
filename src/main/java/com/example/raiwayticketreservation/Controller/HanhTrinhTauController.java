@@ -7,6 +7,7 @@ import com.example.raiwayticketreservation.Service.TauService;
 import com.example.raiwayticketreservation.dtos.ErrorResponse;
 import com.example.raiwayticketreservation.dtos.TimChuyenTauRequest;
 import com.example.raiwayticketreservation.dtos.TimChuyenTauResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class HanhTrinhTauController {
     @Autowired
     private TauService tauService;
 
+    @Operation(summary = "Tìm chuyến tàu",
+            description = "Tìm chuyến tàu một chiều và khứ hồi",
+            tags = "API Tìm vé")
     @GetMapping("/hanhtrinhtau")
     public ResponseEntity getHanhTrinhTauByGaDiGaDenNgayDiNgayDen(@RequestBody TimChuyenTauRequest timChuyenTauRequest) {
         if (timChuyenTauRequest.getLoaiHanhTrinh().equals("MOT_CHIEU")) {
