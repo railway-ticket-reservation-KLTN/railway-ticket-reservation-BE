@@ -44,8 +44,6 @@ public class GheServiceImpl implements GheService {
         if (kiemTraDatCho(trangThaiGheResponses, trangThaiGheRequest)) {
             Ghe ghe = Ghe.builder().id(trangThaiGheRequest.getMaGhe()).build();
 
-//            VeTau veTau = VeTau.builder().id(trangThaiGheRequest.getMaVe()).build();
-
             TrangThaiGhe trangThaiGhe = TrangThaiGhe.builder()
                     .ghe(ghe)
                     .gaDi(trangThaiGheRequest.getGaDi())
@@ -79,10 +77,11 @@ public class GheServiceImpl implements GheService {
     @Override
     public boolean xoaDatChoTam(TrangThaiGheRequest trangThaiGheRequest) {
         Long trangThaigheid = trangThaiGheRepo.getIdByTrangThaiGheRequest(trangThaiGheRequest.getGaDi(), trangThaiGheRequest.getGaDen(),
-                trangThaiGheRequest.getMaGhe(), trangThaiGheRequest.getMaVe(), trangThaiGheRequest.getTrangThai());
+                trangThaiGheRequest.getMaGhe(), trangThaiGheRequest.getTrangThai());
         if(trangThaigheid != null) {
             trangThaiGheRepo.deleteById(trangThaigheid);
             return true;
-        } else return false;
+        }
+        return false;
     }
 }

@@ -4,6 +4,7 @@ import com.example.raiwayticketreservation.Entity.TrangThaiGhe;
 import com.example.raiwayticketreservation.Service.GheService;
 import com.example.raiwayticketreservation.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.function.EntityResponse;
@@ -18,20 +19,15 @@ public class GheController {
     @Autowired
     private GheService gheService;
 
-    @GetMapping("/ghes")
-    public Set<GheResponse> getGheTheoMaToa(@RequestBody ToaRequest toaRequest) {
-        return gheService.getGheTheoToaID(toaRequest.getId());
-    }
-
     @PostMapping("/datcho")
     public ResponseEntity datChoTam(@RequestBody TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
         return gheService.datChoTam(trangThaiGheRequest);
     }
 
     @RequestMapping(value = "/tracho", method = RequestMethod.DELETE)
-    public boolean traCho(@RequestBody TrangThaiGheRequest trangThaiGheRequest) {
+    public ResponseEntity traCho(@RequestBody TrangThaiGheRequest trangThaiGheRequest) {
         if(gheService.xoaDatChoTam(trangThaiGheRequest))
-            return true;
-        return false;
+            return new ResponseEntity<>(true, HttpStatus.OK) ;
+        return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
     }
 }
