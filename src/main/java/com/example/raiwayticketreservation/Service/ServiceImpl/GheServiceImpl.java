@@ -76,8 +76,8 @@ public class GheServiceImpl implements GheService {
     }
     @Override
     public boolean xoaDatChoTam(TrangThaiGheRequest trangThaiGheRequest) {
-        Long trangThaigheid = trangThaiGheRepo.getIdByTrangThaiGheRequest(trangThaiGheRequest.getGaDi(), trangThaiGheRequest.getGaDen(),
-                trangThaiGheRequest.getMaGhe(), trangThaiGheRequest.getTrangThai());
+        Long trangThaigheid = trangThaiGheRepo.getIdByTrangThaiGheRequest(trangThaiGheRequest.getGaDi(), trangThaiGheRequest.getGaDen(), trangThaiGheRequest.getNgayDi(),
+                trangThaiGheRequest.getMaGhe(), trangThaiGheRequest.getSoToa(), trangThaiGheRequest.getTrangThai());
         if(trangThaigheid != null) {
             trangThaiGheRepo.deleteById(trangThaigheid);
             return true;
