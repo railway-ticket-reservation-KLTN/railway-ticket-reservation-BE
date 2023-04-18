@@ -34,7 +34,7 @@ public class HanhTrinhTauController {
             if(hanhTrinh != null) {
                 Set<Tau> taus = tauService.getTauByHanhTrinhID(hanhTrinh.getId());
                 ArrayList toaTheoTaus = new ArrayList<>();
-                toaTheoTaus.addAll(tauService.getToaTauByHanhTrinhIDTauID(hanhTrinh.getId()));
+                toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId()));
                 TimChuyenTauResponse timChuyenTauResponse = TimChuyenTauResponse.builder().id(hanhTrinh.getId()).hanhTrinh(hanhTrinh).taus(taus).toaTaus(toaTheoTaus).build();
                 Set<TimChuyenTauResponse> timChuyenTauResponses = new HashSet<>();
                 timChuyenTauResponses.add(timChuyenTauResponse);
@@ -52,7 +52,7 @@ public class HanhTrinhTauController {
             if (hanhTrinhDi != null && hanhTrinhVe != null) {
                 Set<Tau> tauDis = tauService.getTauByHanhTrinhID(hanhTrinhDi.getId());
                 ArrayList toaTheoTauDis = new ArrayList<>();
-                toaTheoTauDis.addAll(tauService.getToaTauByHanhTrinhIDTauID(hanhTrinhDi.getId()));
+                toaTheoTauDis.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinhDi.getId()));
                 TimChuyenTauResponse chuyenTauDiResponse = TimChuyenTauResponse.builder()
                         .id(hanhTrinhDi.getId())
                         .hanhTrinh(hanhTrinhDi)
@@ -61,7 +61,7 @@ public class HanhTrinhTauController {
                         .build();
                 Set<Tau> tauVes = tauService.getTauByHanhTrinhID(hanhTrinhVe.getId());
                 ArrayList toaTheoTauVes = new ArrayList<>();
-                toaTheoTauVes.addAll(tauService.getToaTauByHanhTrinhIDTauID(hanhTrinhVe.getId()));
+                toaTheoTauVes.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinhVe.getId()));
                 TimChuyenTauResponse chuyenTauVeResponse = TimChuyenTauResponse.builder()
                         .id(hanhTrinhVe.getId()).hanhTrinh(hanhTrinhVe)
                         .taus(tauVes)

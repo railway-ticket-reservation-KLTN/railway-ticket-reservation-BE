@@ -10,7 +10,7 @@ import lombok.ToString;
 
 import java.util.Set;
 
-@NamedNativeQuery(name = "Tau.getToaByMaHanhTrinhMaTau",
+@NamedNativeQuery(name = "Tau.getToaTheoTauByMaHanhTrinhMaTau",
         query = "SELECT d.ma_hanh_trinh as maHanhTrinh, t.ten_tau as tenTau, d.so_toa as soToa, " +
                 "c.ten_toa as tenToa, c.mo_ta_toa as moTaToa, c.so_luong_ghe as soLuongGhe" +
                 " FROM Tau t, Toa c, CTTauToa d " +
