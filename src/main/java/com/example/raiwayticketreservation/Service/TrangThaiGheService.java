@@ -1,7 +1,7 @@
 package com.example.raiwayticketreservation.Service;
 
-import com.example.raiwayticketreservation.dtos.TrangThaiGheRequest;
-import com.example.raiwayticketreservation.dtos.TrangThaiGheResponse;
+import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
+import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 
 import java.util.List;
 

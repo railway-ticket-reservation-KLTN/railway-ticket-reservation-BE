@@ -1,8 +1,8 @@
 package com.example.raiwayticketreservation.Repository;
 
 import com.example.raiwayticketreservation.Entity.Ghe;
-import com.example.raiwayticketreservation.dtos.DatChoResponse;
-import com.example.raiwayticketreservation.dtos.GheResponse;
+import com.example.raiwayticketreservation.dtos.responses.DatChoResponse;
+import com.example.raiwayticketreservation.dtos.responses.GheResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,9 +1,10 @@
 package com.example.raiwayticketreservation.Controller;
 
 import com.example.raiwayticketreservation.Entity.Ghe;
-import com.example.raiwayticketreservation.Service.EmailService;
 import com.example.raiwayticketreservation.Service.GheService;
-import com.example.raiwayticketreservation.dtos.*;
+import com.example.raiwayticketreservation.dtos.requests.GheRequest;
+import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
+import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

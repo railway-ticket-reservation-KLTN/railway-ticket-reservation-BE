@@ -1,7 +1,7 @@
 package com.example.raiwayticketreservation.Repository;
 
 import com.example.raiwayticketreservation.Entity.TrangThaiGhe;
-import com.example.raiwayticketreservation.dtos.TrangThaiGheResponse;
+import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

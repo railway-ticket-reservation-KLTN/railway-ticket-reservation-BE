@@ -1,16 +1,14 @@
 package com.example.raiwayticketreservation.Service.ServiceImpl;
 
 
-import com.example.raiwayticketreservation.Entity.CTTauToa;
 import com.example.raiwayticketreservation.Entity.Tau;
 import com.example.raiwayticketreservation.Repository.TauRepo;
 import com.example.raiwayticketreservation.Service.TauService;
-import com.example.raiwayticketreservation.dtos.ToaTheoTauResponse;
+import com.example.raiwayticketreservation.dtos.responses.ToaTheoTauResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Service

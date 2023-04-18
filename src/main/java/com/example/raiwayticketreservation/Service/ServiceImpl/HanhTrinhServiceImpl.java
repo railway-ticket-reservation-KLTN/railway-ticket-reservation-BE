@@ -1,8 +1,10 @@
 package com.example.raiwayticketreservation.Service.ServiceImpl;
 
 import com.example.raiwayticketreservation.Entity.HanhTrinh;
+import com.example.raiwayticketreservation.Entity.VeTau;
 import com.example.raiwayticketreservation.Repository.HanhTrinhRepo;
 import com.example.raiwayticketreservation.Service.HanhTrinhService;
+import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,10 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
     @Override
     public Long getIDHanhTrinh(HanhTrinh hanhTrinh) {
         return hanhTrinhRepo.getIdHanhTrinh(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), hanhTrinh.getNgayDi());
+    }
+
+    @Override
+    public HanhTrinh getHanhTrinhTheoMaHanhTrinh(VeTau veTau) {
+        return hanhTrinhRepo.getHanhTrinhByHanhTrinhID(veTau.getHanhTrinh().getId());
     }
 }

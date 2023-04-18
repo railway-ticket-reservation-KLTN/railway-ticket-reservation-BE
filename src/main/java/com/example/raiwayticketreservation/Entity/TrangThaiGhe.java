@@ -1,6 +1,6 @@
 package com.example.raiwayticketreservation.Entity;
 
-import com.example.raiwayticketreservation.dtos.TrangThaiGheResponse;
+import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 import jakarta.persistence.*;
 import lombok.*;
 @NamedNativeQuery(name = "TrangThaiGhe.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa",

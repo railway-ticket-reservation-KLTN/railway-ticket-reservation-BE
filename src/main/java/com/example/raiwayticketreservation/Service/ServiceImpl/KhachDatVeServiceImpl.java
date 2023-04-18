@@ -1,6 +1,7 @@
 package com.example.raiwayticketreservation.Service.ServiceImpl;
 
 import com.example.raiwayticketreservation.Entity.KhachDatVe;
+import com.example.raiwayticketreservation.Entity.VeTau;
 import com.example.raiwayticketreservation.Repository.KhachDatVeRepo;
 import com.example.raiwayticketreservation.Service.KhachDatVeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,10 @@ public class KhachDatVeServiceImpl implements KhachDatVeService {
     public Long getIDKhachDat(KhachDatVe khachDatVe) {
         return khachDatVeRepo.getIDKhachDatVe(khachDatVe.getHoTen(), khachDatVe.getSdt(),
                 khachDatVe.getEmail(), khachDatVe.getSoGiayTo());
+    }
+
+    @Override
+    public KhachDatVe getKhachDatVeTheoID(VeTau veTau) {
+        return khachDatVeRepo.getKhachDatByKhachDatID(veTau.getKhachDatVe().getId());
     }
 }

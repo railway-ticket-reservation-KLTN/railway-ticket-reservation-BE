@@ -2,8 +2,8 @@ package com.example.raiwayticketreservation.Service.ServiceImpl;
 
 import com.example.raiwayticketreservation.Repository.TrangThaiGheRepo;
 import com.example.raiwayticketreservation.Service.TrangThaiGheService;
-import com.example.raiwayticketreservation.dtos.TrangThaiGheRequest;
-import com.example.raiwayticketreservation.dtos.TrangThaiGheResponse;
+import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
+import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

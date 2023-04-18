@@ -1,4 +1,4 @@
-package com.example.raiwayticketreservation.dtos;
+package com.example.raiwayticketreservation.dtos.responses;
 
 import com.example.raiwayticketreservation.Entity.KhachDatVe;
 import com.example.raiwayticketreservation.Entity.VeTau;

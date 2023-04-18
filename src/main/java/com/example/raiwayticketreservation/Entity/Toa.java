@@ -1,7 +1,6 @@
 package com.example.raiwayticketreservation.Entity;
 
-import com.example.raiwayticketreservation.dtos.ToaResponse;
-import com.example.raiwayticketreservation.dtos.ToaTheoTauResponse;
+import com.example.raiwayticketreservation.dtos.responses.ToaResponse;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;

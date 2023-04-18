@@ -1,4 +1,4 @@
-package com.example.raiwayticketreservation.dtos;
+package com.example.raiwayticketreservation.dtos.requests;
 
 import com.example.raiwayticketreservation.Entity.KhachDatVe;
 import lombok.Data;

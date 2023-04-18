@@ -1,9 +1,8 @@
 package com.example.raiwayticketreservation.Service.ServiceImpl;
 
-import com.example.raiwayticketreservation.Entity.Toa;
 import com.example.raiwayticketreservation.Repository.ToaRepo;
 import com.example.raiwayticketreservation.Service.ToaService;
-import com.example.raiwayticketreservation.dtos.ToaResponse;
+import com.example.raiwayticketreservation.dtos.responses.ToaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

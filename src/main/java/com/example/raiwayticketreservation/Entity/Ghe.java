@@ -1,7 +1,6 @@
 package com.example.raiwayticketreservation.Entity;
 
-import com.example.raiwayticketreservation.dtos.GheResponse;
-import com.example.raiwayticketreservation.dtos.ToaTheoTauResponse;
+import com.example.raiwayticketreservation.dtos.responses.GheResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

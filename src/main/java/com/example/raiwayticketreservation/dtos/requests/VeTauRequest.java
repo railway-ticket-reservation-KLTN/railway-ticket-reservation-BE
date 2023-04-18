@@ -1,4 +1,4 @@
-package com.example.raiwayticketreservation.dtos;
+package com.example.raiwayticketreservation.dtos.requests;
 
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +12,9 @@ public class VeTauRequest {
     private String loaiVe;
     private String doiTuong;
     private int trangThai;
+    private String tenTau;
+    private int soGhe;
+    private int soToa;
     private String gaDi;
     private String gaDen;
     private String ngayDi;

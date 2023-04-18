@@ -1,10 +1,9 @@
 package com.example.raiwayticketreservation.Controller;
 
-import com.example.raiwayticketreservation.Service.TauService;
 import com.example.raiwayticketreservation.Service.ToaService;
-import com.example.raiwayticketreservation.dtos.ErrorResponse;
-import com.example.raiwayticketreservation.dtos.TimToaRequest;
-import com.example.raiwayticketreservation.dtos.ToaResponse;
+import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
+import com.example.raiwayticketreservation.dtos.requests.TimToaRequest;
+import com.example.raiwayticketreservation.dtos.responses.ToaResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

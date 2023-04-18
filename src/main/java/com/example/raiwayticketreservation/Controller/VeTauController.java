@@ -2,21 +2,18 @@ package com.example.raiwayticketreservation.Controller;
 
 import com.example.raiwayticketreservation.Entity.*;
 import com.example.raiwayticketreservation.Service.*;
-import com.example.raiwayticketreservation.dtos.MuaVeRequest;
-import com.example.raiwayticketreservation.dtos.MuaVeResponse;
+import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
+import com.example.raiwayticketreservation.dtos.requests.MuaVeRequest;
+import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
+import com.example.raiwayticketreservation.dtos.responses.MuaVeResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/v1")
@@ -56,12 +53,16 @@ public class VeTauController {
         String tinhTrang = "";
 
         if(muaVeRequest.getHinhThucThanhToan().equals("TRA_SAU")) {
-            maDatCho = UUID.randomUUID().toString();
+            Random random = new Random();
+            int numRand = random.nextInt(999999999);
+            maDatCho = String.format("%09d", numRand);
             tinhTrang = "CHUA_THANH_TOAN";
             maDatVe = null;
 
         } else if (muaVeRequest.getHinhThucThanhToan().equals("THANH_TOAN_ONLINE")){
-            maDatVe = UUID.randomUUID().toString();
+            Random random = new Random();
+            int numRand = random.nextInt(999999999);
+            maDatVe = String.format("%09d", numRand);
             maDatCho = null;
             tinhTrang = "DA_THANH_TOAN";
         }
@@ -84,6 +85,8 @@ public class VeTauController {
 
         String finalTinhTrang = tinhTrang;
         muaVeRequest.getVeTaus().forEach(veTau -> {
+                Random random = new Random();
+                int maVe = random.nextInt(99999999);
                 HanhTrinh hanhTrinh = HanhTrinh.builder()
                         .gaDi(veTau.getGaDi())
                         .gaDen(veTau.getGaDen())
@@ -93,11 +96,15 @@ public class VeTauController {
                         .id(hanhTrinhService.getIDHanhTrinh(hanhTrinh))
                         .build();
                 VeTau veTauDi = VeTau.builder()
+                        .maVe(String.format("%08d", maVe))
                         .doiTuong(veTau.getDoiTuong())
                         .donGia(veTau.getDonGia())
                         .loaiVe(veTau.getLoaiVe())
                         .soGiayTo(veTau.getSoGiayTo())
                         .tenHanhKhach(veTau.getTenHanhKhach())
+                        .tenTau(veTau.getTenTau())
+                        .soGhe(veTau.getSoGhe())
+                        .soToa(veTau.getSoToa())
                         .tinhTrang(finalTinhTrang)
                         .trangThai(1)
                         .hanhTrinh(hanhTrinhID)
@@ -126,5 +133,30 @@ public class VeTauController {
                 .build();
 
         return new ResponseEntity(muaVeResponse, HttpStatus.OK);
+    }
+    @Operation(summary = "Kiểm tra vé",
+            description = "Khách hàng nhập thông tin trên vé, nếu thông tin trùng với vé thì sẽ trả về thông tin vé",
+            tags = "API Kiểm tra vé")
+    @GetMapping("/kiemtrave")
+    public ResponseEntity kiemTraVe(@RequestBody KiemTraVeRequest kiemTraVeRequest) throws JsonProcessingException {
+        VeTau veTau = veTauService.getVeTheoMaVe(kiemTraVeRequest);
+        if(veTau == null) {
+            return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi kiểm tra vé").moTaLoi("Không tìm thấy vé").build(), HttpStatus.BAD_REQUEST);
+        } else {
+            HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau);
+            KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(veTau);
+            veTau.builder().hanhTrinh(hanhTrinh).khachDatVe(khachDatVe);
+            if(kiemTraVeRequest.getTenTau().equals(veTau.getTenTau())
+                    && kiemTraVeRequest.getGaDi().equals(veTau.getHanhTrinh().getGaDi())
+                    && kiemTraVeRequest.getGaDen().equals(veTau.getHanhTrinh().getGaDen())
+                    && kiemTraVeRequest.getNgayDi().equals(veTau.getHanhTrinh().getNgayDi())
+                    && kiemTraVeRequest.getSoGiayTo().equals(veTau.getSoGiayTo()))
+            {
+                return new ResponseEntity(veTau, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi thông tin vé").moTaLoi("Thông tin cung cấp không trùng khớp với thông tin vé").build(), HttpStatus.BAD_REQUEST);
+            }
+
+        }
     }
 }

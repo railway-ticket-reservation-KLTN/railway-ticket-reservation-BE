@@ -1,11 +1,9 @@
 package com.example.raiwayticketreservation.Entity;
 
-import com.example.raiwayticketreservation.dtos.ToaTheoTauResponse;
+import com.example.raiwayticketreservation.dtos.responses.ToaTheoTauResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Set;

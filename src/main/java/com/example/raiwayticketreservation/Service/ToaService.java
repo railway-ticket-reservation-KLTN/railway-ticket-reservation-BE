@@ -1,6 +1,6 @@
 package com.example.raiwayticketreservation.Service;
 
-import com.example.raiwayticketreservation.dtos.ToaResponse;
+import com.example.raiwayticketreservation.dtos.responses.ToaResponse;
 
 import java.util.Set;
 

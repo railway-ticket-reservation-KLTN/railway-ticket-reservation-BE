@@ -1,9 +1,9 @@
 package com.example.raiwayticketreservation.Service;
 
 import com.example.raiwayticketreservation.Entity.Ghe;
-import com.example.raiwayticketreservation.dtos.GheRequest;
-import com.example.raiwayticketreservation.dtos.GheResponse;
-import com.example.raiwayticketreservation.dtos.TrangThaiGheRequest;
+import com.example.raiwayticketreservation.dtos.requests.GheRequest;
+import com.example.raiwayticketreservation.dtos.responses.GheResponse;
+import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.text.ParseException;
