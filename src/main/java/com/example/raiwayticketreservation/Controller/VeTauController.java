@@ -4,6 +4,7 @@ import com.example.raiwayticketreservation.Entity.*;
 import com.example.raiwayticketreservation.Service.*;
 import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
 import com.example.raiwayticketreservation.dtos.requests.MuaVeRequest;
+import com.example.raiwayticketreservation.dtos.requests.TimVeTraRequest;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import com.example.raiwayticketreservation.dtos.responses.MuaVeResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -143,8 +144,8 @@ public class VeTauController {
         if(veTau == null) {
             return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi kiểm tra vé").moTaLoi("Không tìm thấy vé").build(), HttpStatus.BAD_REQUEST);
         } else {
-            HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau);
-            KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(veTau);
+            HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau.getHanhTrinh().getId());
+            KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(veTau.getKhachDatVe().getId());
             veTau.builder().hanhTrinh(hanhTrinh).khachDatVe(khachDatVe);
             if(kiemTraVeRequest.getTenTau().equals(veTau.getTenTau())
                     && kiemTraVeRequest.getGaDi().equals(veTau.getHanhTrinh().getGaDi())
@@ -157,6 +158,33 @@ public class VeTauController {
                 return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi thông tin vé").moTaLoi("Thông tin cung cấp không trùng khớp với thông tin vé").build(), HttpStatus.BAD_REQUEST);
             }
 
+        }
+    }
+
+    @Operation(summary = "Lấy danh sách vé theo khách đặt",
+            description = "Lấy danh sách vé theo thông tin khách đặt",
+            tags = "API Trả vé")
+    @GetMapping("/ves")
+    public ResponseEntity getDanhSachVeTheoKhachDat(@RequestBody TimVeTraRequest timVeTraRequest) {
+        HoaDon hoaDon = hoaDonService.getHoaDonByMaDatVe(timVeTraRequest.getMaDatVe());
+        KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(hoaDon.getKhachDatVe().getId());
+        if(timVeTraRequest.getTenKhachDat().equals(khachDatVe.getHoTen())
+                && timVeTraRequest.getEmail().equals(khachDatVe.getEmail())
+                && timVeTraRequest.getSoGiayTo().equals(khachDatVe.getSoGiayTo())
+                && timVeTraRequest.getSdt().equals(khachDatVe.getSdt())) {
+            Set<CTHD> cthds = cthdService.getCTHDTheoHoaDonId(hoaDon.getId());
+            ArrayList<VeTau> veTaus = new ArrayList<>();
+            cthds.forEach(cthd -> {
+                VeTau veTau = veTauService.getVeTauTheoID(cthd.getVeTau().getId());
+                HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau.getHanhTrinh().getId());
+                veTau.builder().khachDatVe(khachDatVe).hanhTrinh(hanhTrinh);
+                if(!veTau.getTinhTrang().equals("DA_HUY")) {
+                    veTaus.add(veTau);
+                }
+            });
+            return new ResponseEntity<>(veTaus, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(ErrorResponse.builder().tenLoi("Lỗi thông tin không trùng khớp").moTaLoi("Thôn tin khách đặt không chính xác").build(), HttpStatus.BAD_REQUEST);
         }
     }
 }

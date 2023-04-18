@@ -7,4 +7,6 @@ import java.util.Set;
 
 public interface CTHDService {
     public List<CTHD> themCTHD(Set<CTHD> cthds);
+
+    public Set<CTHD> getCTHDTheoHoaDonId(Long id);
 }

@@ -19,4 +19,9 @@ public class HoaDonServiceImpl implements HoaDonService {
     public Long getIDHoaDon(String ngayLap, Long maKhachDat) {
         return hoaDonRepo.getIDHoaDon(ngayLap, maKhachDat);
     }
+
+    @Override
+    public HoaDon getHoaDonByMaDatVe(String maDatVe) {
+        return hoaDonRepo.getHDByMaDatVe(maDatVe);
+    }
 }

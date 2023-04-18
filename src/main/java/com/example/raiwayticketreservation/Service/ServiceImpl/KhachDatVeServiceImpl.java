@@ -24,7 +24,7 @@ public class KhachDatVeServiceImpl implements KhachDatVeService {
     }
 
     @Override
-    public KhachDatVe getKhachDatVeTheoID(VeTau veTau) {
-        return khachDatVeRepo.getKhachDatByKhachDatID(veTau.getKhachDatVe().getId());
+    public KhachDatVe getKhachDatVeTheoID(Long id) {
+        return khachDatVeRepo.getKhachDatByKhachDatID(id);
     }
 }

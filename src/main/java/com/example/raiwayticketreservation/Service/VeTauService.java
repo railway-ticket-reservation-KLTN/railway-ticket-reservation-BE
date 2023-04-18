@@ -11,4 +11,6 @@ public interface VeTauService {
     public Long getIDVeTau(VeTau veTau);
 
     public VeTau getVeTheoMaVe(KiemTraVeRequest kiemTraVeRequest);
+
+    public VeTau getVeTauTheoID(Long Id);
 }

@@ -13,4 +13,6 @@ public interface VeTauRepo extends JpaRepository<VeTau, Long> {
     public Long getIDVeTau(String tenHanhKhach, String soGiayTo, Long maKhachDat, Long maHanhTrinh);
     @Query(value = "SELECT * FROM railwayticketreservationdb.vetau WHERE ma_ve = ?", nativeQuery = true)
     public VeTau getVeTheoMaVe(String maVe);
+    @Query(value = "SELECT * FROM railwayticketreservationdb.vetau WHERE id = ?", nativeQuery = true)
+    public VeTau getVeTheoId(Long id);
 }

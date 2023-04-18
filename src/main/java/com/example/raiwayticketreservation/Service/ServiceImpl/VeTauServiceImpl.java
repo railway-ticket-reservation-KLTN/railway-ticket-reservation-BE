@@ -31,4 +31,10 @@ public class VeTauServiceImpl implements VeTauService {
     public VeTau getVeTheoMaVe(KiemTraVeRequest kiemTraVeRequest) {
         return veTauRepo.getVeTheoMaVe(kiemTraVeRequest.getMaVe());
     }
+
+    @Override
+    public VeTau getVeTauTheoID(Long id) {
+        return veTauRepo.getVeTheoId(id);
+    }
+
 }

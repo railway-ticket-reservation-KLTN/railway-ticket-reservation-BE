@@ -7,5 +7,5 @@ public interface KhachDatVeService {
     public KhachDatVe themKhachDat(KhachDatVe khachDatVe);
     public Long getIDKhachDat(KhachDatVe khachDatVe);
 
-    public KhachDatVe getKhachDatVeTheoID(VeTau veTau);
+    public KhachDatVe getKhachDatVeTheoID(Long id);
 }

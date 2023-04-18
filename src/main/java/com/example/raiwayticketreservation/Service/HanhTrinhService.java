@@ -9,5 +9,5 @@ public interface HanhTrinhService{
 
     public Long getIDHanhTrinh(HanhTrinh hanhTrinh);
 
-    public HanhTrinh getHanhTrinhTheoMaHanhTrinh(VeTau veTau);
+    public HanhTrinh getHanhTrinhTheoMaHanhTrinh(Long hanhTrinhID);
 }

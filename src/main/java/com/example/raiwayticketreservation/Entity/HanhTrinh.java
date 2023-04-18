@@ -15,7 +15,6 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Table(name = "hanhtrinh")
 public class HanhTrinh implements Serializable {
     @Id

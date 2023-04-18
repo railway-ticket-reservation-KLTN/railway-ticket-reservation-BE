@@ -23,4 +23,9 @@ public class CTHDServiceImpl implements CTHDService {
         });
         return cthdList;
     }
+
+    @Override
+    public Set<CTHD> getCTHDTheoHoaDonId(Long id) {
+        return cthdRepo.getCTHDByHoaDonId(id);
+    }
 }

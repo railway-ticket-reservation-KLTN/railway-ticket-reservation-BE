@@ -24,7 +24,7 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
     }
 
     @Override
-    public HanhTrinh getHanhTrinhTheoMaHanhTrinh(VeTau veTau) {
-        return hanhTrinhRepo.getHanhTrinhByHanhTrinhID(veTau.getHanhTrinh().getId());
+    public HanhTrinh getHanhTrinhTheoMaHanhTrinh(Long hanhTrinhID) {
+        return hanhTrinhRepo.getHanhTrinhByHanhTrinhID(hanhTrinhID);
     }
 }

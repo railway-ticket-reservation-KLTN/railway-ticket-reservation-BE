@@ -6,4 +6,6 @@ public interface HoaDonService {
     public HoaDon themHoaDon(HoaDon hoaDon);
 
     public Long getIDHoaDon(String ngayLap, Long maKhachDat);
+
+    public HoaDon getHoaDonByMaDatVe(String maDatVe);
 }

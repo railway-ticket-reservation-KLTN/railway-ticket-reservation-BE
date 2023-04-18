@@ -8,4 +8,7 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, Long> {
     @Query(value = "SELECT id FROM railwayticketreservationdb.hoadon\n" +
             "WHERE ngay_lap = ? AND ma_khach_dat = ?", nativeQuery = true)
     public Long getIDHoaDon(String ngayLap, Long maKhachDat);
+    @Query(value = "SELECT * FROM railwayticketreservationdb.hoadon\n" +
+            "WHERE ma_dat_ve = ?", nativeQuery = true)
+    public HoaDon getHDByMaDatVe(String maDatVe);
 }

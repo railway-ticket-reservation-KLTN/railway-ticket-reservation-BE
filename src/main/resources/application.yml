@@ -23,3 +23,6 @@ spring:
         transport.protocol: smtp
         smtp.auth: true
         smtp.starttls.enable: true
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
