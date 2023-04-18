@@ -2,6 +2,7 @@ package com.example.raiwayticketreservation.Entity;
 
 import com.example.raiwayticketreservation.dtos.GheResponse;
 import com.example.raiwayticketreservation.dtos.ToaTheoTauResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,9 +32,11 @@ public class Ghe {
     private int trangThai;
 
     @OneToMany(mappedBy = "ghe")
+    @JsonIgnore
     private Set<TrangThaiGhe> trangThaiGhes;
 
     @ManyToOne
     @JoinColumn(name = "maToa")
+    @JsonIgnore
     private Toa toa;
 }

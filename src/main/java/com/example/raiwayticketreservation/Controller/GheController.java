@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.Controller;
 
+import com.example.raiwayticketreservation.Entity.Ghe;
 import com.example.raiwayticketreservation.Service.EmailService;
 import com.example.raiwayticketreservation.Service.GheService;
 import com.example.raiwayticketreservation.dtos.*;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/v1")
@@ -36,5 +38,16 @@ public class GheController {
         if(gheService.xoaDatChoTam(trangThaiGheRequest))
             return new ResponseEntity<>(true, HttpStatus.OK) ;
         return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
+    }
+    @Operation(summary = "Lấy danh sách ghế",
+            description = "Khi Click chọn vào toa nào thì sẽ thực thi API này để lấy ra danh sách ghế theo toa, nếu ghế nào có trạng thái là 0 có nghĩa đã được đặt",
+            tags = "API Get danh sách ghế theo toa")
+    @GetMapping(value = "/ghes")
+    public ResponseEntity getDanhSachGhe(@RequestBody GheRequest gheRequest) {
+        Set<Ghe> ghes = gheService.getGhesTheoMaToa(gheRequest);
+        if(ghes.size() == 0) {
+            return new ResponseEntity<>(ErrorResponse.builder().tenLoi("Lỗi lấy danh sách ghế").build(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(ghes, HttpStatus.OK);
     }
 }

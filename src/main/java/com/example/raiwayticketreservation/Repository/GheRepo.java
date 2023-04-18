@@ -13,4 +13,8 @@ public interface GheRepo extends JpaRepository<Ghe, Long> {
     @Query(value = "INSERT INTO `railwayticketreservationdb`.`trang_thai_ghe` (`ga_di`, `ga_den`, `ma_ghe`, `ma_ve`, `trang_thai`) " +
             "VALUES (?, ?, ?, ?, ?)", nativeQuery = true)
     public DatChoResponse datCho(String gaDi, String gaDen, Long maGhe, Long maVe, String trangThai);
+
+    @Query(value = "SELECT * FROM railwayticketreservationdb.ghe\n" +
+            "WHERE ma_toa = 1", nativeQuery = true)
+    public Set<Ghe> getDsGheTheoMaToa(Long maToa);
 }

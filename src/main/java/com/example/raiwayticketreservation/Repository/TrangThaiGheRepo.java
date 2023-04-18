@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-
 public interface TrangThaiGheRepo extends JpaRepository <TrangThaiGhe, Long> {
     @Query(value = "SELECT id FROM railwayticketreservationdb.trangthaighe\n" +
             "WHERE ga_di = ? AND ga_den = ? AND ngay_di = ? " +
@@ -16,4 +15,5 @@ public interface TrangThaiGheRepo extends JpaRepository <TrangThaiGhe, Long> {
 
     @Query(nativeQuery = true)
     public List<TrangThaiGheResponse> getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(Long maGhe, String tenTau, String ngayDi, int soToa);
+
 }

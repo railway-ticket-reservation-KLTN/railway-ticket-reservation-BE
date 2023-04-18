@@ -9,7 +9,6 @@ public class TrangThaiGheResponse {
     private String gaDi;
     private String trangThai;
     private Long maGhe;
-    private Long maVe;
     private String ngayDi;
     private String gioDi;
     private String gioDen;

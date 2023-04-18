@@ -1,5 +1,7 @@
 package com.example.raiwayticketreservation.Service;
 
+import com.example.raiwayticketreservation.Entity.Ghe;
+import com.example.raiwayticketreservation.dtos.GheRequest;
 import com.example.raiwayticketreservation.dtos.GheResponse;
 import com.example.raiwayticketreservation.dtos.TrangThaiGheRequest;
 import org.springframework.http.ResponseEntity;
@@ -13,4 +15,6 @@ public interface GheService {
     public ResponseEntity datChoTam(TrangThaiGheRequest trangThaiGheRequest) throws ParseException;
 
     public boolean xoaDatChoTam(TrangThaiGheRequest trangThaiGheRequest);
+
+    public Set<Ghe> getGhesTheoMaToa(GheRequest gheRequest);
 }

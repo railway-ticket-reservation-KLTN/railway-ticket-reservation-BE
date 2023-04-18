@@ -2,14 +2,10 @@ package com.example.raiwayticketreservation.Service.ServiceImpl;
 
 import com.example.raiwayticketreservation.Entity.Ghe;
 import com.example.raiwayticketreservation.Entity.TrangThaiGhe;
-import com.example.raiwayticketreservation.Entity.VeTau;
 import com.example.raiwayticketreservation.Repository.GheRepo;
 import com.example.raiwayticketreservation.Repository.TrangThaiGheRepo;
 import com.example.raiwayticketreservation.Service.GheService;
-import com.example.raiwayticketreservation.dtos.ErrorResponse;
-import com.example.raiwayticketreservation.dtos.GheResponse;
-import com.example.raiwayticketreservation.dtos.TrangThaiGheRequest;
-import com.example.raiwayticketreservation.dtos.TrangThaiGheResponse;
+import com.example.raiwayticketreservation.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +27,7 @@ public class GheServiceImpl implements GheService {
 
     @Autowired
     private TrangThaiGheRepo trangThaiGheRepo;
+
     @Override
     public Set<GheResponse> getGheTheoToaID(Long id) {
         return gheRepo.getGheByToaId(id);
@@ -58,30 +55,46 @@ public class GheServiceImpl implements GheService {
             trangThaiGheRepo.save(trangThaiGhe);
             return new ResponseEntity(HttpStatus.OK);
         } else
-        return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi đặt chỗ").moTaLoi("Chỗ đã được đặt").build(), HttpStatus.LOCKED);
+            return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi đặt chỗ").moTaLoi("Chỗ đã được đặt").build(), HttpStatus.LOCKED);
     }
 
     public boolean kiemTraDatCho(List<TrangThaiGheResponse> trangThaiGheResponses, TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
-        for(int i = 0; i < trangThaiGheResponses.size(); i++) {
+        for (int i = 0; i < trangThaiGheResponses.size(); i++) {
             DateFormat dateFormat = new SimpleDateFormat("hh:mm");
-            Date gioDiRequest =  dateFormat.parse(trangThaiGheRequest.getGioDi());
-            Date gioDenResponse =  dateFormat.parse(trangThaiGheResponses.get(i).getGioDen());
-            if(trangThaiGheRequest.getGaDi().equals(trangThaiGheResponses.get(i).getGaDi())
+            Date gioDiRequest = dateFormat.parse(trangThaiGheRequest.getGioDi());
+            Date gioDenResponse = dateFormat.parse(trangThaiGheResponses.get(i).getGioDen());
+            if (trangThaiGheRequest.getGaDi().equals(trangThaiGheResponses.get(i).getGaDi())
                     || trangThaiGheRequest.getGaDen().equals(trangThaiGheResponses.get(i).getGaDen())
-                    || gioDiRequest.before(gioDenResponse)){
+                    || gioDiRequest.before(gioDenResponse)) {
                 return false;
             }
         }
         return true;
     }
+
     @Override
     public boolean xoaDatChoTam(TrangThaiGheRequest trangThaiGheRequest) {
         Long trangThaigheid = trangThaiGheRepo.getIdByTrangThaiGheRequest(trangThaiGheRequest.getGaDi(), trangThaiGheRequest.getGaDen(), trangThaiGheRequest.getNgayDi(),
                 trangThaiGheRequest.getMaGhe(), trangThaiGheRequest.getSoToa(), trangThaiGheRequest.getTrangThai());
-        if(trangThaigheid != null) {
+        if (trangThaigheid != null) {
             trangThaiGheRepo.deleteById(trangThaigheid);
             return true;
         }
         return false;
     }
+
+    @Override
+    public Set<Ghe> getGhesTheoMaToa(GheRequest gheRequest) {
+        Set<Ghe> dsGhe = gheRepo.getDsGheTheoMaToa(gheRequest.getMaToa());
+        dsGhe.forEach(gheItem -> {
+            List<TrangThaiGheResponse> trangThaiGhes = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(gheItem.getId(), gheRequest.getTenTau(), gheRequest.getNgayDi(), gheRequest.getSoToa());
+            trangThaiGhes.forEach(trangThaiGheResponse -> {
+                if(trangThaiGheResponse.getTrangThai() != null) {
+                    gheItem.setTrangThai(0);
+                }
+            });
+        });
+        return dsGhe;
+    }
 }
+
