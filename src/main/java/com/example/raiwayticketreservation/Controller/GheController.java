@@ -43,7 +43,7 @@ public class GheController {
     @Operation(summary = "Lấy danh sách ghế",
             description = "Khi Click chọn vào toa nào thì sẽ thực thi API này để lấy ra danh sách ghế theo toa, nếu ghế nào có trạng thái là 0 có nghĩa đã được đặt",
             tags = "API Get danh sách ghế theo toa")
-    @GetMapping(value = "/ghes")
+    @PostMapping(value = "/ghes")
     public ResponseEntity getDanhSachGhe(@RequestBody GheRequest gheRequest) {
         Set<Ghe> ghes = gheService.getGhesTheoMaToa(gheRequest);
         if(ghes.size() == 0) {

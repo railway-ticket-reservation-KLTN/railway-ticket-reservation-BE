@@ -8,10 +8,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Set;
 
 @RestController
@@ -23,7 +21,7 @@ public class ToaController {
     @Operation(summary = "Tìm toa theo tàu",
             description = "Khi Click chọn vào toa request tới API này để lấy ra danh sách toa theo tàu và theo hành trình",
             tags = "API Get danh sách toa")
-    @GetMapping("/toas")
+    @PostMapping("/toas")
     public ResponseEntity getToaTauBangHanhTrinhIDTauID(@RequestBody TimToaRequest timToaRequest) {
         Set<ToaResponse> toaResponseSet;
         toaResponseSet = toaService.getToasByHanhTrinhIDTauID(timToaRequest.getHanhTrinhID(), timToaRequest.getTauID());

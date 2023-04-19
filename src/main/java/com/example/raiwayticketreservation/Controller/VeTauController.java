@@ -138,7 +138,7 @@ public class VeTauController {
     @Operation(summary = "Kiểm tra vé",
             description = "Khách hàng nhập thông tin trên vé, nếu thông tin trùng với vé thì sẽ trả về thông tin vé",
             tags = "API Kiểm tra vé")
-    @GetMapping("/kiemtrave")
+    @PostMapping("/kiemtrave")
     public ResponseEntity kiemTraVe(@RequestBody KiemTraVeRequest kiemTraVeRequest) throws JsonProcessingException {
         VeTau veTau = veTauService.getVeTheoMaVe(kiemTraVeRequest);
         if(veTau == null) {
@@ -164,7 +164,7 @@ public class VeTauController {
     @Operation(summary = "Lấy danh sách vé theo khách đặt",
             description = "Lấy danh sách vé theo thông tin khách đặt",
             tags = "API Trả vé")
-    @GetMapping("/ves")
+    @PostMapping("/ves")
     public ResponseEntity getDanhSachVeTheoKhachDat(@RequestBody TimVeTraRequest timVeTraRequest) {
         HoaDon hoaDon = hoaDonService.getHoaDonByMaDatVe(timVeTraRequest.getMaDatVe());
         KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(hoaDon.getKhachDatVe().getId());

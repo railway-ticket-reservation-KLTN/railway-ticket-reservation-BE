@@ -27,7 +27,7 @@ public class HanhTrinhTauController {
     @Operation(summary = "Tìm chuyến tàu",
             description = "Tìm chuyến tàu một chiều và khứ hồi",
             tags = "API Tìm vé")
-    @GetMapping("/hanhtrinhtau")
+    @PostMapping("/hanhtrinhtau")
     public ResponseEntity getHanhTrinhTauByGaDiGaDenNgayDiNgayDen(@RequestBody TimChuyenTauRequest timChuyenTauRequest) {
         if (timChuyenTauRequest.getLoaiHanhTrinh().equals("MOT_CHIEU")) {
             HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
