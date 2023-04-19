@@ -13,4 +13,8 @@ public interface VeTauService {
     public VeTau getVeTheoMaVe(KiemTraVeRequest kiemTraVeRequest);
 
     public VeTau getVeTauTheoID(Long Id);
+
+    public void capNhatTrangThaiTinhTrangVeTau(VeTau veTau);
+
+    public Set<VeTau> getVeTauTheoMaKhachDat(Long maKhachDat);
 }

@@ -21,7 +21,7 @@ public class MaXacThuc {
     private Long id;
     private String maXacThuc;
     private Timestamp timestamp;
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "ma_khach_dat", referencedColumnName = "id")
     private KhachDatVe khachDatVe;
 }

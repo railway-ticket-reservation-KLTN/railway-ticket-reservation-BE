@@ -5,7 +5,7 @@ import com.example.raiwayticketreservation.Entity.HoaDon;
 public interface HoaDonService {
     public HoaDon themHoaDon(HoaDon hoaDon);
 
-    public Long getIDHoaDon(String ngayLap, Long maKhachDat);
+    public Long getIDHoaDonTheoMaDatChoHoacMaDatVe(String maDatCho, String maDatVe);
 
     public HoaDon getHoaDonByMaDatVe(String maDatVe);
 }

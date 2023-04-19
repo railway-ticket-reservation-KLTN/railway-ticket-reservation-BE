@@ -20,7 +20,8 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
 
     @Override
     public Long getIDHanhTrinh(HanhTrinh hanhTrinh) {
-        return hanhTrinhRepo.getIdHanhTrinh(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), hanhTrinh.getNgayDi());
+        return hanhTrinhRepo.getIdHanhTrinh(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), hanhTrinh.getNgayDi(),
+                hanhTrinh.getNgayDen(), hanhTrinh.getGioDi(), hanhTrinh.getGioDen());
     }
 
     @Override

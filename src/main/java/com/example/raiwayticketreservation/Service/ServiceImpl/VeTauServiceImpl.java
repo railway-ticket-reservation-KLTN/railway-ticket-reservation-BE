@@ -3,6 +3,7 @@ package com.example.raiwayticketreservation.Service.ServiceImpl;
 import com.example.raiwayticketreservation.Entity.VeTau;
 import com.example.raiwayticketreservation.Repository.VeTauRepo;
 import com.example.raiwayticketreservation.Service.VeTauService;
+import com.example.raiwayticketreservation.constants.SystemConstant;
 import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,16 @@ public class VeTauServiceImpl implements VeTauService {
     @Override
     public VeTau getVeTauTheoID(Long id) {
         return veTauRepo.getVeTheoId(id);
+    }
+
+    @Override
+    public void capNhatTrangThaiTinhTrangVeTau(VeTau veTau) {
+        veTauRepo.capNhatTinhTrangVeTauTheoID(SystemConstant.TRA_VE, veTau.getId());
+    }
+
+    @Override
+    public Set<VeTau> getVeTauTheoMaKhachDat(Long maKhachDat) {
+        return veTauRepo.getVeTauTheoMaKhachDat(maKhachDat);
     }
 
 }

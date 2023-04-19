@@ -37,7 +37,7 @@ public class GheController {
     @RequestMapping(value = "/tracho", method = RequestMethod.DELETE)
     public ResponseEntity traCho(@RequestBody TrangThaiGheRequest trangThaiGheRequest) {
         if(gheService.xoaDatChoTam(trangThaiGheRequest))
-            return new ResponseEntity<>(true, HttpStatus.OK) ;
+            return new ResponseEntity<>(true, HttpStatus.OK);
         return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
     }
     @Operation(summary = "Lấy danh sách ghế",

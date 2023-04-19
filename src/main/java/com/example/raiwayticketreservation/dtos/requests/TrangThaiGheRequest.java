@@ -1,8 +1,10 @@
 package com.example.raiwayticketreservation.dtos.requests;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class TrangThaiGheRequest {
     private String gaDi;
     private String gaDen;

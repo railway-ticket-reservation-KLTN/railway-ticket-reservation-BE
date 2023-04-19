@@ -5,20 +5,24 @@ import com.example.raiwayticketreservation.Entity.TrangThaiGhe;
 import com.example.raiwayticketreservation.Repository.GheRepo;
 import com.example.raiwayticketreservation.Repository.TrangThaiGheRepo;
 import com.example.raiwayticketreservation.Service.GheService;
+import com.example.raiwayticketreservation.constants.SystemConstant;
 import com.example.raiwayticketreservation.dtos.requests.GheRequest;
 import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import com.example.raiwayticketreservation.dtos.responses.GheResponse;
 import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
+import org.hibernate.annotations.CurrentTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -54,6 +58,7 @@ public class GheServiceImpl implements GheService {
                     .soToa(trangThaiGheRequest.getSoToa())
                     .gioDen(trangThaiGheRequest.getGioDen())
                     .gioDi(trangThaiGheRequest.getGioDi())
+                    .thoiHanGiuGhe(tinhThoiHanMaXacThuc(600))
                     .trangThai(trangThaiGheRequest.getTrangThai()).build();
 
             trangThaiGheRepo.save(trangThaiGhe);
@@ -93,12 +98,21 @@ public class GheServiceImpl implements GheService {
         dsGhe.forEach(gheItem -> {
             List<TrangThaiGheResponse> trangThaiGhes = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(gheItem.getId(), gheRequest.getTenTau(), gheRequest.getNgayDi(), gheRequest.getSoToa());
             trangThaiGhes.forEach(trangThaiGheResponse -> {
-                if(trangThaiGheResponse.getTrangThai() != null) {
-                    gheItem.setTrangThai(0);
+                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                if(trangThaiGheResponse.getTrangThai() != null
+                        &&  trangThaiGheResponse.getThoiHanGiuGhe().after(currentTime)
+                        || trangThaiGheResponse.getTrangThai().equals(SystemConstant.DA_MUA)) {
+                        gheItem.setTrangThai(0);
                 }
             });
         });
         return dsGhe;
+    }
+
+    private Timestamp tinhThoiHanMaXacThuc(int soGiayHetHan) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, soGiayHetHan);
+        return new Timestamp(calendar.getTime().getTime());
     }
 }
 

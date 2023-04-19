@@ -2,6 +2,7 @@ package com.example.raiwayticketreservation.Controller;
 
 import com.example.raiwayticketreservation.Entity.*;
 import com.example.raiwayticketreservation.Service.*;
+import com.example.raiwayticketreservation.constants.SystemConstant;
 import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
 import com.example.raiwayticketreservation.dtos.requests.MuaVeRequest;
 import com.example.raiwayticketreservation.dtos.requests.TimVeTraRequest;
@@ -33,68 +34,88 @@ public class VeTauController {
     @Autowired
     private KhachDatVeService khachDatVeService;
 
+    @Autowired
+    private TrangThaiGheService trangThaiGheService;
+
     @Operation(summary = "Mua vé",
             description = "Sau khi hoàn thành các buớc mua vé thì API này thực thi" +
                     " để lưu vé và thông tin khách đặt vào DB",
             tags = "API Mua vé")
     @PostMapping("/muave")
     public ResponseEntity muaVe(@RequestBody MuaVeRequest muaVeRequest) {
-        KhachDatVe khachDatVe = KhachDatVe.builder().hoTen(muaVeRequest.getKhachDatVe().getHoTen())
-                .sdt(muaVeRequest.getKhachDatVe().getSdt())
-                .email(muaVeRequest.getKhachDatVe().getEmail())
-                .soGiayTo(muaVeRequest.getKhachDatVe().getSoGiayTo()).build();
-        KhachDatVe khachDatVeSaved = khachDatVeService.themKhachDat(khachDatVe);
-
         KhachDatVe khachDatVeID = KhachDatVe.builder().
                 id(khachDatVeService.getIDKhachDat(muaVeRequest.getKhachDatVe()))
                 .build();
-
-        String maDatVe = "";
-        String maDatCho = "";
-        String tinhTrang = "";
-
-        if(muaVeRequest.getHinhThucThanhToan().equals("TRA_SAU")) {
-            Random random = new Random();
-            int numRand = random.nextInt(999999999);
-            maDatCho = String.format("%09d", numRand);
-            tinhTrang = "CHUA_THANH_TOAN";
-            maDatVe = null;
-
-        } else if (muaVeRequest.getHinhThucThanhToan().equals("THANH_TOAN_ONLINE")){
-            Random random = new Random();
-            int numRand = random.nextInt(999999999);
-            maDatVe = String.format("%09d", numRand);
-            maDatCho = null;
-            tinhTrang = "DA_THANH_TOAN";
+        KhachDatVe khachDatVe = new KhachDatVe();
+        if(khachDatVeID.getId() == null) {
+            KhachDatVe khachDatVeSaved = KhachDatVe.builder().hoTen(muaVeRequest.getKhachDatVe().getHoTen())
+                    .sdt(muaVeRequest.getKhachDatVe().getSdt())
+                    .email(muaVeRequest.getKhachDatVe().getEmail())
+                    .soGiayTo(muaVeRequest.getKhachDatVe().getSoGiayTo()).build();
+            khachDatVeService.themKhachDat(khachDatVe);
+            khachDatVe = khachDatVeSaved;
+        } else {
+            khachDatVe = khachDatVeService.getKhachDatVeTheoID(khachDatVeID.getId());
         }
+        Set<VeTau> veKhachDat = veTauService.getVeTauTheoMaKhachDat(khachDatVe.getId());
+        if(veKhachDat.size() < 5){
+            String maDatVe = "";
+            String maDatCho = "";
+            String tinhTrang = "";
 
-        HoaDon hoaDon = HoaDon.builder()
-                .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
-                .ngayLap(muaVeRequest.getNgayLap())
-                .khachDatVe(khachDatVeID)
-                .maDatVe(maDatVe)
-                .maDatCho(maDatCho)
-                .tinhTrang(tinhTrang)
-                .trangThai(1)
-                .build();
-        HoaDon hoaDonSaved = hoaDonService.themHoaDon(hoaDon);
+            if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.TRA_SAU)) {
+                Random random = new Random();
+                int numRand = random.nextInt(999999999);
+                maDatCho = String.format("%09d", numRand);
+                tinhTrang = "CHUA_THANH_TOAN";
+                maDatVe = null;
 
-        Set<VeTau> veTauDis = new HashSet<>();
-        HoaDon hoaDonID = HoaDon.builder()
-                .id(hoaDonService.getIDHoaDon(muaVeRequest.getNgayLap(), khachDatVeID.getId()))
-                .build();
+            } else if (muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.THANH_TOAN_ONLINE)){
+                Random random = new Random();
+                int numRand = random.nextInt(999999999);
+                maDatVe = String.format("%09d", numRand);
+                maDatCho = null;
+                tinhTrang = "DA_THANH_TOAN";
+            }
 
-        String finalTinhTrang = tinhTrang;
-        muaVeRequest.getVeTaus().forEach(veTau -> {
+            HoaDon hoaDon = HoaDon.builder()
+                    .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
+                    .ngayLap(muaVeRequest.getNgayLap())
+                    .khachDatVe(khachDatVe)
+                    .maDatVe(maDatVe)
+                    .maDatCho(maDatCho)
+                    .tinhTrang(tinhTrang)
+                    .trangThai(1)
+                    .build();
+            HoaDon hoaDonSaved = hoaDonService.themHoaDon(hoaDon);
+
+            Set<VeTau> veTauDis = new HashSet<>();
+            HoaDon hoaDonID = HoaDon.builder()
+                    .id(hoaDonService.getIDHoaDonTheoMaDatChoHoacMaDatVe(maDatCho, maDatVe))
+                    .build();
+
+            String finalTinhTrang = tinhTrang;
+            KhachDatVe finalKhachDatVe = khachDatVe;
+            muaVeRequest.getVeTaus().forEach(veTau -> {
                 Random random = new Random();
                 int maVe = random.nextInt(99999999);
                 HanhTrinh hanhTrinh = HanhTrinh.builder()
                         .gaDi(veTau.getGaDi())
                         .gaDen(veTau.getGaDen())
                         .ngayDi(veTau.getNgayDi())
+                        .ngayDen(veTau.getNgayDen())
+                        .gioDi(veTau.getGioDi())
+                        .gioDen(veTau.getGioDen())
                         .build();
                 HanhTrinh hanhTrinhID = HanhTrinh.builder()
                         .id(hanhTrinhService.getIDHanhTrinh(hanhTrinh))
+                        .gaDi(veTau.getGaDi())
+                        .gaDen(veTau.getGaDen())
+                        .ngayDi(veTau.getNgayDi())
+                        .ngayDen(veTau.getNgayDen())
+                        .gioDi(veTau.getGioDi())
+                        .gioDen(veTau.getGioDen())
+                        .giaVe(veTau.getDonGia())
                         .build();
                 VeTau veTauDi = VeTau.builder()
                         .maVe(String.format("%08d", maVe))
@@ -109,31 +130,41 @@ public class VeTauController {
                         .tinhTrang(finalTinhTrang)
                         .trangThai(1)
                         .hanhTrinh(hanhTrinhID)
-                        .khachDatVe(khachDatVeID)
+                        .khachDatVe(finalKhachDatVe)
                         .build();
                 veTauDis.add(veTauDi);
-        });
-        List<VeTau> veTauSaved = veTauService.themVe(veTauDis);
+                Long trangThaiGheID = trangThaiGheService
+                        .getIdTrangThaiGhe(veTau.getGaDi(), veTau.getGaDen()
+                                , veTau.getNgayDi(), veTau.getMaGhe(), veTau.getSoToa(), SystemConstant.DAT_CHO);
+                trangThaiGheService.capNhatTrangThaiGhe(veTauDi.getMaVe(), SystemConstant.DA_MUA, trangThaiGheID);
+            });
+            List<VeTau> veTauSaved = veTauService.themVe(veTauDis);
 
-        Set<CTHD> cthds = new HashSet<>();
-        veTauSaved.forEach(veTau -> {
-            VeTau veTauID = VeTau.builder().id(veTau.getId()).build();
-            CTHD cthd = CTHD.builder().donGia(veTau.getDonGia())
-                    .hoaDon(hoaDonID)
-                    .veTau(veTauID)
+
+            Set<CTHD> cthds = new HashSet<>();
+            veTauSaved.forEach(veTau -> {
+                VeTau veTauID = VeTau.builder().id(veTau.getId()).build();
+                CTHD cthd = CTHD.builder().donGia(veTau.getDonGia())
+                        .hoaDon(hoaDonID)
+                        .veTau(veTauID)
+                        .build();
+                cthds.add(cthd);
+            });
+            cthdService.themCTHD(cthds);
+
+            MuaVeResponse muaVeResponse = MuaVeResponse.builder()
+                    .veTaus(veTauSaved)
+                    .khachDatVe(khachDatVe)
+                    .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
+                    .ngayLap(muaVeRequest.getNgayLap())
                     .build();
-            cthds.add(cthd);
-        });
-        cthdService.themCTHD(cthds);
 
-        MuaVeResponse muaVeResponse = MuaVeResponse.builder()
-                .veTaus(veTauSaved)
-                .khachDatVe(khachDatVeSaved)
-                .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
-                .ngayLap(muaVeRequest.getNgayLap())
-                .build();
-
-        return new ResponseEntity(muaVeResponse, HttpStatus.OK);
+            return new ResponseEntity(muaVeResponse, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi mua vé")
+                .moTaLoi("Khách hàng đã đặt quá số lượng vé được mua theo quy định của nhà ga. Mỗi khách hàng chỉ được mua tối đa 5 vé")
+                .build(), HttpStatus.BAD_REQUEST);
     }
     @Operation(summary = "Kiểm tra vé",
             description = "Khách hàng nhập thông tin trên vé, nếu thông tin trùng với vé thì sẽ trả về thông tin vé",
@@ -178,7 +209,7 @@ public class VeTauController {
                 VeTau veTau = veTauService.getVeTauTheoID(cthd.getVeTau().getId());
                 HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau.getHanhTrinh().getId());
                 veTau.builder().khachDatVe(khachDatVe).hanhTrinh(hanhTrinh);
-                if(!veTau.getTinhTrang().equals("DA_HUY")) {
+                if(!veTau.getTinhTrang().equals(SystemConstant.TRA_VE)) {
                     veTaus.add(veTau);
                 }
             });

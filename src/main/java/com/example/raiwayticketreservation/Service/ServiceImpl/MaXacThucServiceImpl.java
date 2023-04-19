@@ -26,7 +26,7 @@ public class MaXacThucServiceImpl implements MaXacThucService {
         MaXacThuc maXacThuc = MaXacThuc.builder()
                 .khachDatVe(khachDatVe)
                 .maXacThuc(maXT)
-                .timestamp(tinhThoiHanMaXacThuc(24*60))
+                .timestamp(tinhThoiHanMaXacThuc(12*60))
                 .build();
         maXacThucRepo.save(maXacThuc);
     }

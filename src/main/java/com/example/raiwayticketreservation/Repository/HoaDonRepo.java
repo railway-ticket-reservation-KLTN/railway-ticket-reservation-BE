@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface HoaDonRepo extends JpaRepository<HoaDon, Long> {
     @Query(value = "SELECT id FROM railwayticketreservationdb.hoadon\n" +
-            "WHERE ngay_lap = ? AND ma_khach_dat = ?", nativeQuery = true)
-    public Long getIDHoaDon(String ngayLap, Long maKhachDat);
+            "WHERE ma_dat_cho = ? OR ma_dat_ve = ?", nativeQuery = true)
+    public Long getIDHoaDon(String maDatCho, String maDatVe);
     @Query(value = "SELECT * FROM railwayticketreservationdb.hoadon\n" +
             "WHERE ma_dat_ve = ?", nativeQuery = true)
     public HoaDon getHDByMaDatVe(String maDatVe);

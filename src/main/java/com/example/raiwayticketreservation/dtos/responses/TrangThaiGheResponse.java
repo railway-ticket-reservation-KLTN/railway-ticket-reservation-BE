@@ -2,6 +2,8 @@ package com.example.raiwayticketreservation.dtos.responses;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 public class TrangThaiGheResponse {
     private Long id;
@@ -14,4 +16,5 @@ public class TrangThaiGheResponse {
     private String gioDen;
     private String tenTau;
     private int soToa;
+    private Timestamp thoiHanGiuGhe;
 }

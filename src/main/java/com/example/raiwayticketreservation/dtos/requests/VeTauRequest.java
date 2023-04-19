@@ -13,6 +13,7 @@ public class VeTauRequest {
     private String doiTuong;
     private int trangThai;
     private String tenTau;
+    private Long maGhe;
     private int soGhe;
     private int soToa;
     private String gaDi;

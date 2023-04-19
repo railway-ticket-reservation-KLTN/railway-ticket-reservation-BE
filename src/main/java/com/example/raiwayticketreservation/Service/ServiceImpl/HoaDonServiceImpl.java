@@ -16,8 +16,9 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public Long getIDHoaDon(String ngayLap, Long maKhachDat) {
-        return hoaDonRepo.getIDHoaDon(ngayLap, maKhachDat);
+    public Long getIDHoaDonTheoMaDatChoHoacMaDatVe(String maDatCho, String maDatVe) {
+
+        return hoaDonRepo.getIDHoaDon(maDatCho, maDatVe);
     }
 
     @Override
