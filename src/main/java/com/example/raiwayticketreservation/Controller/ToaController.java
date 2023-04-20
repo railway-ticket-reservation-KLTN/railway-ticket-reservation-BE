@@ -18,6 +18,7 @@ public class ToaController {
     @Autowired
     private ToaService toaService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Tìm toa theo tàu",
             description = "Khi Click chọn vào toa request tới API này để lấy ra danh sách toa theo tàu và theo hành trình",
             tags = "API Get danh sách toa")

@@ -24,6 +24,7 @@ public class HanhTrinhTauController {
     @Autowired
     private TauService tauService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Tìm chuyến tàu",
             description = "Tìm chuyến tàu một chiều và khứ hồi",
             tags = "API Tìm vé")

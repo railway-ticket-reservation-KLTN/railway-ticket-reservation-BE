@@ -21,6 +21,7 @@ public class GheController {
     @Autowired
     private GheService gheService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Chọn chỗ",
             description = "Khi khách hàng chọn vào một ghế bất kỳ thì API này sẽ thực thi " +
                     "để thực hiện việc đặt chỗ tạm thời trong thời gian 600s",
@@ -30,6 +31,7 @@ public class GheController {
         return gheService.datChoTam(trangThaiGheRequest);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Nhả chỗ",
             description = "Sau khi khách hàng chọn lại ghế đã chọn hoặc hủy bỏ vé trong giỏ " +
                     "thì API này thực thi để xóa chỗ đã đặt",
@@ -40,6 +42,8 @@ public class GheController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Lấy danh sách ghế",
             description = "Khi Click chọn vào toa nào thì sẽ thực thi API này để lấy ra danh sách ghế theo toa, nếu ghế nào có trạng thái là 0 có nghĩa đã được đặt",
             tags = "API Get danh sách ghế theo toa")

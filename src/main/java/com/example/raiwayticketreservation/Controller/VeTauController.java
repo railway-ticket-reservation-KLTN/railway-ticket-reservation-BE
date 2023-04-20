@@ -37,6 +37,7 @@ public class VeTauController {
     @Autowired
     private TrangThaiGheService trangThaiGheService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Mua vé",
             description = "Sau khi hoàn thành các buớc mua vé thì API này thực thi" +
                     " để lưu vé và thông tin khách đặt vào DB",
@@ -166,6 +167,8 @@ public class VeTauController {
                 .moTaLoi("Khách hàng đã đặt quá số lượng vé được mua theo quy định của nhà ga. Mỗi khách hàng chỉ được mua tối đa 5 vé")
                 .build(), HttpStatus.BAD_REQUEST);
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Kiểm tra vé",
             description = "Khách hàng nhập thông tin trên vé, nếu thông tin trùng với vé thì sẽ trả về thông tin vé",
             tags = "API Kiểm tra vé")
@@ -192,6 +195,7 @@ public class VeTauController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Lấy danh sách vé theo khách đặt",
             description = "Lấy danh sách vé theo thông tin khách đặt",
             tags = "API Trả vé")

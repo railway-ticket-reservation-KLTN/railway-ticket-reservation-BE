@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -41,6 +38,8 @@ public class MaXacThucController {
 
     @Autowired
     private TrangThaiGheService trangThaiGheService;
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Gửi mã xác thực",
             description = "Gửi mã xác thực qua email",
             tags = "API Gửi mã xác thực" )
@@ -64,6 +63,7 @@ public class MaXacThucController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Xác thực trả vé",
             description = "Xác thực OTP và thực thi tiến trình trả vé",
             tags = "API Trả vé" )
