@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class VeTauGheKey implements Serializable {
     @Column(name = "maVe")
     private Long maHanhTrinh;
+
     @Column(name = "maGhe")
     private Long maGhe;
 }

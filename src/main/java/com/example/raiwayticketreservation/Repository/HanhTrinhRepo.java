@@ -4,6 +4,7 @@ import com.example.raiwayticketreservation.Entity.HanhTrinh;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.sql.Time;
 import java.util.Date;
 
 public interface HanhTrinhRepo extends JpaRepository<HanhTrinh, Long> {

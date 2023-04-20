@@ -25,6 +25,8 @@ public class CTTauToa {
     @JoinColumn(name = "maToa")
     private Toa toa;
 
+    @Column(columnDefinition = "VARCHAR(10)")
     private String soToa;
+
     private Long maHanhTrinh;
 }

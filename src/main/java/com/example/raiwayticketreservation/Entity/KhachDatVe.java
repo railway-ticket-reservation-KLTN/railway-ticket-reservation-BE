@@ -19,11 +19,18 @@ public class KhachDatVe implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String hoTen;
-    private String soGiayTo;
-    private String email;
-    private String sdt;
 
+    @Column(columnDefinition = "NVARCHAR(150)")
+    private String hoTen;
+
+    @Column(columnDefinition = "VARCHAR(20)")
+    private String soGiayTo;
+
+    @Column(columnDefinition = "VARCHAR(100)")
+    private String email;
+
+    @Column(columnDefinition = "VARCHAR(15)")
+    private String sdt;
 
     @OneToMany(mappedBy = "khachDatVe", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude

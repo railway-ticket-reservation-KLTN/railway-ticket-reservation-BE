@@ -2,6 +2,8 @@ package com.example.raiwayticketreservation.dtos.requests;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class TimChuyenTauRequest {
     private String gaDi;

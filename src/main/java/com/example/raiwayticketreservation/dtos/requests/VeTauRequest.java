@@ -3,6 +3,9 @@ package com.example.raiwayticketreservation.dtos.requests;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Time;
+import java.util.Date;
+
 @Data
 @Builder
 public class VeTauRequest {
@@ -20,6 +23,6 @@ public class VeTauRequest {
     private String gaDen;
     private String ngayDi;
     private String ngayDen;
-    private String gioDi;
-    private String gioDen;
+    private Time gioDi;
+    private Time gioDen;
 }

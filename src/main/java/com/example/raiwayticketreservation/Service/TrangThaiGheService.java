@@ -3,6 +3,7 @@ package com.example.raiwayticketreservation.Service;
 import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
 import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 
+import java.util.Date;
 import java.util.List;
 
 public interface TrangThaiGheService {

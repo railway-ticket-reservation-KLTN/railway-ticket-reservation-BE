@@ -12,8 +12,13 @@ public class QuyDinh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(columnDefinition = "NVARCHAR(100)")
     private String tieuDe;
+
+    @Column(columnDefinition = "TEXT")
     private String moTa;
+
     private int trangThai;
 
     @ManyToOne

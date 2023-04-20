@@ -1,10 +1,13 @@
 package com.example.raiwayticketreservation.Entity;
 
 import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @NamedNativeQuery(name = "TrangThaiGhe.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa",
         query = "SELECT id, ga_den as gaden, ga_di as gaDi, " +
@@ -43,14 +46,34 @@ public class TrangThaiGhe {
     @JoinColumn(name = "maGhe")
     private Ghe ghe;
 
+    @Column(columnDefinition = "NVARCHAR(80)")
     private String gaDi;
+
+    @Column(columnDefinition = "NVARCHAR(80)")
     private String gaDen;
-    private String ngayDi;
-    private String gioDi;
-    private String gioDen;
+
+    @Column(columnDefinition = "Date")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date ngayDi;
+
+    @Column(columnDefinition = "TIME")
+    @JsonFormat(pattern="HH:mm:ss")
+    private Time gioDi;
+
+    @Column(columnDefinition = "TIME")
+    @JsonFormat(pattern="HH:mm:ss")
+    private Time gioDen;
+
+    @Column(columnDefinition = "VARCHAR(10)")
     private String tenTau;
+
     private int soToa;
+
+    @Column(columnDefinition = "VARCHAR(50)")
     private String trangThai;
+
+    @Column(columnDefinition = "VARCHAR(20)")
     private String maVeTau;
+
     private Timestamp thoiHanGiuGhe;
 }

@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -20,13 +22,31 @@ public class HanhTrinh implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(columnDefinition = "NVARCHAR(80)")
     private String gaDi;
+
+    @Column(columnDefinition = "NVARCHAR(80)")
     private String gaDen;
-    private String ngayDi;
-    private String ngayDen;
-    private String gioDi;
-    private String gioDen;
+
+    @Column(columnDefinition = "DATE")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date ngayDi;
+
+    @Column(columnDefinition = "DATE")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date ngayDen;
+
+    @Column(columnDefinition = "TIME")
+    @JsonFormat(pattern="HH:mm:ss")
+    private Time gioDi;
+
+    @Column(columnDefinition = "TIME")
+    @JsonFormat(pattern="HH:mm:ss")
+    private Time gioDen;
+
     private int trangThai;
+
     private double giaVe;
 
     @OneToMany(mappedBy = "hanhTrinh")

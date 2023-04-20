@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -53,8 +56,7 @@ public class VeTauController {
                     .sdt(muaVeRequest.getKhachDatVe().getSdt())
                     .email(muaVeRequest.getKhachDatVe().getEmail())
                     .soGiayTo(muaVeRequest.getKhachDatVe().getSoGiayTo()).build();
-            khachDatVeService.themKhachDat(khachDatVe);
-            khachDatVe = khachDatVeSaved;
+            khachDatVe = khachDatVeService.themKhachDat(khachDatVeSaved);
         } else {
             khachDatVe = khachDatVeService.getKhachDatVeTheoID(khachDatVeID.getId());
         }
@@ -78,10 +80,10 @@ public class VeTauController {
                 maDatCho = null;
                 tinhTrang = "DA_THANH_TOAN";
             }
-
+            Date ngayLap = Date.valueOf(muaVeRequest.getNgayLap());
             HoaDon hoaDon = HoaDon.builder()
                     .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
-                    .ngayLap(muaVeRequest.getNgayLap())
+                    .ngayLap(ngayLap)
                     .khachDatVe(khachDatVe)
                     .maDatVe(maDatVe)
                     .maDatCho(maDatCho)
@@ -100,11 +102,13 @@ public class VeTauController {
             muaVeRequest.getVeTaus().forEach(veTau -> {
                 Random random = new Random();
                 int maVe = random.nextInt(99999999);
+                Date ngayDi = Date.valueOf(veTau.getNgayDi());
+                Date ngayDen = Date.valueOf(veTau.getNgayDen());
                 HanhTrinh hanhTrinh = HanhTrinh.builder()
                         .gaDi(veTau.getGaDi())
                         .gaDen(veTau.getGaDen())
-                        .ngayDi(veTau.getNgayDi())
-                        .ngayDen(veTau.getNgayDen())
+                        .ngayDi(ngayDi)
+                        .ngayDen(ngayDen)
                         .gioDi(veTau.getGioDi())
                         .gioDen(veTau.getGioDen())
                         .build();
@@ -112,8 +116,8 @@ public class VeTauController {
                         .id(hanhTrinhService.getIDHanhTrinh(hanhTrinh))
                         .gaDi(veTau.getGaDi())
                         .gaDen(veTau.getGaDen())
-                        .ngayDi(veTau.getNgayDi())
-                        .ngayDen(veTau.getNgayDen())
+                        .ngayDi(ngayDi)
+                        .ngayDen(ngayDen)
                         .gioDi(veTau.getGioDi())
                         .gioDen(veTau.getGioDen())
                         .giaVe(veTau.getDonGia())
@@ -134,9 +138,10 @@ public class VeTauController {
                         .khachDatVe(finalKhachDatVe)
                         .build();
                 veTauDis.add(veTauDi);
+
                 Long trangThaiGheID = trangThaiGheService
                         .getIdTrangThaiGhe(veTau.getGaDi(), veTau.getGaDen()
-                                , veTau.getNgayDi(), veTau.getMaGhe(), veTau.getSoToa(), SystemConstant.DAT_CHO);
+                                , veTau.getNgayDi().toString(), veTau.getMaGhe(), veTau.getSoToa(), SystemConstant.DAT_CHO);
                 trangThaiGheService.capNhatTrangThaiGhe(veTauDi.getMaVe(), SystemConstant.DA_MUA, trangThaiGheID);
             });
             List<VeTau> veTauSaved = veTauService.themVe(veTauDis);
@@ -157,7 +162,7 @@ public class VeTauController {
                     .veTaus(veTauSaved)
                     .khachDatVe(khachDatVe)
                     .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
-                    .ngayLap(muaVeRequest.getNgayLap())
+                    .ngayLap(ngayLap)
                     .build();
 
             return new ResponseEntity(muaVeResponse, HttpStatus.OK);
@@ -181,10 +186,13 @@ public class VeTauController {
             HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau.getHanhTrinh().getId());
             KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(veTau.getKhachDatVe().getId());
             veTau.builder().hanhTrinh(hanhTrinh).khachDatVe(khachDatVe);
+            String strNgayDi = (veTau.getHanhTrinh().getNgayDi().toString());
+            Date ngayDi = Date.valueOf(strNgayDi.substring(0, strNgayDi.indexOf(' ')));
+            Date ngayDiRequest = Date.valueOf(kiemTraVeRequest.getNgayDi());
             if(kiemTraVeRequest.getTenTau().equals(veTau.getTenTau())
                     && kiemTraVeRequest.getGaDi().equals(veTau.getHanhTrinh().getGaDi())
                     && kiemTraVeRequest.getGaDen().equals(veTau.getHanhTrinh().getGaDen())
-                    && kiemTraVeRequest.getNgayDi().equals(veTau.getHanhTrinh().getNgayDi())
+                    && ngayDiRequest.equals(ngayDi)
                     && kiemTraVeRequest.getSoGiayTo().equals(veTau.getSoGiayTo()))
             {
                 return new ResponseEntity(veTau, HttpStatus.OK);
@@ -219,7 +227,7 @@ public class VeTauController {
             });
             return new ResponseEntity<>(veTaus, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(ErrorResponse.builder().tenLoi("Lỗi thông tin không trùng khớp").moTaLoi("Thôn tin khách đặt không chính xác").build(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ErrorResponse.builder().tenLoi("Lỗi thông tin không trùng khớp").moTaLoi("Thông tin khách đặt không chính xác").build(), HttpStatus.BAD_REQUEST);
         }
     }
 }

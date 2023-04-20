@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Random;
@@ -82,11 +83,13 @@ public class MaXacThucController {
                 xacThucRequest.getKhachDatVe().setId(khachDatVeID.getId());
                 Set<VeTauRequest> veTauRequestSet = xacThucRequest.getVeTaus();
                 veTauRequestSet.forEach(veTauRequest -> {
+                    Date ngayDi = Date.valueOf(veTauRequest.getNgayDi());
+                    Date ngayDen = Date.valueOf(veTauRequest.getNgayDen());
                     HanhTrinh hanhTrinh = HanhTrinh.builder()
                             .gaDi(veTauRequest.getGaDi())
                             .gaDen(veTauRequest.getGaDen())
-                            .ngayDi(veTauRequest.getNgayDi())
-                            .ngayDen(veTauRequest.getNgayDen())
+                            .ngayDi(ngayDi)
+                            .ngayDen(ngayDen)
                             .gioDi(veTauRequest.getGioDi())
                             .gioDen(veTauRequest.getGioDen())
                             .build();
@@ -107,7 +110,7 @@ public class MaXacThucController {
                     veTauService.capNhatTrangThaiTinhTrangVeTau(veTau);
                     veTaus.add(veTau);
                     Long trangThaiGheId = trangThaiGheService
-                            .getIdTrangThaiGhe(veTauRequest.getGaDi(), veTauRequest.getGaDen(), veTauRequest.getNgayDi(),
+                            .getIdTrangThaiGhe(veTauRequest.getGaDi(), veTauRequest.getGaDen(), veTauRequest.getNgayDi().toString(),
                                     veTauRequest.getMaGhe(), veTauRequest.getSoToa(), SystemConstant.DA_MUA);
                     trangThaiGheService.xoaTrangThaiGheByID(trangThaiGheId);
                 });

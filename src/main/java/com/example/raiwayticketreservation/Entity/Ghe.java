@@ -26,8 +26,12 @@ public class Ghe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "VARCHAR(10)")
     private String soGhe;
+
+    @Column(columnDefinition = "NVARCHAR(100)")
     private String loaiGhe;
+
     private int trangThai;
 
     @OneToMany(mappedBy = "ghe")

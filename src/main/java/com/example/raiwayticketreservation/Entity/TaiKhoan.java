@@ -12,9 +12,16 @@ public class TaiKhoan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(columnDefinition = "VARCHAR(50)")
     private String tenTaiKhoan;
+
+    @Column(columnDefinition = "VARCHAR(50)")
     private String matKhau;
+
+    @Column(columnDefinition = "VARCHAR(50)")
     private String loaiTK;
+
     private int trangThai;
 
     @OneToOne(cascade = CascadeType.ALL)

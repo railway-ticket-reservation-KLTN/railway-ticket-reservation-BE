@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -29,7 +32,8 @@ public class HanhTrinhTauController {
             description = "Tìm chuyến tàu một chiều và khứ hồi",
             tags = "API Tìm vé")
     @PostMapping("/hanhtrinhtau")
-    public ResponseEntity getHanhTrinhTauByGaDiGaDenNgayDiNgayDen(@RequestBody TimChuyenTauRequest timChuyenTauRequest) {
+    public ResponseEntity getHanhTrinhTauByGaDiGaDenNgayDiNgayDen(@RequestBody TimChuyenTauRequest timChuyenTauRequest) throws ParseException {
+
         if (timChuyenTauRequest.getLoaiHanhTrinh().equals("MOT_CHIEU")) {
             HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
             if(hanhTrinh != null) {

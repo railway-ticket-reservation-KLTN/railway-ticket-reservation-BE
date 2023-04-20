@@ -18,16 +18,34 @@ public class VeTau implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(columnDefinition = "VARCHAR(20)")
     private String maVe;
+
+    @Column(columnDefinition = "NVARCHAR(150)")
     private String tenHanhKhach;
+
+    @Column(columnDefinition = "VARCHAR(20)")
     private String soGiayTo;
+
     private double donGia;
+
+    @Column(columnDefinition = "VARCHAR(20)")
     private String loaiVe;
+
+    @Column(columnDefinition = "VARCHAR(20)")
     private String doiTuong;
+
+    @Column(columnDefinition = "VARCHAR(10)")
     private String tenTau;
+
     private int soGhe;
+
     private int soToa;
+
+    @Column(columnDefinition = "VARCHAR(50)")
     private String tinhTrang;
+
     private int trangThai;
 
     @OneToMany(mappedBy = "veTau")

@@ -26,8 +26,13 @@ public class Toa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(columnDefinition = "VARCHAR(50)")
     private String tenToa;
+
+    @Column(columnDefinition = "NVARCHAR(100)")
     private String moTaToa;
+
     private int soLuongGhe;
 
     @OneToMany(mappedBy = "toa")

@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class HanhTrinhTauKey implements Serializable {
     @Column(name = "maHanhTrinh")
     private Long mahanhTrinh;
+
     @Column(name = "maTau")
     private Long maTau;
 }

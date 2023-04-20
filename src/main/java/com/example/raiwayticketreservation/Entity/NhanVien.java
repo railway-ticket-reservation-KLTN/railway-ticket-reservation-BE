@@ -14,10 +14,19 @@ public class NhanVien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(columnDefinition = "NVARCHAR(150)")
     private String tenNhanVien;
+
+    @Column(columnDefinition = "NVARCHAR(150)")
     private String diaChi;
+
+    @Column(columnDefinition = "VARCHAR(15)")
     private String sdt;
+
+    @Column(columnDefinition = "VARCHAR(50)")
     private String viTri;
+
     private int trangThai;
 
     @OneToMany(mappedBy = "nhanVien", cascade = CascadeType.ALL)

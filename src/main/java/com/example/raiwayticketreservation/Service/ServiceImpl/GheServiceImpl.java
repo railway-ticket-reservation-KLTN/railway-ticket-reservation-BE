@@ -11,19 +11,21 @@ import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import com.example.raiwayticketreservation.dtos.responses.GheResponse;
 import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
-import org.hibernate.annotations.CurrentTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -48,12 +50,12 @@ public class GheServiceImpl implements GheService {
 
         if (kiemTraDatCho(trangThaiGheResponses, trangThaiGheRequest)) {
             Ghe ghe = Ghe.builder().id(trangThaiGheRequest.getMaGhe()).build();
-
+            Date ngayDi =  Date.valueOf(trangThaiGheRequest.getNgayDi());
             TrangThaiGhe trangThaiGhe = TrangThaiGhe.builder()
                     .ghe(ghe)
                     .gaDi(trangThaiGheRequest.getGaDi())
                     .gaDen(trangThaiGheRequest.getGaDen())
-                    .ngayDi(trangThaiGheRequest.getNgayDi())
+                    .ngayDi(ngayDi)
                     .tenTau(trangThaiGheRequest.getTenTau())
                     .soToa(trangThaiGheRequest.getSoToa())
                     .gioDen(trangThaiGheRequest.getGioDen())
@@ -69,9 +71,8 @@ public class GheServiceImpl implements GheService {
 
     public boolean kiemTraDatCho(List<TrangThaiGheResponse> trangThaiGheResponses, TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
         for (int i = 0; i < trangThaiGheResponses.size(); i++) {
-            DateFormat dateFormat = new SimpleDateFormat("hh:mm");
-            Date gioDiRequest = dateFormat.parse(trangThaiGheRequest.getGioDi());
-            Date gioDenResponse = dateFormat.parse(trangThaiGheResponses.get(i).getGioDen());
+            Time gioDiRequest = trangThaiGheRequest.getGioDi();
+            Time gioDenResponse = trangThaiGheResponses.get(i).getGioDen();
             if (trangThaiGheRequest.getGaDi().equals(trangThaiGheResponses.get(i).getGaDi())
                     || trangThaiGheRequest.getGaDen().equals(trangThaiGheResponses.get(i).getGaDen())
                     || gioDiRequest.before(gioDenResponse)) {

@@ -8,6 +8,8 @@ import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class HanhTrinhServiceImpl implements HanhTrinhService {
     @Autowired
@@ -20,8 +22,12 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
 
     @Override
     public Long getIDHanhTrinh(HanhTrinh hanhTrinh) {
-        return hanhTrinhRepo.getIdHanhTrinh(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), hanhTrinh.getNgayDi(),
-                hanhTrinh.getNgayDen(), hanhTrinh.getGioDi(), hanhTrinh.getGioDen());
+        String strNgayDi = hanhTrinh.getNgayDi().toString();
+        String strNgayDen = hanhTrinh.getNgayDen().toString();
+        String strGioDi = hanhTrinh.getGioDi().toString();
+        String strGioDen = hanhTrinh.getGioDen().toString();
+        return hanhTrinhRepo.getIdHanhTrinh(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), strNgayDi,
+                strNgayDen, strGioDi, strGioDen);
     }
 
     @Override

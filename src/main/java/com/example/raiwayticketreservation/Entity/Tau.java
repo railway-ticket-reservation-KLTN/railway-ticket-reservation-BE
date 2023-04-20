@@ -30,7 +30,10 @@ public class Tau {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(columnDefinition = "VARCHAR(10)")
     private String tenTau;
+
     private int soLuongToa;
 
     @OneToMany(mappedBy = "tau")
