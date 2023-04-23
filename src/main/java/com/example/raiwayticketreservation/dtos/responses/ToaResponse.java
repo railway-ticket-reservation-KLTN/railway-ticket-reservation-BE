@@ -8,6 +8,7 @@ import lombok.Data;
 public class ToaResponse {
     public Long id;
     public String soToa;
+    public String tenTau;
     public String moTaToa;
     public int soLuongGhe;
     public String ten_toa;
