@@ -9,5 +9,5 @@ import java.util.Set;
 public interface TauService {
     public Set<Tau> getTauByHanhTrinhID(Long id);
 
-    public ArrayList<ToaResponse> getToaTheoTauByHanhTrinhIDTauID(Long hanhTrinhID);
+    public ArrayList<ToaResponse> getToaTheoTauByHanhTrinhIDTauID(Long hanhTrinhID, String tenTau);
 }

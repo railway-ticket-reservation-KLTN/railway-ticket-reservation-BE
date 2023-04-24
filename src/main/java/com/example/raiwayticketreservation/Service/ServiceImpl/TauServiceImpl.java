@@ -22,7 +22,7 @@ public class TauServiceImpl implements TauService {
     }
 
     @Override
-    public ArrayList<ToaResponse> getToaTheoTauByHanhTrinhIDTauID(Long hanhTrinhID) {
-        return tauRepo.getToaTheoTauByMaHanhTrinhMaTau(hanhTrinhID);
+    public ArrayList<ToaResponse> getToaTheoTauByHanhTrinhIDTauID(Long hanhTrinhID, String tenTau) {
+        return tauRepo.getToaTheoTauByMaHanhTrinhMaTau(hanhTrinhID, tenTau);
     }
 }

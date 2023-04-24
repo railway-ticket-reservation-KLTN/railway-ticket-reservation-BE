@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -38,8 +36,9 @@ public class HanhTrinhTauController {
             HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
             if(hanhTrinh != null) {
                 Set<Tau> taus = tauService.getTauByHanhTrinhID(hanhTrinh.getId());
+                String tenTauDi = taus.stream().toList().get(0).getTenTau();
                 ArrayList toaTheoTaus = new ArrayList<>();
-                toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId()));
+                toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), tenTauDi));
                 TimChuyenTauResponse timChuyenTauResponse = TimChuyenTauResponse.builder().id(hanhTrinh.getId()).hanhTrinh(hanhTrinh).taus(taus).toaTaus(toaTheoTaus).build();
                 Set<TimChuyenTauResponse> timChuyenTauResponses = new HashSet<>();
                 timChuyenTauResponses.add(timChuyenTauResponse);
@@ -57,8 +56,9 @@ public class HanhTrinhTauController {
             HanhTrinh hanhTrinhVe = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getNgayVe());
             if (hanhTrinhDi != null && hanhTrinhVe != null) {
                 Set<Tau> tauDis = tauService.getTauByHanhTrinhID(hanhTrinhDi.getId());
+                String tenTau = tauDis.stream().toList().get(0).getTenTau();
                 ArrayList toaTheoTauDis = new ArrayList<>();
-                toaTheoTauDis.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinhDi.getId()));
+                toaTheoTauDis.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinhDi.getId(), tenTau));
                 TimChuyenTauResponse chuyenTauDiResponse = TimChuyenTauResponse.builder()
                         .id(hanhTrinhDi.getId())
                         .hanhTrinh(hanhTrinhDi)
@@ -66,8 +66,9 @@ public class HanhTrinhTauController {
                         .toaTaus(toaTheoTauDis)
                         .build();
                 Set<Tau> tauVes = tauService.getTauByHanhTrinhID(hanhTrinhVe.getId());
+                String tenTauVe = tauVes.stream().toList().get(0).getTenTau();
                 ArrayList toaTheoTauVes = new ArrayList<>();
-                toaTheoTauVes.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinhVe.getId()));
+                toaTheoTauVes.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinhVe.getId(), tenTauVe));
                 TimChuyenTauResponse chuyenTauVeResponse = TimChuyenTauResponse.builder()
                         .id(hanhTrinhVe.getId()).hanhTrinh(hanhTrinhVe)
                         .taus(tauVes)

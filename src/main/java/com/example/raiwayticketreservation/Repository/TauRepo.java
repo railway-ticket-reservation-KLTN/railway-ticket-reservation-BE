@@ -14,5 +14,5 @@ public interface TauRepo extends JpaRepository<Tau, Long> {
     public Set<Tau> getTau(Long id);
 
     @Query(nativeQuery = true)
-    public ArrayList<ToaResponse> getToaTheoTauByMaHanhTrinhMaTau(Long hanhTrinhID);
+    public ArrayList<ToaResponse> getToaTheoTauByMaHanhTrinhMaTau(Long hanhTrinhID, String tenTau);
 }
