@@ -43,6 +43,7 @@ public class HanhTrinhTauController {
                 TimChuyenTauResponse timChuyenTauResponse = TimChuyenTauResponse.builder().id(hanhTrinh.getId()).hanhTrinh(hanhTrinh).taus(taus).toaTaus(toaTheoTaus).build();
                 Set<TimChuyenTauResponse> timChuyenTauResponses = new HashSet<>();
                 timChuyenTauResponses.add(timChuyenTauResponse);
+                System.out.println(timChuyenTauResponses);
                 return new ResponseEntity(timChuyenTauResponses, HttpStatus.OK);
             } else {
                 ErrorResponse errorResponse = ErrorResponse.builder()

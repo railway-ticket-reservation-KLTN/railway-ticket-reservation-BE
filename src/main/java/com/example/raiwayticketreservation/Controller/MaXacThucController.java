@@ -88,8 +88,8 @@ public class MaXacThucController {
                     HanhTrinh hanhTrinh = HanhTrinh.builder()
                             .gaDi(veTauRequest.getGaDi())
                             .gaDen(veTauRequest.getGaDen())
-                            .ngayDi(ngayDi)
-                            .ngayDen(ngayDen)
+                            .ngayDi(ngayDi.toLocalDate())
+                            .ngayDen(ngayDen.toLocalDate())
                             .gioDi(veTauRequest.getGioDi())
                             .gioDen(veTauRequest.getGioDen())
                             .build();

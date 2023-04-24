@@ -107,8 +107,8 @@ public class VeTauController {
                 HanhTrinh hanhTrinh = HanhTrinh.builder()
                         .gaDi(veTau.getGaDi())
                         .gaDen(veTau.getGaDen())
-                        .ngayDi(ngayDi)
-                        .ngayDen(ngayDen)
+                        .ngayDi(ngayDi.toLocalDate())
+                        .ngayDen(ngayDen.toLocalDate())
                         .gioDi(veTau.getGioDi())
                         .gioDen(veTau.getGioDen())
                         .build();
@@ -116,8 +116,8 @@ public class VeTauController {
                         .id(hanhTrinhService.getIDHanhTrinh(hanhTrinh))
                         .gaDi(veTau.getGaDi())
                         .gaDen(veTau.getGaDen())
-                        .ngayDi(ngayDi)
-                        .ngayDen(ngayDen)
+                        .ngayDi(ngayDi.toLocalDate())
+                        .ngayDen(ngayDen.toLocalDate())
                         .gioDi(veTau.getGioDi())
                         .gioDen(veTau.getGioDen())
                         .giaVe(veTau.getDonGia())
@@ -186,13 +186,11 @@ public class VeTauController {
             HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau.getHanhTrinh().getId());
             KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(veTau.getKhachDatVe().getId());
             veTau.builder().hanhTrinh(hanhTrinh).khachDatVe(khachDatVe);
-            String strNgayDi = (veTau.getHanhTrinh().getNgayDi().toString());
-            Date ngayDi = Date.valueOf(strNgayDi.substring(0, strNgayDi.indexOf(' ')));
             Date ngayDiRequest = Date.valueOf(kiemTraVeRequest.getNgayDi());
             if(kiemTraVeRequest.getTenTau().equals(veTau.getTenTau())
                     && kiemTraVeRequest.getGaDi().equals(veTau.getHanhTrinh().getGaDi())
                     && kiemTraVeRequest.getGaDen().equals(veTau.getHanhTrinh().getGaDen())
-                    && ngayDiRequest.equals(ngayDi)
+                    && ngayDiRequest.toLocalDate().equals(veTau.getHanhTrinh().getNgayDi())
                     && kiemTraVeRequest.getSoGiayTo().equals(veTau.getSoGiayTo()))
             {
                 return new ResponseEntity(veTau, HttpStatus.OK);

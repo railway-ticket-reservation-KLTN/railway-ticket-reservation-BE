@@ -2,12 +2,15 @@ package com.example.raiwayticketreservation.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -31,18 +34,18 @@ public class HanhTrinh implements Serializable {
 
     @Column(columnDefinition = "DATE")
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date ngayDi;
+    private LocalDate ngayDi;
 
     @Column(columnDefinition = "DATE")
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date ngayDen;
+    private LocalDate ngayDen;
 
-    @Column(columnDefinition = "TIME")
-    @JsonFormat(pattern="HH:mm:ss")
+    @Temporal(TemporalType.TIME)
+    @DateTimeFormat(style = "HH:mm:ss")
     private Time gioDi;
 
-    @Column(columnDefinition = "TIME")
-    @JsonFormat(pattern="HH:mm:ss")
+    @Temporal(TemporalType.TIME)
+    @DateTimeFormat(style = "HH:mm:ss")
     private Time gioDen;
 
     private int trangThai;
