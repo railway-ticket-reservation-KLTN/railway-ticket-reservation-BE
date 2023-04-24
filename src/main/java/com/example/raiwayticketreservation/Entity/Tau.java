@@ -1,6 +1,6 @@
 package com.example.raiwayticketreservation.Entity;
 
-import com.example.raiwayticketreservation.dtos.responses.ToaTheoTauResponse;
+import com.example.raiwayticketreservation.dtos.responses.ToaResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,19 +9,19 @@ import lombok.ToString;
 import java.util.Set;
 
 @NamedNativeQuery(name = "Tau.getToaTheoTauByMaHanhTrinhMaTau",
-        query = "SELECT d.ma_hanh_trinh as maHanhTrinh, t.ten_tau as tenTau, d.so_toa as soToa, " +
-                "c.ten_toa as tenToa, c.mo_ta_toa as moTaToa, c.so_luong_ghe as soLuongGhe" +
-                " FROM Tau t, Toa c, CTTauToa d " +
+        query = "SELECT c.id as maToa, t.ten_tau as tenTau, d.so_toa as soToa,\n" +
+                "c.ten_toa as tenToa, c.mo_ta_toa as moTaToa, c.so_luong_ghe as soLuongGhe\n" +
+                "FROM Tau t, Toa c, CTTauToa d \n" +
                 "WHERE t.id = d.ma_tau AND c.id = d.ma_toa AND d.ma_hanh_trinh = ?",
-        resultSetMapping = "Mapping.ToaTheoTauResponse")
-@SqlResultSetMapping(name = "Mapping.ToaTheoTauResponse",
-        classes = @ConstructorResult(targetClass = ToaTheoTauResponse.class,
-                columns = {@ColumnResult(name = "maHanhTrinh"),
-                        @ColumnResult(name = "tenTau"),
+        resultSetMapping = "Mapping.ToaTauResponse")
+@SqlResultSetMapping(name = "Mapping.ToaTauResponse",
+        classes = @ConstructorResult(targetClass = ToaResponse.class,
+                columns = {@ColumnResult(name = "maToa"),
                         @ColumnResult(name = "soToa"),
-                        @ColumnResult(name = "tenToa"),
+                        @ColumnResult(name = "tenTau"),
                         @ColumnResult(name = "moTaToa"),
-                        @ColumnResult(name = "soLuongGhe")}))
+                        @ColumnResult(name = "soLuongGhe"),
+                        @ColumnResult(name = "tenToa")}))
 @Entity
 @Data
 @ToString

@@ -51,7 +51,7 @@ public class GheController {
     public ResponseEntity getDanhSachGhe(@RequestBody GheRequest gheRequest) {
         Set<Ghe> ghes = gheService.getGhesTheoMaToa(gheRequest);
         if(ghes.size() == 0) {
-            return new ResponseEntity<>(ErrorResponse.builder().tenLoi("Lỗi lấy danh sách ghế").build(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ErrorResponse.builder().tenLoi("Lỗi lấy danh sách ghế").moTaLoi("Ghế không có trong cơ sở dữ liệu").build(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(ghes, HttpStatus.OK);
     }

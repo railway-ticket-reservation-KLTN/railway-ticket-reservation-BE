@@ -14,5 +14,5 @@ public class TimChuyenTauResponse {
     private Long id;
     private HanhTrinh hanhTrinh;
     private Set<Tau> taus;
-    private ArrayList<ToaTheoTauResponse> toaTaus;
+    private ArrayList<ToaResponse> toaTaus;
 }

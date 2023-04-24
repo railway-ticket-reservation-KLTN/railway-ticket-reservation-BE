@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ToaResponse {
-    public Long id;
+    public Long maToa;
     public String soToa;
     public String tenTau;
     public String moTaToa;
     public int soLuongGhe;
-    public String ten_toa;
+    public String tenToa;
 }
