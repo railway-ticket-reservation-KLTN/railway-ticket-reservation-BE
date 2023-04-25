@@ -8,5 +8,5 @@ public class SystemConstant {
     public static final String DA_MUA = "DA_MUA";
     public static final String DAT_CHO = "DAT_CHO";
     public static final String TRA_SAU = "TRA_SAU";
-    public static final String THANH_TOAN_ONLINE = "THANH_TOAN_ONLINE";
+    public static final String THANH_TOAN_MOMO = "THANH_TOAN_MOMO";
 }

@@ -6,14 +6,16 @@ import com.example.raiwayticketreservation.Service.VeTauService;
 import com.example.raiwayticketreservation.constants.SystemConstant;
 import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
 public class VeTauServiceImpl implements VeTauService {
-
     @Autowired
     private VeTauRepo veTauRepo;
 
@@ -47,5 +49,4 @@ public class VeTauServiceImpl implements VeTauService {
     public Set<VeTau> getVeTauTheoMaKhachDat(Long maKhachDat) {
         return veTauRepo.getVeTauTheoMaKhachDat(maKhachDat);
     }
-
 }

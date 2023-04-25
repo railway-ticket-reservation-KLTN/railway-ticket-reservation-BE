@@ -52,7 +52,7 @@ public class HanhTrinh implements Serializable {
 
     private double giaVe;
 
-    @OneToMany(mappedBy = "hanhTrinh")
+    @OneToMany(mappedBy = "hanhTrinh", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<VeTau> veTaus;
 

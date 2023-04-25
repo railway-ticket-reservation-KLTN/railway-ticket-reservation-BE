@@ -6,6 +6,7 @@ import com.example.raiwayticketreservation.constants.SystemConstant;
 import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
 import com.example.raiwayticketreservation.dtos.requests.MuaVeRequest;
 import com.example.raiwayticketreservation.dtos.requests.TimVeTraRequest;
+import com.example.raiwayticketreservation.dtos.requests.VeTauRequest;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import com.example.raiwayticketreservation.dtos.responses.MuaVeResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -40,6 +39,9 @@ public class VeTauController {
     @Autowired
     private TrangThaiGheService trangThaiGheService;
 
+    @Autowired
+    private ThanhToanMoMoService thanhToanMoMoService;
+
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Mua vé",
             description = "Sau khi hoàn thành các buớc mua vé thì API này thực thi" +
@@ -47,6 +49,38 @@ public class VeTauController {
             tags = "API Mua vé")
     @PostMapping("/muave")
     public ResponseEntity muaVe(@RequestBody MuaVeRequest muaVeRequest) {
+        if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.TRA_SAU)) {
+            MuaVeResponse muaVeResponse = xuLiMuaVe(muaVeRequest);
+            if(muaVeResponse.getVeTaus() == null)
+                return new ResponseEntity<>(ErrorResponse.builder()
+                        .tenLoi("Lỗi mua vé")
+                        .moTaLoi("Xử lí mua vé gặp lỗi")
+                        .build(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(muaVeResponse, HttpStatus.OK);
+        } else if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.THANH_TOAN_MOMO)) {
+            Map<String, Long> param = new HashMap<String, Long>();
+            List<VeTauRequest> giaVes = muaVeRequest.getVeTaus().stream().toList();
+            double donGia = 0;
+            for(int i = 0; i < giaVes.size(); i++) {
+                donGia += giaVes.get(i).getDonGia();
+            }
+            param.put("amount", (long) donGia);
+            MuaVeResponse muaVeResponse = xuLiMuaVe(muaVeRequest);
+            Object response = thanhToanMoMoService.getDataThanhToanMoMo(param);
+            if(response != null && muaVeResponse != null) {
+                return  new ResponseEntity(response, HttpStatus.OK);
+            } else return new ResponseEntity<>(ErrorResponse.builder()
+                    .tenLoi("Lỗi mua vé")
+                    .moTaLoi("Xử lí mua vé online gặp lỗi")
+                    .build(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi mua vé")
+                .moTaLoi("Khách hàng đã đặt quá số lượng vé được mua theo quy định của nhà ga. Mỗi khách hàng chỉ được mua tối đa 5 vé")
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    public MuaVeResponse xuLiMuaVe(MuaVeRequest muaVeRequest) {
         KhachDatVe khachDatVeID = KhachDatVe.builder().
                 id(khachDatVeService.getIDKhachDat(muaVeRequest.getKhachDatVe()))
                 .build();
@@ -66,20 +100,12 @@ public class VeTauController {
             String maDatCho = "";
             String tinhTrang = "";
 
-            if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.TRA_SAU)) {
-                Random random = new Random();
-                int numRand = random.nextInt(999999999);
-                maDatCho = String.format("%09d", numRand);
-                tinhTrang = "CHUA_THANH_TOAN";
-                maDatVe = null;
+            Random random = new Random();
+            int numRand = random.nextInt(999999999);
+            maDatCho = String.format("%09d", numRand);
+            tinhTrang = "CHUA_THANH_TOAN";
+            maDatVe = null;
 
-            } else if (muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.THANH_TOAN_ONLINE)){
-                Random random = new Random();
-                int numRand = random.nextInt(999999999);
-                maDatVe = String.format("%09d", numRand);
-                maDatCho = null;
-                tinhTrang = "DA_THANH_TOAN";
-            }
             Date ngayLap = Date.valueOf(muaVeRequest.getNgayLap());
             HoaDon hoaDon = HoaDon.builder()
                     .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
@@ -100,8 +126,8 @@ public class VeTauController {
             String finalTinhTrang = tinhTrang;
             KhachDatVe finalKhachDatVe = khachDatVe;
             muaVeRequest.getVeTaus().forEach(veTau -> {
-                Random random = new Random();
-                int maVe = random.nextInt(99999999);
+                Random randomNum = new Random();
+                int maVe = randomNum.nextInt(99999999);
                 Date ngayDi = Date.valueOf(veTau.getNgayDi());
                 Date ngayDen = Date.valueOf(veTau.getNgayDen());
                 HanhTrinh hanhTrinh = HanhTrinh.builder()
@@ -112,6 +138,7 @@ public class VeTauController {
                         .gioDi(veTau.getGioDi())
                         .gioDen(veTau.getGioDen())
                         .build();
+
                 HanhTrinh hanhTrinhID = HanhTrinh.builder()
                         .id(hanhTrinhService.getIDHanhTrinh(hanhTrinh))
                         .gaDi(veTau.getGaDi())
@@ -122,6 +149,7 @@ public class VeTauController {
                         .gioDen(veTau.getGioDen())
                         .giaVe(veTau.getDonGia())
                         .build();
+
                 VeTau veTauDi = VeTau.builder()
                         .maVe(String.format("%08d", maVe))
                         .doiTuong(veTau.getDoiTuong())
@@ -164,13 +192,9 @@ public class VeTauController {
                     .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
                     .ngayLap(ngayLap)
                     .build();
-
-            return new ResponseEntity(muaVeResponse, HttpStatus.OK);
+            return muaVeResponse;
         }
-        return new ResponseEntity<>(ErrorResponse.builder()
-                .tenLoi("Lỗi mua vé")
-                .moTaLoi("Khách hàng đã đặt quá số lượng vé được mua theo quy định của nhà ga. Mỗi khách hàng chỉ được mua tối đa 5 vé")
-                .build(), HttpStatus.BAD_REQUEST);
+        return null;
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
