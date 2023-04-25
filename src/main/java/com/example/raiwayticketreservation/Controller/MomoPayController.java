@@ -4,6 +4,7 @@ import com.example.raiwayticketreservation.Config.MomoConfig;
 import com.example.raiwayticketreservation.constants.MoMoConstant;
 import com.example.raiwayticketreservation.utils.MomoEncoderUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.v3.oas.annotations.Operation;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -11,8 +12,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,15 +23,18 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/v1/thanhtoan")
 public class MomoPayController {
 
 	// tạo thanh toán, response trả về pay url
+	@CrossOrigin(origins = "http://localhost:4200")
+	@Operation(summary = "Tạo thanh toán MoMo",
+			description = "Sau khi thực thi API mua vé sẽ có thực thi API này để trả về link QR MoMo để thanh toán",
+			tags = "API Thanh toán")
 	@GetMapping(value = "/thanhtoanmomo/{amount}")
 	@JsonCreator
-	public Map<String, Object> thanhToanMoMo(@PathVariable Long amount)
+	public Map<String, Object> taoThanhToanMoMo(@PathVariable Long amount)
 			throws InvalidKeyException, NoSuchAlgorithmException, ClientProtocolException, IOException {
 
 		JSONObject json = new JSONObject();
