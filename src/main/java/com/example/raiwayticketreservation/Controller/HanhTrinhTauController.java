@@ -1,7 +1,6 @@
 package com.example.raiwayticketreservation.Controller;
 
 import com.example.raiwayticketreservation.Entity.HanhTrinh;
-import com.example.raiwayticketreservation.Entity.Tau;
 import com.example.raiwayticketreservation.Service.HanhTrinhService;
 import com.example.raiwayticketreservation.Service.TauService;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
@@ -33,17 +32,14 @@ public class HanhTrinhTauController {
     public ResponseEntity getHanhTrinhTauByGaDiGaDenNgayDiNgayDen(@RequestBody TimChuyenTauRequest timChuyenTauRequest) throws ParseException {
 
         if (timChuyenTauRequest.getLoaiHanhTrinh().equals("MOT_CHIEU")) {
-            HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
-            if(hanhTrinh != null) {
-                Set<Tau> taus = tauService.getTauByHanhTrinhID(hanhTrinh.getId());
-                String tenTauDi = taus.stream().toList().get(0).getTenTau();
-                ArrayList toaTheoTaus = new ArrayList<>();
-                toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), tenTauDi));
-                TimChuyenTauResponse timChuyenTauResponse = TimChuyenTauResponse.builder().id(hanhTrinh.getId()).hanhTrinh(hanhTrinh).taus(taus).toaTaus(toaTheoTaus).build();
-                Set<TimChuyenTauResponse> timChuyenTauResponses = new HashSet<>();
-                timChuyenTauResponses.add(timChuyenTauResponse);
-                System.out.println(timChuyenTauResponses);
-                return new ResponseEntity(timChuyenTauResponses, HttpStatus.OK);
+            List<HanhTrinh> hanhTrinhSet = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
+            if(hanhTrinhSet != null) {
+                hanhTrinhSet.forEach(hanhTrinh -> {
+                    Set toaTheoTaus = new HashSet<>();
+                    toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), hanhTrinh.getTau().getId()));
+                    hanhTrinh.getTau().setCtTauToas(toaTheoTaus);
+                });
+                return new ResponseEntity(hanhTrinhSet, HttpStatus.OK);
             } else {
                 ErrorResponse errorResponse = ErrorResponse.builder()
                         .tenLoi("Không tìm thấy")
@@ -52,33 +48,26 @@ public class HanhTrinhTauController {
                 return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
             }
         } else if (timChuyenTauRequest.getLoaiHanhTrinh().equals("KHU_HOI")) {
-            HanhTrinh hanhTrinhDi = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
-            HanhTrinh hanhTrinhVe = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getNgayVe());
-            if (hanhTrinhDi != null && hanhTrinhVe != null) {
-                Set<Tau> tauDis = tauService.getTauByHanhTrinhID(hanhTrinhDi.getId());
-                String tenTau = tauDis.stream().toList().get(0).getTenTau();
-                ArrayList toaTheoTauDis = new ArrayList<>();
-                toaTheoTauDis.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinhDi.getId(), tenTau));
-                TimChuyenTauResponse chuyenTauDiResponse = TimChuyenTauResponse.builder()
-                        .id(hanhTrinhDi.getId())
-                        .hanhTrinh(hanhTrinhDi)
-                        .taus(tauDis)
-                        .toaTaus(toaTheoTauDis)
-                        .build();
-                Set<Tau> tauVes = tauService.getTauByHanhTrinhID(hanhTrinhVe.getId());
-                String tenTauVe = tauVes.stream().toList().get(0).getTenTau();
-                ArrayList toaTheoTauVes = new ArrayList<>();
-                toaTheoTauVes.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinhVe.getId(), tenTauVe));
-                TimChuyenTauResponse chuyenTauVeResponse = TimChuyenTauResponse.builder()
-                        .id(hanhTrinhVe.getId()).hanhTrinh(hanhTrinhVe)
-                        .taus(tauVes)
-                        .toaTaus(toaTheoTauVes)
-                        .build();
+            List<HanhTrinh> hanhTrinhDiSet = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
+            List<HanhTrinh> hanhTrinhVeSet = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayVe());
 
-                Set<TimChuyenTauResponse> timChuyenTauResponses = new HashSet<>();
-                timChuyenTauResponses.add(chuyenTauDiResponse);
-                timChuyenTauResponses.add(chuyenTauVeResponse);
-                return new ResponseEntity(timChuyenTauResponses, HttpStatus.OK);
+            if(hanhTrinhDiSet != null && hanhTrinhVeSet != null ) {
+                hanhTrinhDiSet.forEach(hanhTrinh -> {
+                    Set toaTheoTaus = new HashSet<>();
+                    toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), hanhTrinh.getTau().getId()));
+                    hanhTrinh.getTau().setCtTauToas(toaTheoTaus);
+                });
+
+                hanhTrinhVeSet.forEach(hanhTrinh -> {
+                    Set toaTheoTaus = new HashSet<>();
+                    toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), hanhTrinh.getTau().getId()));
+                    hanhTrinh.getTau().setCtTauToas(toaTheoTaus);
+                });
+                TimChuyenTauResponse timChuyenTauResponse = TimChuyenTauResponse.builder()
+                        .hanhTrinhDi(hanhTrinhVeSet)
+                        .hanhTrinhVe(hanhTrinhVeSet)
+                        .build();
+                return new ResponseEntity(timChuyenTauResponse, HttpStatus.OK);
             } else {
                 ErrorResponse errorResponse = ErrorResponse.builder()
                         .tenLoi("Không tìm thấy")

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public interface TauRepo extends JpaRepository<Tau, Long> {
-    @Query(value = "SELECT * FROM railwayticketreservationdb.tau, railwayticketreservationdb.cthanhtrinhtau  " +
-            "WHERE id = ma_tau AND ma_hanh_trinh = ?", nativeQuery = true)
-    public Set<Tau> getTau(Long id);
+    @Query(value = "SELECT * FROM railwayticketreservationdb.tau " +
+            "WHERE id = ?", nativeQuery = true)
+    public Tau getTau(Long id);
 
     @Query(nativeQuery = true)
-    public ArrayList<ToaResponse> getToaTheoTauByMaHanhTrinhMaTau(Long hanhTrinhID, String tenTau);
+    public ArrayList<ToaResponse> getToaTheoTauByMaHanhTrinhMaTau(Long hanhTrinhID, Long tenTau);
 }

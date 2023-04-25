@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public interface TauService {
-    public Set<Tau> getTauByHanhTrinhID(Long id);
+    public Tau getTauByTauID(Long id);
 
-    public ArrayList<ToaResponse> getToaTheoTauByHanhTrinhIDTauID(Long hanhTrinhID, String tenTau);
+    public ArrayList<ToaResponse> getToaTheoTauByHanhTrinhIDTauID(Long hanhTrinhID, Long maTau);
 }

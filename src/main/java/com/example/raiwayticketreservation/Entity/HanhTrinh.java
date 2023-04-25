@@ -56,7 +56,9 @@ public class HanhTrinh implements Serializable {
     @JsonIgnore
     private Set<VeTau> veTaus;
 
-    @OneToMany(mappedBy = "hanhTrinh")
-    @JsonIgnore
-    private Set<CTHanhTrinhTau> ctHanhTrinhTaus;
+    @ManyToOne
+    @JoinColumn(name = "maTau")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Tau tau;
 }

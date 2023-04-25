@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class HanhTrinhServiceImpl implements HanhTrinhService {
@@ -16,7 +18,7 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
     private HanhTrinhRepo hanhTrinhRepo;
 
     @Override
-    public HanhTrinh getHanhTrinh(String gaDi, String gaDen, String ngayDi) {
+    public List<HanhTrinh> getHanhTrinh(String gaDi, String gaDen, String ngayDi) {
         return hanhTrinhRepo.getHanhTrinhByGaDiGaDenNgayDiNgayDen(gaDi, gaDen, ngayDi);
     }
 

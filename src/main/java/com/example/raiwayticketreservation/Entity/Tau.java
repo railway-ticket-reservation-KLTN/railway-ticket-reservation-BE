@@ -4,6 +4,7 @@ import com.example.raiwayticketreservation.dtos.responses.ToaResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.Set;
@@ -12,7 +13,7 @@ import java.util.Set;
         query = "SELECT c.id as maToa, t.ten_tau as tenTau, d.so_toa as soToa,\n" +
                 "c.ten_toa as tenToa, c.mo_ta_toa as moTaToa, c.so_luong_ghe as soLuongGhe\n" +
                 "FROM Tau t, Toa c, CTTauToa d \n" +
-                "WHERE t.id = d.ma_tau AND c.id = d.ma_toa AND d.ma_hanh_trinh = ? AND t.ten_tau = ?",
+                "WHERE t.id = d.ma_tau AND c.id = d.ma_toa AND d.ma_hanh_trinh = ? AND t.id = ?",
         resultSetMapping = "Mapping.ToaTauResponse")
 @SqlResultSetMapping(name = "Mapping.ToaTauResponse",
         classes = @ConstructorResult(targetClass = ToaResponse.class,
@@ -36,11 +37,12 @@ public class Tau {
 
     private int soLuongToa;
 
-    @OneToMany(mappedBy = "tau")
+    @OneToMany(mappedBy = "tau", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JsonIgnore
-    private Set<CTHanhTrinhTau> ctHanhTrinhTaus;
+    private Set<HanhTrinh> hanhTrinhs;
 
     @OneToMany(mappedBy = "tau")
-    @JsonIgnore
     private Set<CTTauToa> ctTauToas;
 }

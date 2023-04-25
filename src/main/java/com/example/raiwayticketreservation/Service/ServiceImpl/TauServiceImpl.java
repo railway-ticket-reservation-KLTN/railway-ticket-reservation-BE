@@ -17,12 +17,12 @@ public class TauServiceImpl implements TauService {
     private TauRepo tauRepo;
 
     @Override
-    public Set<Tau> getTauByHanhTrinhID(Long id) {
+    public Tau getTauByTauID(Long id) {
         return tauRepo.getTau(id);
     }
 
     @Override
-    public ArrayList<ToaResponse> getToaTheoTauByHanhTrinhIDTauID(Long hanhTrinhID, String tenTau) {
-        return tauRepo.getToaTheoTauByMaHanhTrinhMaTau(hanhTrinhID, tenTau);
+    public ArrayList<ToaResponse> getToaTheoTauByHanhTrinhIDTauID(Long hanhTrinhID, Long maTau) {
+        return tauRepo.getToaTheoTauByMaHanhTrinhMaTau(hanhTrinhID, maTau);
     }
 }
