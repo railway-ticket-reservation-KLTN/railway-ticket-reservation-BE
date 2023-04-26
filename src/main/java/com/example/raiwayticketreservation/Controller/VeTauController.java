@@ -49,30 +49,32 @@ public class VeTauController {
             tags = "API Mua vé")
     @PostMapping("/muave")
     public ResponseEntity muaVe(@RequestBody MuaVeRequest muaVeRequest) {
-        if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.TRA_SAU)) {
-            MuaVeResponse muaVeResponse = xuLiMuaVe(muaVeRequest);
-            if(muaVeResponse.getVeTaus() == null)
-                return new ResponseEntity<>(ErrorResponse.builder()
+        MuaVeResponse muaVeResponse = xuLiMuaVe(muaVeRequest);
+        if (muaVeResponse != null) {
+            if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.TRA_SAU)) {
+                if(muaVeResponse.getVeTaus() == null)
+                    return new ResponseEntity<>(ErrorResponse.builder()
+                            .tenLoi("Lỗi mua vé")
+                            .moTaLoi("Xử lí mua vé gặp lỗi")
+                            .build(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(muaVeResponse, HttpStatus.OK);
+            } else if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.THANH_TOAN_MOMO)) {
+                Map<String, Long> param = new HashMap<String, Long>();
+                List<VeTauRequest> giaVes = muaVeRequest.getVeTaus().stream().toList();
+                double donGia = 0;
+                for(int i = 0; i < giaVes.size(); i++) {
+                    donGia += giaVes.get(i).getDonGia();
+                }
+                param.put("amount", (long) donGia);
+                param.put("orderId", muaVeResponse.getMaDatCho());
+                Object response = thanhToanMoMoService.getDataThanhToanMoMo(param);
+                if(response != null && muaVeResponse != null) {
+                    return  new ResponseEntity(response, HttpStatus.OK);
+                } else return new ResponseEntity<>(ErrorResponse.builder()
                         .tenLoi("Lỗi mua vé")
-                        .moTaLoi("Xử lí mua vé gặp lỗi")
+                        .moTaLoi("Xử lí mua vé online gặp lỗi")
                         .build(), HttpStatus.BAD_REQUEST);
-            return new ResponseEntity(muaVeResponse, HttpStatus.OK);
-        } else if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.THANH_TOAN_MOMO)) {
-            Map<String, Long> param = new HashMap<String, Long>();
-            List<VeTauRequest> giaVes = muaVeRequest.getVeTaus().stream().toList();
-            double donGia = 0;
-            for(int i = 0; i < giaVes.size(); i++) {
-                donGia += giaVes.get(i).getDonGia();
             }
-            param.put("amount", (long) donGia);
-            MuaVeResponse muaVeResponse = xuLiMuaVe(muaVeRequest);
-            Object response = thanhToanMoMoService.getDataThanhToanMoMo(param);
-            if(response != null && muaVeResponse != null) {
-                return  new ResponseEntity(response, HttpStatus.OK);
-            } else return new ResponseEntity<>(ErrorResponse.builder()
-                    .tenLoi("Lỗi mua vé")
-                    .moTaLoi("Xử lí mua vé online gặp lỗi")
-                    .build(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(ErrorResponse.builder()
                 .tenLoi("Lỗi mua vé")
@@ -102,16 +104,14 @@ public class VeTauController {
 
             Random random = new Random();
             int numRand = random.nextInt(999999999);
-            maDatCho = String.format("%09d", numRand);
+            maDatCho = 1 + String.format("%09d", numRand);
             tinhTrang = "CHUA_THANH_TOAN";
-            maDatVe = null;
 
             Date ngayLap = Date.valueOf(muaVeRequest.getNgayLap());
             HoaDon hoaDon = HoaDon.builder()
                     .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
                     .ngayLap(ngayLap)
                     .khachDatVe(khachDatVe)
-                    .maDatVe(maDatVe)
                     .maDatCho(maDatCho)
                     .tinhTrang(tinhTrang)
                     .trangThai(1)
@@ -191,6 +191,7 @@ public class VeTauController {
                     .khachDatVe(khachDatVe)
                     .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
                     .ngayLap(ngayLap)
+                    .maDatCho(Long.valueOf(maDatCho))
                     .build();
             return muaVeResponse;
         }
@@ -232,24 +233,31 @@ public class VeTauController {
     @PostMapping("/ves")
     public ResponseEntity getDanhSachVeTheoKhachDat(@RequestBody TimVeTraRequest timVeTraRequest) {
         HoaDon hoaDon = hoaDonService.getHoaDonByMaDatVe(timVeTraRequest.getMaDatVe());
-        KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(hoaDon.getKhachDatVe().getId());
-        if(timVeTraRequest.getTenKhachDat().equals(khachDatVe.getHoTen())
-                && timVeTraRequest.getEmail().equals(khachDatVe.getEmail())
-                && timVeTraRequest.getSoGiayTo().equals(khachDatVe.getSoGiayTo())
-                && timVeTraRequest.getSdt().equals(khachDatVe.getSdt())) {
-            Set<CTHD> cthds = cthdService.getCTHDTheoHoaDonId(hoaDon.getId());
-            ArrayList<VeTau> veTaus = new ArrayList<>();
-            cthds.forEach(cthd -> {
-                VeTau veTau = veTauService.getVeTauTheoID(cthd.getVeTau().getId());
-                HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau.getHanhTrinh().getId());
-                veTau.builder().khachDatVe(khachDatVe).hanhTrinh(hanhTrinh);
-                if(!veTau.getTinhTrang().equals(SystemConstant.TRA_VE)) {
-                    veTaus.add(veTau);
-                }
-            });
-            return new ResponseEntity<>(veTaus, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(ErrorResponse.builder().tenLoi("Lỗi thông tin không trùng khớp").moTaLoi("Thông tin khách đặt không chính xác").build(), HttpStatus.BAD_REQUEST);
+        if(hoaDon != null) {
+            KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(hoaDon.getKhachDatVe().getId());
+            if(timVeTraRequest.getTenKhachDat().equals(khachDatVe.getHoTen())
+                    && timVeTraRequest.getEmail().equals(khachDatVe.getEmail())
+                    && timVeTraRequest.getSoGiayTo().equals(khachDatVe.getSoGiayTo())
+                    && timVeTraRequest.getSdt().equals(khachDatVe.getSdt())) {
+                Set<CTHD> cthds = cthdService.getCTHDTheoHoaDonId(hoaDon.getId());
+                ArrayList<VeTau> veTaus = new ArrayList<>();
+                cthds.forEach(cthd -> {
+                    VeTau veTau = veTauService.getVeTauTheoID(cthd.getVeTau().getId());
+                    HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau.getHanhTrinh().getId());
+                    veTau.builder().khachDatVe(khachDatVe).hanhTrinh(hanhTrinh);
+                    if(!veTau.getTinhTrang().equals(SystemConstant.TRA_VE)) {
+                        veTaus.add(veTau);
+                    }
+                });
+                return new ResponseEntity<>(veTaus, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(ErrorResponse.builder()
+                        .tenLoi("Lỗi thông tin không trùng khớp")
+                        .moTaLoi("Thông tin khách đặt không chính xác").build(), HttpStatus.BAD_REQUEST);
+            }
         }
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi hóa đơn")
+                .moTaLoi("Không tìm thấy thông tin hóa đơn của khách hàng, hãy kiểm tra lại mã hóa đơn vừa nhập").build(), HttpStatus.BAD_REQUEST);
     }
 }

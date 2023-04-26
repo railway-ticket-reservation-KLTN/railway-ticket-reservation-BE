@@ -9,4 +9,6 @@ public class SystemConstant {
     public static final String DAT_CHO = "DAT_CHO";
     public static final String TRA_SAU = "TRA_SAU";
     public static final String THANH_TOAN_MOMO = "THANH_TOAN_MOMO";
+    public static final String DA_THANH_TOAN = "DA_THANH_TOAN";
+
 }

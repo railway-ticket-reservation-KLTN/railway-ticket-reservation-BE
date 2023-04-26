@@ -107,7 +107,7 @@ public class MaXacThucController {
                             .khachDatVe(xacThucRequest.getKhachDatVe())
                             .build();
                     veTau.setId(veTauService.getIDVeTau(veTau));
-                    veTauService.capNhatTrangThaiTinhTrangVeTau(veTau);
+                    veTauService.capNhatTrangThaiTinhTrangVeTau(veTau.getId(), SystemConstant.TRA_VE);
                     veTaus.add(veTau);
                     Long trangThaiGheId = trangThaiGheService
                             .getIdTrangThaiGhe(veTauRequest.getGaDi(), veTauRequest.getGaDen(), veTauRequest.getNgayDi().toString(),

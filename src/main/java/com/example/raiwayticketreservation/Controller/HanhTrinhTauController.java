@@ -37,7 +37,7 @@ public class HanhTrinhTauController {
                 hanhTrinhSet.forEach(hanhTrinh -> {
                     Set toaTheoTaus = new HashSet<>();
                     toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), hanhTrinh.getTau().getId()));
-                    hanhTrinh.getTau().setCtTauToas(toaTheoTaus);
+                    hanhTrinh.getTau().setToas(toaTheoTaus);
                 });
                 return new ResponseEntity(hanhTrinhSet, HttpStatus.OK);
             } else {
@@ -55,13 +55,13 @@ public class HanhTrinhTauController {
                 hanhTrinhDiSet.forEach(hanhTrinh -> {
                     Set toaTheoTaus = new HashSet<>();
                     toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), hanhTrinh.getTau().getId()));
-                    hanhTrinh.getTau().setCtTauToas(toaTheoTaus);
+                    hanhTrinh.getTau().setToas(toaTheoTaus);
                 });
 
                 hanhTrinhVeSet.forEach(hanhTrinh -> {
                     Set toaTheoTaus = new HashSet<>();
                     toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), hanhTrinh.getTau().getId()));
-                    hanhTrinh.getTau().setCtTauToas(toaTheoTaus);
+                    hanhTrinh.getTau().setToas(toaTheoTaus);
                 });
                 TimChuyenTauResponse timChuyenTauResponse = TimChuyenTauResponse.builder()
                         .hanhTrinhDi(hanhTrinhVeSet)

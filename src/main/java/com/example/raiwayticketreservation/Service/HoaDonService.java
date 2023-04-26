@@ -8,4 +8,6 @@ public interface HoaDonService {
     public Long getIDHoaDonTheoMaDatChoHoacMaDatVe(String maDatCho, String maDatVe);
 
     public HoaDon getHoaDonByMaDatVe(String maDatVe);
+
+    public void capNhatHoaDonTheoMaDatCho(String maDatVe, String tinhTrang, String maDatCho);
 }

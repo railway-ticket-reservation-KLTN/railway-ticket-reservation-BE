@@ -25,4 +25,9 @@ public class HoaDonServiceImpl implements HoaDonService {
     public HoaDon getHoaDonByMaDatVe(String maDatVe) {
         return hoaDonRepo.getHDByMaDatVe(maDatVe);
     }
+
+    @Override
+    public void capNhatHoaDonTheoMaDatCho(String maDatVe, String tinhTrang, String maDatCho) {
+        hoaDonRepo.capNhatHoaDonTheoMaDatCho(maDatVe, tinhTrang, maDatCho);
+    }
 }

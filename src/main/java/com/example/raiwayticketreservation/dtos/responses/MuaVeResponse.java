@@ -14,4 +14,5 @@ public class MuaVeResponse {
     private KhachDatVe khachDatVe;
     private String hinhThucThanhToan;
     private Date ngayLap;
+    private Long maDatCho;
 }

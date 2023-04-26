@@ -41,12 +41,21 @@ public class VeTauServiceImpl implements VeTauService {
     }
 
     @Override
-    public void capNhatTrangThaiTinhTrangVeTau(VeTau veTau) {
-        veTauRepo.capNhatTinhTrangVeTauTheoID(SystemConstant.TRA_VE, veTau.getId());
+    public void capNhatTrangThaiTinhTrangVeTau(Long maVeTau, String trangThai) {
+        if(trangThai.equals(SystemConstant.TRA_VE)) {
+            veTauRepo.capNhatTinhTrangVeTauTheoID(SystemConstant.TRA_VE, maVeTau);
+        } else if (trangThai.equals(SystemConstant.DA_MUA)) {
+            veTauRepo.capNhatTinhTrangVeTauTheoID(SystemConstant.DA_MUA, maVeTau);
+        }
     }
 
     @Override
     public Set<VeTau> getVeTauTheoMaKhachDat(Long maKhachDat) {
         return veTauRepo.getVeTauTheoMaKhachDat(maKhachDat);
+    }
+
+    @Override
+    public Set<Long> getIDVeTauByMaHoaDon(Long maHoaDon) {
+        return veTauRepo.getIdVeByMaHD(maHoaDon);
     }
 }

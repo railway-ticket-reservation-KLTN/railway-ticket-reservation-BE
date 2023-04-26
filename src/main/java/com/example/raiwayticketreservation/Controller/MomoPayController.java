@@ -1,10 +1,17 @@
 package com.example.raiwayticketreservation.Controller;
 
 import com.example.raiwayticketreservation.Config.MomoConfig;
+import com.example.raiwayticketreservation.Entity.VeTau;
+import com.example.raiwayticketreservation.Service.EmailService;
+import com.example.raiwayticketreservation.Service.HoaDonService;
+import com.example.raiwayticketreservation.Service.VeTauService;
 import com.example.raiwayticketreservation.constants.MoMoConstant;
+import com.example.raiwayticketreservation.constants.SystemConstant;
+import com.example.raiwayticketreservation.dtos.responses.ThanhToanResponse;
 import com.example.raiwayticketreservation.utils.MomoEncoderUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.websocket.server.PathParam;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -12,6 +19,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,26 +29,36 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/v1/thanhtoan")
 public class MomoPayController {
+
+	@Autowired
+	private HoaDonService hoaDonService;
+
+	@Autowired
+	private VeTauService veTauService;
+
+	@Autowired
+	private EmailService emailService;
 
 	// tạo thanh toán, response trả về pay url
 	@CrossOrigin(origins = "http://localhost:4200")
 	@Operation(summary = "Tạo thanh toán MoMo",
 			description = "Sau khi thực thi API mua vé sẽ có thực thi API này để trả về link QR MoMo để thanh toán",
 			tags = "API Thanh toán")
-	@GetMapping(value = "/thanhtoanmomo/{amount}")
+	@GetMapping(value = "/thanhtoanmomo/{amount}/{orderId}")
 	@JsonCreator
-	public Map<String, Object> taoThanhToanMoMo(@PathVariable Long amount)
+	public Map<String, Object> taoThanhToanMoMo(@PathVariable Long amount, @PathVariable Long orderId)
 			throws InvalidKeyException, NoSuchAlgorithmException, ClientProtocolException, IOException {
 
 		JSONObject json = new JSONObject();
 		String requestId = "MM" + System.currentTimeMillis();
-		String orderId = "MMOID" + System.currentTimeMillis();
+//		String orderId = "MMOID" + System.currentTimeMillis();
 		String partnerCode = MomoConfig.PARTNER_CODE;
 		String accessKey = MomoConfig.ACCESS_KEY;
 		String secretKey = MomoConfig.SECRET_KEY;
@@ -54,7 +73,7 @@ public class MomoPayController {
 		json.put("requestId", requestId);
 		json.put("amount", amount);
 		json.put("extraData", extraData);
-		json.put("orderId", orderId);
+		json.put("orderId", orderId.toString());
 		json.put("storeId", "railwayvn");
 		json.put("autoCapture", true);
 		json.put("redirectUrl", returnUrl);
@@ -94,6 +113,93 @@ public class MomoPayController {
 		JSONObject result = new JSONObject(resultJsonStr.toString());
 
 		return result.toMap();
+	}
+	@GetMapping("/trangthai")
+	public Object trangThaiThanhToan(@RequestParam String partnerCode, @RequestParam Long orderId, @RequestParam Long amount, @RequestParam String orderInfo,
+									 @RequestParam String orderType, @RequestParam String message, @RequestParam Long resultCode) {
+		final DecimalFormat df = new DecimalFormat("###,###,##0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+		if(resultCode == 0) {
+			String maDatVe = "";
+			Random random = new Random();
+			int numRand = random.nextInt(999999999);
+			maDatVe = 1 + String.format("%09d", numRand);
+			String maDatCho = String.valueOf(orderId);
+			String trangThai = SystemConstant.DA_THANH_TOAN;
+			hoaDonService.capNhatHoaDonTheoMaDatCho(maDatVe, trangThai, maDatCho);
+
+			Long hoaDonID = hoaDonService.getIDHoaDonTheoMaDatChoHoacMaDatVe(maDatCho, maDatVe);
+			Set<Long> maVeTaus = veTauService.getIDVeTauByMaHoaDon(hoaDonID);
+			Set<VeTau> veTaus = new HashSet<>();
+			maVeTaus.forEach(maVeTau -> {
+				veTauService.capNhatTrangThaiTinhTrangVeTau(maVeTau, SystemConstant.DA_MUA);
+				veTaus.add(veTauService.getVeTauTheoID(maVeTau));
+			});
+			List<VeTau> veTauList = veTaus.stream().toList();
+			String emailKhachDat = veTauList.get(0).getKhachDatVe().getEmail();
+			ThanhToanResponse thanhToanResponse = ThanhToanResponse.builder()
+					.maDatVe(maDatVe)
+					.veTauSet(veTaus)
+					.build();
+			double tongGia = 0;
+			for (int i = 0; i < veTauList.size(); i++) {
+				tongGia += veTauList.get(i).getDonGia();
+			}
+			emailService.sendMessage(emailKhachDat, "Railway VN - Thanh toán vé thành công", "Kính gửi quý Khách hàng,\n" +
+					"\n" +
+					"Xin trân trọng cảm ơn quý khách đã lựa chọn sử dung dịch vụ của Railway VN\n" +
+					"Chúng tôi xin thông báo quý khách đã thực hiện đặt vé thành công với thông tin như sau:\n" +
+					"\n" +
+					"Mã đặt vé là: "+ maDatVe +"\n" +
+					"Tổng số vé: "+ veTaus.size() +"\n" +
+					"Tổng số tiền: "+  df.format(tongGia).replace(",", ".")  +"VNĐ\n" +
+					"\n"+
+					"Quý khách vui lòng vào trang Railway VN vào phần kiểm tra vé nhập các thông tin cần thiết để kiểm tra thông tin vé."+
+					"\n" +
+					"\n"+
+					"Đây là email gửi tự động. Xin vui lòng không trả lời email này.\n" +
+					"Quý khách có thể liên hệ với trung tâm hỗ trợ khách hàng 1900 0009 để được trợ giúp.\n" +
+					"Xin Trân trọng cảm ơn!\n" +
+					"\n" +
+					"Railway VN.");
+			return thanhToanResponse;
+		} else {
+			String maDatCho = String.valueOf(orderId);
+			String maDatVe = "";
+			Long hoaDonID = hoaDonService.getIDHoaDonTheoMaDatChoHoacMaDatVe(maDatCho, maDatVe);
+			Set<Long> maVeTaus = veTauService.getIDVeTauByMaHoaDon(hoaDonID);
+			Set<VeTau> veTaus = new HashSet<>();
+			maVeTaus.forEach(maVeTau -> {
+				veTaus.add(veTauService.getVeTauTheoID(maVeTau));
+			});
+			List<VeTau> veTauList = veTaus.stream().toList();
+			String emailKhachDat = veTauList.get(0).getKhachDatVe().getEmail();
+			ThanhToanResponse thanhToanResponse = ThanhToanResponse.builder()
+					.veTauSet(veTaus)
+					.maDatCho(maDatCho)
+					.build();
+			double tongGia = 0;
+			for (int i = 0; i < veTauList.size(); i++) {
+				tongGia += veTauList.get(i).getDonGia();
+			}
+			emailService.sendMessage(emailKhachDat, "Railway VN - Thanh toán vé không thành công", "Kính gửi quý Khách hàng,\n" +
+					"\n" +
+					"Xin trân trọng cảm ơn quý khách đã lựa chọn sử dung dịch vụ của Railway VN\n" +
+					"Chúng tôi xin thông báo quý khách đã thực hiện đặt vé không thành công với thông tin như sau:\n" +
+					"\n" +
+					"Mã đặt chỗ là: "+ maDatCho +"\n" +
+					"Tổng số vé: "+ veTaus.size() +"\n" +
+					"Tổng số tiền: "+ df.format(tongGia).replace(",", ".") +" VNĐ\n" +
+					"\n"+
+					"Quý khách vui lòng đến trực tiếp nhà ga để thanh toán vé. Quý khách lưu ý vé chỉ được giữ trong vòng 24 giờ kể từ khi đặt vé."+
+					"\n" +
+					"\n"+
+					"Đây là email gửi tự động. Xin vui lòng không trả lời email này.\n" +
+					"Quý khách có thể liên hệ với trung tâm hỗ trợ khách hàng 1900 0009 để được trợ giúp.\n" +
+					"Xin Trân trọng cảm ơn!\n" +
+					"\n" +
+					"Railway VN.");
+			return thanhToanResponse;
+		}
 	}
 
 	// truy vấn lại trạng thái thanh toán

@@ -44,5 +44,5 @@ public class Tau {
     private Set<HanhTrinh> hanhTrinhs;
 
     @OneToMany(mappedBy = "tau")
-    private Set<CTTauToa> ctTauToas;
+    private Set<CTTauToa> toas;
 }

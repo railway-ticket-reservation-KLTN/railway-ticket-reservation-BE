@@ -16,8 +16,10 @@ public interface VeTauService {
 
     public VeTau getVeTauTheoID(Long Id);
 
-    public void capNhatTrangThaiTinhTrangVeTau(VeTau veTau);
+    public void capNhatTrangThaiTinhTrangVeTau(Long maVeTau, String trangThai);
 
     public Set<VeTau> getVeTauTheoMaKhachDat(Long maKhachDat);
+
+    public Set<Long> getIDVeTauByMaHoaDon(Long maHoaDon);
 
 }
