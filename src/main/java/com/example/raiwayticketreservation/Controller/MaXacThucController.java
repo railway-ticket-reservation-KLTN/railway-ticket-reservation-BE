@@ -52,9 +52,22 @@ public class MaXacThucController {
         if(khachDatVeResult.getId() != null) {
             Random random = new Random();
             int numRand = random.nextInt(999999);
-            String maXacThuc = String.format("%06d", numRand);
-            emailService.sendMessage(khachDatVe.getEmail(), "[RaiwalVN] Mã xác thực emai", "Xin chào"+khachDatVe.getHoTen()+"," +
-                    " mã xác thực của bạn là: "+maXacThuc);
+            String maXacThuc = 1 + String.format("%05d", numRand);
+            emailService.sendMessage(khachDatVe.getEmail(), "Railway VN - Gửi mã xác thực emai", "Xin chào "+ khachDatVe.getHoTen() +",\n" +
+                    "\n" +
+                    "Xin trân trọng cảm ơn quý khách đã lựa chọn sử dung dịch vụ của Railway VN\n" +
+                    "Chúng tôi xin thông báo quý khách đã thực hiện đặt vé thành công với thông tin như sau:\n" +
+                    "\n" +
+                    "Mã xác thực là: "+ maXacThuc +"\n" +
+                    "\n"+
+                    "Quý khách vui lòng xác thực trong vòng 12 tiếng kể từ khi mã này được gửi."+
+                    "\n" +
+                    "\n"+
+                    "Đây là email gửi tự động. Xin vui lòng không trả lời email này.\n" +
+                    "Quý khách có thể liên hệ với trung tâm hỗ trợ khách hàng 1900 0009 để được trợ giúp.\n" +
+                    "Xin Trân trọng cảm ơn!\n" +
+                    "\n" +
+                    "Railway VN.");
             maXacThucService.themMaXacThuc(khachDatVeResult, maXacThuc);
             return new ResponseEntity("Mã xác thực đã được gửi đến hộp thư của bạn.", HttpStatus.OK);
         } else
