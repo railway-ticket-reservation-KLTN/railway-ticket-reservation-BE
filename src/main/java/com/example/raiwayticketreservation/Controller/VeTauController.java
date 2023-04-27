@@ -49,31 +49,33 @@ public class VeTauController {
             tags = "API Mua vé")
     @PostMapping("/muave")
     public ResponseEntity muaVe(@RequestBody MuaVeRequest muaVeRequest) {
-        MuaVeResponse muaVeResponse = xuLiMuaVe(muaVeRequest);
-        if (muaVeResponse != null) {
-            if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.TRA_SAU)) {
-                if(muaVeResponse.getVeTaus() == null)
-                    return new ResponseEntity<>(ErrorResponse.builder()
+        if(muaVeRequest.getVeTaus().size() <= 5) {
+            MuaVeResponse muaVeResponse = xuLiMuaVe(muaVeRequest);
+            if (muaVeResponse != null) {
+                if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.TRA_SAU)) {
+                    if(muaVeResponse.getVeTaus() == null)
+                        return new ResponseEntity<>(ErrorResponse.builder()
+                                .tenLoi("Lỗi mua vé")
+                                .moTaLoi("Xử lí mua vé gặp lỗi")
+                                .build(), HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity(muaVeResponse, HttpStatus.OK);
+                } else if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.THANH_TOAN_MOMO)) {
+                    Map<String, Long> param = new HashMap<String, Long>();
+                    List<VeTauRequest> giaVes = muaVeRequest.getVeTaus().stream().toList();
+                    double donGia = 0;
+                    for(int i = 0; i < giaVes.size(); i++) {
+                        donGia += giaVes.get(i).getDonGia();
+                    }
+                    param.put("amount", (long) donGia);
+                    param.put("orderId", muaVeResponse.getMaDatCho());
+                    Object response = thanhToanMoMoService.getDataThanhToanMoMo(param);
+                    if(response != null && muaVeResponse != null) {
+                        return  new ResponseEntity(response, HttpStatus.OK);
+                    } else return new ResponseEntity<>(ErrorResponse.builder()
                             .tenLoi("Lỗi mua vé")
-                            .moTaLoi("Xử lí mua vé gặp lỗi")
+                            .moTaLoi("Xử lí mua vé online gặp lỗi")
                             .build(), HttpStatus.BAD_REQUEST);
-                return new ResponseEntity(muaVeResponse, HttpStatus.OK);
-            } else if(muaVeRequest.getHinhThucThanhToan().equals(SystemConstant.THANH_TOAN_MOMO)) {
-                Map<String, Long> param = new HashMap<String, Long>();
-                List<VeTauRequest> giaVes = muaVeRequest.getVeTaus().stream().toList();
-                double donGia = 0;
-                for(int i = 0; i < giaVes.size(); i++) {
-                    donGia += giaVes.get(i).getDonGia();
                 }
-                param.put("amount", (long) donGia);
-                param.put("orderId", muaVeResponse.getMaDatCho());
-                Object response = thanhToanMoMoService.getDataThanhToanMoMo(param);
-                if(response != null && muaVeResponse != null) {
-                    return  new ResponseEntity(response, HttpStatus.OK);
-                } else return new ResponseEntity<>(ErrorResponse.builder()
-                        .tenLoi("Lỗi mua vé")
-                        .moTaLoi("Xử lí mua vé online gặp lỗi")
-                        .build(), HttpStatus.BAD_REQUEST);
             }
         }
         return new ResponseEntity<>(ErrorResponse.builder()
@@ -97,8 +99,7 @@ public class VeTauController {
             khachDatVe = khachDatVeService.getKhachDatVeTheoID(khachDatVeID.getId());
         }
         Set<VeTau> veKhachDat = veTauService.getVeTauTheoMaKhachDat(khachDatVe.getId());
-        if(veKhachDat.size() < 5){
-            String maDatVe = "";
+        if(veKhachDat.size() + muaVeRequest.getVeTaus().size() < 5){
             String maDatCho = "";
             String tinhTrang = "";
 
@@ -107,24 +108,14 @@ public class VeTauController {
             maDatCho = 1 + String.format("%09d", numRand);
             tinhTrang = "CHUA_THANH_TOAN";
 
-            Date ngayLap = Date.valueOf(muaVeRequest.getNgayLap());
-            HoaDon hoaDon = HoaDon.builder()
-                    .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
-                    .ngayLap(ngayLap)
-                    .khachDatVe(khachDatVe)
-                    .maDatCho(maDatCho)
-                    .tinhTrang(tinhTrang)
-                    .trangThai(1)
-                    .build();
-            HoaDon hoaDonSaved = hoaDonService.themHoaDon(hoaDon);
+            Date ngayMuaVe = Date.valueOf(muaVeRequest.getNgayLap());
 
             Set<VeTau> veTauDis = new HashSet<>();
-            HoaDon hoaDonID = HoaDon.builder()
-                    .id(hoaDonService.getIDHoaDonTheoMaDatChoHoacMaDatVe(maDatCho, maDatVe))
-                    .build();
 
             String finalTinhTrang = tinhTrang;
             KhachDatVe finalKhachDatVe = khachDatVe;
+            String finalMaDatCho = maDatCho;
+
             muaVeRequest.getVeTaus().forEach(veTau -> {
                 Random randomNum = new Random();
                 int maVe = randomNum.nextInt(99999999);
@@ -151,8 +142,10 @@ public class VeTauController {
                         .build();
 
                 VeTau veTauDi = VeTau.builder()
-                        .maVe(String.format("%08d", maVe))
+                        .maVe(1 + String.format("%08d", maVe))
+                        .maDatCho(finalMaDatCho)
                         .doiTuong(veTau.getDoiTuong())
+                        .ngayMua(ngayMuaVe)
                         .donGia(veTau.getDonGia())
                         .loaiVe(veTau.getLoaiVe())
                         .soGiayTo(veTau.getSoGiayTo())
@@ -174,23 +167,10 @@ public class VeTauController {
             });
             List<VeTau> veTauSaved = veTauService.themVe(veTauDis);
 
-
-            Set<CTHD> cthds = new HashSet<>();
-            veTauSaved.forEach(veTau -> {
-                VeTau veTauID = VeTau.builder().id(veTau.getId()).build();
-                CTHD cthd = CTHD.builder().donGia(veTau.getDonGia())
-                        .hoaDon(hoaDonID)
-                        .veTau(veTauID)
-                        .build();
-                cthds.add(cthd);
-            });
-            cthdService.themCTHD(cthds);
-
             MuaVeResponse muaVeResponse = MuaVeResponse.builder()
                     .veTaus(veTauSaved)
-                    .khachDatVe(khachDatVe)
                     .hinhThucThanhToan(muaVeRequest.getHinhThucThanhToan())
-                    .ngayLap(ngayLap)
+                    .ngayMuave(ngayMuaVe)
                     .maDatCho(Long.valueOf(maDatCho))
                     .build();
             return muaVeResponse;

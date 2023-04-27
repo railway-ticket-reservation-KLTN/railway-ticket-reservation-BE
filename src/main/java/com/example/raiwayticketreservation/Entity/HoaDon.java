@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -36,11 +37,8 @@ public class HoaDon {
     @Column(columnDefinition = "VARCHAR(80)")
     private String hinhThucThanhToan;
 
-    @Column(columnDefinition = "VARCHAR(40)")
+    @Column(columnDefinition = "VARCHAR(20)")
     private String maDatVe;
-
-    @Column(columnDefinition = "VARCHAR(40)")
-    private String maDatCho;
 
     @Column(columnDefinition = "VARCHAR(80)")
     private String tinhTrang;

@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +23,9 @@ public class VeTauServiceImpl implements VeTauService {
 
     @Override
     public List<VeTau> themVe(Set<VeTau> veTaus) {
+        veTaus.forEach(veTau -> {
+            veTau.setThoiGianGiuVe(tinhThoiHanGiuVe(3));
+        });
         return veTauRepo.saveAll(veTaus);
     }
 
@@ -55,7 +60,13 @@ public class VeTauServiceImpl implements VeTauService {
     }
 
     @Override
-    public Set<Long> getIDVeTauByMaHoaDon(Long maHoaDon) {
-        return veTauRepo.getIdVeByMaHD(maHoaDon);
+    public Set<VeTau> getVeTauByMaDatCho(Long maDatCho) {
+        return veTauRepo.getIdVeByMaDatCho(maDatCho.toString());
+    }
+
+    private Timestamp tinhThoiHanGiuVe(int soPhutHetHan) {
+        Calendar calendar =Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, soPhutHetHan);
+        return new Timestamp(calendar.getTime().getTime());
     }
 }

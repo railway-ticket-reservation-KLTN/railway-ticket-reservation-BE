@@ -11,8 +11,7 @@ import java.util.List;
 @Builder
 public class MuaVeResponse {
     private List<VeTau> veTaus;
-    private KhachDatVe khachDatVe;
     private String hinhThucThanhToan;
-    private Date ngayLap;
+    private Date ngayMuave;
     private Long maDatCho;
 }

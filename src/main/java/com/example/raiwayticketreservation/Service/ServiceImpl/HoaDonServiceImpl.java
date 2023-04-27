@@ -6,6 +6,9 @@ import com.example.raiwayticketreservation.Service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 @Service
 public class HoaDonServiceImpl implements HoaDonService {
     @Autowired
@@ -30,4 +33,5 @@ public class HoaDonServiceImpl implements HoaDonService {
     public void capNhatHoaDonTheoMaDatCho(String maDatVe, String tinhTrang, String maDatCho) {
         hoaDonRepo.capNhatHoaDonTheoMaDatCho(maDatVe, tinhTrang, maDatCho);
     }
+
 }

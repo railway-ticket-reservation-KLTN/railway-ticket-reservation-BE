@@ -1,11 +1,14 @@
 package com.example.raiwayticketreservation.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 @Entity
 @Data
@@ -21,6 +24,13 @@ public class VeTau implements Serializable {
 
     @Column(columnDefinition = "VARCHAR(20)")
     private String maVe;
+
+    @Column(columnDefinition = "VARCHAR(20)")
+    private String maDatCho;
+
+    @Column(columnDefinition = "DATE")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date ngayMua;
 
     @Column(columnDefinition = "NVARCHAR(150)")
     private String tenHanhKhach;
@@ -47,6 +57,8 @@ public class VeTau implements Serializable {
     private String tinhTrang;
 
     private int trangThai;
+
+    private Timestamp thoiGianGiuVe;
 
     @OneToMany(mappedBy = "veTau")
     @JsonIgnore

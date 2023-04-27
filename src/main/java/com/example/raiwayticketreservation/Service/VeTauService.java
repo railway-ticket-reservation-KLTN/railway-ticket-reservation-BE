@@ -20,6 +20,6 @@ public interface VeTauService {
 
     public Set<VeTau> getVeTauTheoMaKhachDat(Long maKhachDat);
 
-    public Set<Long> getIDVeTauByMaHoaDon(Long maHoaDon);
+    public Set<VeTau> getVeTauByMaDatCho(Long maDatCho);
 
 }

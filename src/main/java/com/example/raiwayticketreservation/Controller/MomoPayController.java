@@ -1,7 +1,11 @@
 package com.example.raiwayticketreservation.Controller;
 
 import com.example.raiwayticketreservation.Config.MomoConfig;
+import com.example.raiwayticketreservation.Entity.CTHD;
+import com.example.raiwayticketreservation.Entity.HoaDon;
+import com.example.raiwayticketreservation.Entity.KhachDatVe;
 import com.example.raiwayticketreservation.Entity.VeTau;
+import com.example.raiwayticketreservation.Service.CTHDService;
 import com.example.raiwayticketreservation.Service.EmailService;
 import com.example.raiwayticketreservation.Service.HoaDonService;
 import com.example.raiwayticketreservation.Service.VeTauService;
@@ -41,6 +45,9 @@ public class MomoPayController {
 	private HoaDonService hoaDonService;
 
 	@Autowired
+	private CTHDService cthdService;
+
+	@Autowired
 	private VeTauService veTauService;
 
 	@Autowired
@@ -58,7 +65,6 @@ public class MomoPayController {
 
 		JSONObject json = new JSONObject();
 		String requestId = "MM" + System.currentTimeMillis();
-//		String orderId = "MMOID" + System.currentTimeMillis();
 		String partnerCode = MomoConfig.PARTNER_CODE;
 		String accessKey = MomoConfig.ACCESS_KEY;
 		String secretKey = MomoConfig.SECRET_KEY;
@@ -111,7 +117,6 @@ public class MomoPayController {
 			resultJsonStr.append(line);
 		}
 		JSONObject result = new JSONObject(resultJsonStr.toString());
-
 		return result.toMap();
 	}
 	@GetMapping("/trangthai")
@@ -123,27 +128,52 @@ public class MomoPayController {
 			Random random = new Random();
 			int numRand = random.nextInt(999999999);
 			maDatVe = 1 + String.format("%09d", numRand);
-			String maDatCho = String.valueOf(orderId);
 			String trangThai = SystemConstant.DA_THANH_TOAN;
-			hoaDonService.capNhatHoaDonTheoMaDatCho(maDatVe, trangThai, maDatCho);
 
-			Long hoaDonID = hoaDonService.getIDHoaDonTheoMaDatChoHoacMaDatVe(maDatCho, maDatVe);
-			Set<Long> maVeTaus = veTauService.getIDVeTauByMaHoaDon(hoaDonID);
-			Set<VeTau> veTaus = new HashSet<>();
-			maVeTaus.forEach(maVeTau -> {
-				veTauService.capNhatTrangThaiTinhTrangVeTau(maVeTau, SystemConstant.DA_MUA);
-				veTaus.add(veTauService.getVeTauTheoID(maVeTau));
+			Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(orderId);
+			veTaus.forEach(veTau -> {
+				veTauService.capNhatTrangThaiTinhTrangVeTau(veTau.getId(), SystemConstant.DA_MUA);
 			});
+			Set<VeTau> veTauDaCapNhat = veTauService.getVeTauByMaDatCho(orderId);
+
 			List<VeTau> veTauList = veTaus.stream().toList();
 			String emailKhachDat = veTauList.get(0).getKhachDatVe().getEmail();
+			Date ngayLap = veTauList.get(0).getNgayMua();
+			KhachDatVe khachDatVeID = KhachDatVe.builder().id(veTauList.get(0).getKhachDatVe().getId()).build();
+
 			ThanhToanResponse thanhToanResponse = ThanhToanResponse.builder()
 					.maDatVe(maDatVe)
-					.veTauSet(veTaus)
+					.veTauSet(veTauDaCapNhat)
 					.build();
+
 			double tongGia = 0;
 			for (int i = 0; i < veTauList.size(); i++) {
 				tongGia += veTauList.get(i).getDonGia();
 			}
+
+			//Thêm hóa đơn và chi tiết hóa đơn
+            HoaDon hoaDon = HoaDon.builder()
+                    .hinhThucThanhToan(SystemConstant.THANH_TOAN_MOMO)
+                    .ngayLap(ngayLap)
+                    .khachDatVe(khachDatVeID)
+                    .maDatVe(maDatVe)
+                    .tinhTrang(trangThai)
+                    .trangThai(1)
+                    .build();
+
+            HoaDon hoaDonReturn = hoaDonService.themHoaDon(hoaDon);
+
+			Set<CTHD> cthds = new HashSet<>();
+            veTauList.forEach(veTau -> {
+                VeTau veTauID = VeTau.builder().id(veTau.getId()).build();
+                CTHD cthd = CTHD.builder().donGia(veTau.getDonGia())
+                        .hoaDon(hoaDonReturn)
+                        .veTau(veTauID)
+                        .build();
+                cthds.add(cthd);
+            });
+            cthdService.themCTHD(cthds);
+
 			emailService.sendMessage(emailKhachDat, "Railway VN - Thanh toán vé thành công", "Kính gửi quý Khách hàng,\n" +
 					"\n" +
 					"Xin trân trọng cảm ơn quý khách đã lựa chọn sử dung dịch vụ của Railway VN\n" +
@@ -164,13 +194,8 @@ public class MomoPayController {
 			return thanhToanResponse;
 		} else {
 			String maDatCho = String.valueOf(orderId);
-			String maDatVe = "";
-			Long hoaDonID = hoaDonService.getIDHoaDonTheoMaDatChoHoacMaDatVe(maDatCho, maDatVe);
-			Set<Long> maVeTaus = veTauService.getIDVeTauByMaHoaDon(hoaDonID);
-			Set<VeTau> veTaus = new HashSet<>();
-			maVeTaus.forEach(maVeTau -> {
-				veTaus.add(veTauService.getVeTauTheoID(maVeTau));
-			});
+			Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(orderId);
+
 			List<VeTau> veTauList = veTaus.stream().toList();
 			String emailKhachDat = veTauList.get(0).getKhachDatVe().getEmail();
 			ThanhToanResponse thanhToanResponse = ThanhToanResponse.builder()
@@ -178,6 +203,7 @@ public class MomoPayController {
 					.maDatCho(maDatCho)
 					.build();
 			double tongGia = 0;
+
 			for (int i = 0; i < veTauList.size(); i++) {
 				tongGia += veTauList.get(i).getDonGia();
 			}

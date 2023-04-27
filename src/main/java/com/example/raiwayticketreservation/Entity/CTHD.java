@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Timestamp;
+
 @Entity
 @Data
 @ToString
@@ -27,5 +29,6 @@ public class CTHD {
     @MapsId("maVeTau")
     @JoinColumn(name = "maVeTau")
     private VeTau veTau;
+
     private double donGia;
 }

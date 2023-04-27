@@ -28,7 +28,7 @@ public interface VeTauRepo extends JpaRepository<VeTau, Long> {
             "WHERE (id = ?);", nativeQuery = true)
     public void capNhatTinhTrangVeTauTheoID (String tinhTrang, Long id);
 
-    @Query(value = "SELECT ma_ve_tau FROM railwayticketreservationdb.cthd\n" +
-            "    WHERE ma_hoa_don = ?", nativeQuery = true)
-    public Set<Long> getIdVeByMaHD(Long maHD);
+    @Query(value = "SELECT * FROM railwayticketreservationdb.vetau\n" +
+            "    WHERE ma_dat_cho = ?", nativeQuery = true)
+    public Set<VeTau> getIdVeByMaDatCho(String maDatCho);
 }
