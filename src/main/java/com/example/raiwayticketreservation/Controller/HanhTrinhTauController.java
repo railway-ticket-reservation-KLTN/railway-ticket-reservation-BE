@@ -49,7 +49,7 @@ public class HanhTrinhTauController {
             }
         } else if (timChuyenTauRequest.getLoaiHanhTrinh().equals("KHU_HOI")) {
             List<HanhTrinh> hanhTrinhDiSet = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
-            List<HanhTrinh> hanhTrinhVeSet = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayVe());
+            List<HanhTrinh> hanhTrinhVeSet = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getNgayVe());
 
             if(hanhTrinhDiSet != null && hanhTrinhVeSet != null ) {
                 hanhTrinhDiSet.forEach(hanhTrinh -> {

@@ -1,5 +1,8 @@
 package com.example.raiwayticketreservation.constants;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class MoMoConstant {
     public static String PARTNER_CODE = "partnerCode";
     public static String PARTNER_CLIENT_ID = "partnerClientId";
