@@ -188,9 +188,6 @@ public class VeTauController {
         if(veTau == null) {
             return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi kiểm tra vé").moTaLoi("Không tìm thấy vé").build(), HttpStatus.BAD_REQUEST);
         } else {
-            HanhTrinh hanhTrinh = hanhTrinhService.getHanhTrinhTheoMaHanhTrinh(veTau.getHanhTrinh().getId());
-            KhachDatVe khachDatVe = khachDatVeService.getKhachDatVeTheoID(veTau.getKhachDatVe().getId());
-            veTau.builder().hanhTrinh(hanhTrinh).khachDatVe(khachDatVe);
             Date ngayDiRequest = Date.valueOf(kiemTraVeRequest.getNgayDi());
             if(kiemTraVeRequest.getTenTau().equals(veTau.getTenTau())
                     && kiemTraVeRequest.getGaDi().equals(veTau.getHanhTrinh().getGaDi())
