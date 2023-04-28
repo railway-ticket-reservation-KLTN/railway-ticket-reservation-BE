@@ -15,6 +15,6 @@ public interface TrangThaiGheService {
     public void xoaTrangThaiGheByID(Long id);
 
     public void capNhatThoiHanGiuGheTheoMaVe(String maVe);
-
-    public void xoaTrangThaiGheDaHetHan();
+//
+//    public void xoaTrangThaiGheDaHetHan();
 }

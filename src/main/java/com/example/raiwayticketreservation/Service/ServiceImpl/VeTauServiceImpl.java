@@ -74,11 +74,11 @@ public class VeTauServiceImpl implements VeTauService {
         return new Timestamp(calendar.getTime().getTime());
     }
 
-    @Override
-    @Scheduled(cron = "0 */1 * * * *")
-    public void capNhatVeTauHetHanThanhToan() {
-        LocalDateTime dt = LocalDateTime.now();
-        log.info("Thời gian cập nhật: " + dt);
-        veTauRepo.capNhatVeHetHan();
-    }
+//    @Override
+//    @Scheduled(cron = "0 */1 * * * *")
+//    public void capNhatVeTauHetHanThanhToan() {
+//        LocalDateTime dt = LocalDateTime.now();
+//        log.info("Thời gian cập nhật: " + dt);
+//        veTauRepo.capNhatVeHetHan();
+//    }
 }

@@ -60,7 +60,7 @@ public class GheController {
         return new ResponseEntity<>(ghes, HttpStatus.OK);
     }
 
-    public void xoaTrangThaiGhe() {
-        trangThaiGheService.xoaTrangThaiGheDaHetHan();
-    }
+//    public void xoaTrangThaiGhe() {
+//        trangThaiGheService.xoaTrangThaiGheDaHetHan();
+//    }
 }
