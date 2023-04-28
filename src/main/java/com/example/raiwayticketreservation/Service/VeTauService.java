@@ -22,4 +22,5 @@ public interface VeTauService {
 
     public Set<VeTau> getVeTauByMaDatCho(Long maDatCho);
 
+    public void capNhatVeTauHetHanThanhToan();
 }

@@ -2,6 +2,7 @@ package com.example.raiwayticketreservation.Controller;
 
 import com.example.raiwayticketreservation.Entity.Ghe;
 import com.example.raiwayticketreservation.Service.GheService;
+import com.example.raiwayticketreservation.Service.TrangThaiGheService;
 import com.example.raiwayticketreservation.dtos.requests.GheRequest;
 import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
@@ -20,6 +21,9 @@ public class GheController {
 
     @Autowired
     private GheService gheService;
+
+    @Autowired
+    private TrangThaiGheService trangThaiGheService;
 
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Chọn chỗ",
@@ -54,5 +58,9 @@ public class GheController {
             return new ResponseEntity<>(ErrorResponse.builder().tenLoi("Lỗi lấy danh sách ghế").moTaLoi("Ghế không có trong cơ sở dữ liệu").build(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(ghes, HttpStatus.OK);
+    }
+
+    public void xoaTrangThaiGhe() {
+        trangThaiGheService.xoaTrangThaiGheDaHetHan();
     }
 }

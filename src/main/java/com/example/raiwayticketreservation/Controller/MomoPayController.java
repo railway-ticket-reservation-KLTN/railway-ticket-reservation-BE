@@ -5,10 +5,7 @@ import com.example.raiwayticketreservation.Entity.CTHD;
 import com.example.raiwayticketreservation.Entity.HoaDon;
 import com.example.raiwayticketreservation.Entity.KhachDatVe;
 import com.example.raiwayticketreservation.Entity.VeTau;
-import com.example.raiwayticketreservation.Service.CTHDService;
-import com.example.raiwayticketreservation.Service.EmailService;
-import com.example.raiwayticketreservation.Service.HoaDonService;
-import com.example.raiwayticketreservation.Service.VeTauService;
+import com.example.raiwayticketreservation.Service.*;
 import com.example.raiwayticketreservation.constants.MoMoConstant;
 import com.example.raiwayticketreservation.constants.SystemConstant;
 import com.example.raiwayticketreservation.dtos.responses.ThanhToanResponse;
@@ -52,6 +49,9 @@ public class MomoPayController {
 
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private TrangThaiGheService trangThaiGheService;
 
 	// tạo thanh toán, response trả về pay url
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -133,6 +133,7 @@ public class MomoPayController {
 			Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(orderId);
 			veTaus.forEach(veTau -> {
 				veTauService.capNhatTrangThaiTinhTrangVeTau(veTau.getId(), SystemConstant.DA_MUA);
+				trangThaiGheService.capNhatThoiHanGiuGheTheoMaVe(veTau.getMaVe());
 			});
 			Set<VeTau> veTauDaCapNhat = veTauService.getVeTauByMaDatCho(orderId);
 
@@ -173,6 +174,8 @@ public class MomoPayController {
                 cthds.add(cthd);
             });
             cthdService.themCTHD(cthds);
+
+
 
 			emailService.sendMessage(emailKhachDat, "Railway VN - Thanh toán vé thành công", "Kính gửi quý Khách hàng,\n" +
 					"\n" +

@@ -13,4 +13,8 @@ public interface TrangThaiGheService {
     public Long getIdTrangThaiGhe(String gaDi, String gaDen, String ngayDi, Long maGhe, int soToa, String trangThai);
 
     public void xoaTrangThaiGheByID(Long id);
+
+    public void capNhatThoiHanGiuGheTheoMaVe(String maVe);
+
+    public void xoaTrangThaiGheDaHetHan();
 }

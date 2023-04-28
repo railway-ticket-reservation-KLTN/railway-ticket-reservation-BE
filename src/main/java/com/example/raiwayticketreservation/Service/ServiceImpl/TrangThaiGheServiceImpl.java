@@ -5,13 +5,17 @@ import com.example.raiwayticketreservation.Repository.TrangThaiGheRepo;
 import com.example.raiwayticketreservation.Service.TrangThaiGheService;
 import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
 import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class TrangThaiGheServiceImpl implements TrangThaiGheService {
     @Autowired
     private TrangThaiGheRepo trangThaiGheRepo;
@@ -35,5 +39,18 @@ public class TrangThaiGheServiceImpl implements TrangThaiGheService {
     @Override
     public void xoaTrangThaiGheByID(Long id) {
         trangThaiGheRepo.deleteById(id);
+    }
+
+    @Override
+    public void capNhatThoiHanGiuGheTheoMaVe(String maVe) {
+        trangThaiGheRepo.updateThoiHanGiuGheByMaVe(maVe);
+    }
+
+    @Override
+    @Scheduled(cron = "0 */1 * * * *")
+    public void xoaTrangThaiGheDaHetHan() {
+        LocalDateTime dt = LocalDateTime.now();
+        log.info("Thời gian xóa trạng thái ghế: " + dt);
+        trangThaiGheRepo.xoaTrangThaiGheDaHetHan();
     }
 }

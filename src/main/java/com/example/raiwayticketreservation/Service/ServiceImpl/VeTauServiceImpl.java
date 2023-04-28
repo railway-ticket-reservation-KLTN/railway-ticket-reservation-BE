@@ -5,18 +5,22 @@ import com.example.raiwayticketreservation.Repository.VeTauRepo;
 import com.example.raiwayticketreservation.Service.VeTauService;
 import com.example.raiwayticketreservation.constants.SystemConstant;
 import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class VeTauServiceImpl implements VeTauService {
     @Autowired
     private VeTauRepo veTauRepo;
@@ -68,5 +72,13 @@ public class VeTauServiceImpl implements VeTauService {
         Calendar calendar =Calendar.getInstance();
         calendar.add(Calendar.MINUTE, soPhutHetHan);
         return new Timestamp(calendar.getTime().getTime());
+    }
+
+    @Override
+    @Scheduled(cron = "0 */1 * * * *")
+    public void capNhatVeTauHetHanThanhToan() {
+        LocalDateTime dt = LocalDateTime.now();
+        log.info("Thời gian cập nhật: " + dt);
+        veTauRepo.capNhatVeHetHan();
     }
 }

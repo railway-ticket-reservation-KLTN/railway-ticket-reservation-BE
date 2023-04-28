@@ -25,4 +25,18 @@ public interface TrangThaiGheRepo extends JpaRepository <TrangThaiGhe, Long> {
             "SET ma_ve_tau = ?, trang_thai = ?  \n" +
             "WHERE (id = ?);", nativeQuery = true)
     public void updateTrangThaiGheByID(String maVeTau, String trangThai, Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE `railwayticketreservationdb`.`trangthaighe` \n" +
+            "SET thoi_han_giu_ghe = null \n" +
+            "WHERE (ma_ve_tau = ?);", nativeQuery = true)
+    public void updateThoiHanGiuGheByMaVe(String maVeTau);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM railwayticketreservationdb.trangthaighe\n" +
+            "WHERE  trang_thai = 'DAT_CHO' AND  TIMESTAMPDIFF(HOUR, thoi_han_giu_ghe, NOW()) >= 0 " +
+            "OR trang_thai = 'DA_MUA' AND TIMESTAMPDIFF(HOUR, thoi_han_giu_ghe, NOW()) >= 0", nativeQuery = true)
+    public void xoaTrangThaiGheDaHetHan();
 }

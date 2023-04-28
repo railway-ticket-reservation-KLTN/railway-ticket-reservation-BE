@@ -25,10 +25,16 @@ public interface VeTauRepo extends JpaRepository<VeTau, Long> {
     @Transactional
     @Query(value = "UPDATE railwayticketreservationdb.vetau \n" +
             "SET tinh_trang = ? \n" +
-            "WHERE (id = ?);", nativeQuery = true)
+            "WHERE (id = ?)", nativeQuery = true)
     public void capNhatTinhTrangVeTauTheoID (String tinhTrang, Long id);
 
     @Query(value = "SELECT * FROM railwayticketreservationdb.vetau\n" +
             "    WHERE ma_dat_cho = ?", nativeQuery = true)
     public Set<VeTau> getIdVeByMaDatCho(String maDatCho);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE railwayticketreservationdb.vetau SET tinh_trang = 'HET_HAN_THANH_TOAN'\n" +
+            "WHERE  TIMESTAMPDIFF(MINUTE, thoi_gian_giu_ve, NOW()) >=0 " +
+            "AND tinh_trang = 'CHUA_THANH_TOAN'", nativeQuery = true)
+    public void capNhatVeHetHan();
 }

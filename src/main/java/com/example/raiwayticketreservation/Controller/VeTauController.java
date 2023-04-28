@@ -99,7 +99,7 @@ public class VeTauController {
             khachDatVe = khachDatVeService.getKhachDatVeTheoID(khachDatVeID.getId());
         }
         Set<VeTau> veKhachDat = veTauService.getVeTauTheoMaKhachDat(khachDatVe.getId());
-        if(veKhachDat.size() + muaVeRequest.getVeTaus().size() < 5){
+        if(veKhachDat.size() + muaVeRequest.getVeTaus().size() <= 5){
             String maDatCho = "";
             String tinhTrang = "";
 
@@ -236,5 +236,9 @@ public class VeTauController {
         return new ResponseEntity<>(ErrorResponse.builder()
                 .tenLoi("Lỗi hóa đơn")
                 .moTaLoi("Không tìm thấy thông tin hóa đơn của khách hàng, hãy kiểm tra lại mã hóa đơn vừa nhập").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    public void xuLiGiaHanVeTau() {
+        veTauService.capNhatVeTauHetHanThanhToan();
     }
 }
