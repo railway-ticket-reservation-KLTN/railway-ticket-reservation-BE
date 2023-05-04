@@ -1,12 +1,10 @@
 #Connect DB
 spring:
-  config:
-    import: env.properties
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/railwayticketreservationdb
-    username: DB_USERNAME
-    password: DB_PASS
+    username: root
+    password: 123456789
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: true
@@ -17,8 +15,9 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: EMAIL
-    password: MAILSENDER_PASS
+    username: hophuocduy261020@gmail.com
+#    password: phamynnfusgajjwb
+    password: phamynnfusgajjwb
     properties:
       mail:
         debug: true

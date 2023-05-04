@@ -5,8 +5,8 @@ public class MomoConfig {
 	public static String ACCESS_KEY = "Q2XhhSdgpKUlQ4Ky";
 	public static String SECRET_KEY = "k6B53GQKSjktZGJBK2MyrDa7w9S6RyCf";
 	public static String PARTNER_NAME = "Railway VN";
-	public static String REQUEST_TYPE = "captureWallet";
 	public static String LANG = "vi";
+	public static String REQUEST_TYPE = "captureWallet";
 
 	public static String PAY_QUERY_STATUS_URL = "https://test-payment.momo.vn/pay/query-status";
 	public static String PAY_CONFIRM_URL = "https://test-payment.momo.vn/pay/confirm";
