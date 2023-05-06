@@ -64,7 +64,7 @@ public class HanhTrinhTauController {
                     hanhTrinh.getTau().setToas(toaTheoTaus);
                 });
                 TimChuyenTauResponse timChuyenTauResponse = TimChuyenTauResponse.builder()
-                        .hanhTrinhDi(hanhTrinhVeSet)
+                        .hanhTrinhDi(hanhTrinhDiSet)
                         .hanhTrinhVe(hanhTrinhVeSet)
                         .build();
                 return new ResponseEntity(timChuyenTauResponse, HttpStatus.OK);
