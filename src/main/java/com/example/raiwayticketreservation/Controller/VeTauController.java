@@ -242,7 +242,7 @@ public class VeTauController {
     @Operation(summary = "Lấy danh sách vé theo mã đặt chỗ",
             description = "Lấy danh sách vé theo mã đặt chỗ để load lên bảng vé tàu",
             tags = "API Quản lí vé - NHAN_VIEN")
-    @PostMapping("/vestheomadatcho")
+    @PostMapping("/nhanvien/vestheomadatcho")
     public ResponseEntity getVesTheoMaDatCho(@RequestBody String maDatCho) {
         Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(Long.valueOf(maDatCho));
         if(veTaus != null) {
@@ -256,7 +256,7 @@ public class VeTauController {
     @Operation(summary = "Xác nhận đặt vé",
             description = "Lưu dữ liệu khi khách hàng xác nhận thanh toán vé trả sau",
             tags = "API Đặt vé trả sau - NHAN_VIEN")
-    @PostMapping("/datvetrasau")
+    @PostMapping("/nhanvien/datvetrasau")
     public ResponseEntity xacNhanDatVe(@RequestBody List<VeTau> veTaus) {
         try {
             String maDatVe = "";
@@ -303,7 +303,7 @@ public class VeTauController {
     @Operation(summary = "Xác nhận trả vé tại nhà Ga",
             description = "Cập nhật thông tin vé trả",
             tags = "API Trả vé tại nhà Ga - NHAN_VIEN")
-    @PostMapping("/vestheomadatcho")
+    @PostMapping("/nhanvien/vestheomadatcho")
     public ResponseEntity xacNhanTraVe(@RequestBody List<VeTau> veTaus){
         if(veTaus != null) {
             veTaus.forEach(veTau -> {
