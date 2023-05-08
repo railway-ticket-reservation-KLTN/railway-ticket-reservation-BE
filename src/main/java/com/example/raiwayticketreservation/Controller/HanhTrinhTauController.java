@@ -82,4 +82,59 @@ public class HanhTrinhTauController {
                 .build();
         return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Thêm hành trình tàu",
+            description = "Thêm hành trình tàu trên trang quản trị",
+            tags = "API Quản lí hành trình - ADMIN")
+    @PostMapping("/admin/themhanhtrinh")
+    public ResponseEntity themHanhTrinhs(List<HanhTrinh> hanhTrinhs) {
+        if (hanhTrinhs.size() != 0) {
+             List<HanhTrinh> hanhTrinhList = hanhTrinhService.themHanhTrinhs(hanhTrinhs);
+            return new ResponseEntity<>(hanhTrinhList, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi thêm hành trình")
+                .moTaLoi("Không có hành trình để thêm").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Xóa hành trình tàu",
+            description = "Xóa hành trình tàu trên trang quản trị",
+            tags = "API Quản lí hành trình - ADMIN")
+    @PostMapping("/admin/xoahanhtrinh")
+    public ResponseEntity xoaHanhTrinhs(List<HanhTrinh> hanhTrinhs) {
+        if (hanhTrinhs.size() != 0) {
+            if(hanhTrinhService.xoaHanhTrinh(hanhTrinhs)) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(ErrorResponse.builder()
+                        .tenLoi("Lỗi xóa hành trình")
+                        .moTaLoi("Xóa hành trình gặp lỗi").build(), HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi thêm hành trình")
+                .moTaLoi("Không có hành trình để thêm").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Cập nhật hành trình tàu",
+            description = "Cập nhật hành trình tàu trên trang quản trị",
+            tags = "API Quản lí hành trình - ADMIN")
+    @PostMapping("/admin/xoahanhtrinh")
+    public ResponseEntity capNhatHanhTrinh(HanhTrinh hanhTrinh) {
+        if (hanhTrinh != null) {
+            if (hanhTrinhService.capNhatHanhTrinh(hanhTrinh)) {
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(ErrorResponse.builder()
+                    .tenLoi("Lỗi cập nhật hành trình")
+                    .moTaLoi("Xử lí cập nhật hành trình xảy ra lỗi").build(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi câp nhật hành trình")
+                .moTaLoi("Không có hành trình để cập nhật").build(), HttpStatus.BAD_REQUEST);
+    }
+
 }

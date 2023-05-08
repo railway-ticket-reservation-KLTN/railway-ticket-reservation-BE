@@ -14,4 +14,10 @@ public interface HanhTrinhService{
     public Long getIDHanhTrinh(HanhTrinh hanhTrinh);
 
     public HanhTrinh getHanhTrinhTheoMaHanhTrinh(Long hanhTrinhID);
+
+    public List<HanhTrinh> themHanhTrinhs(List<HanhTrinh> hanhTrinhs);
+
+    public boolean xoaHanhTrinh(List<HanhTrinh> hanhTrinhs);
+
+    public boolean capNhatHanhTrinh(HanhTrinh hanhTrinh);
 }
