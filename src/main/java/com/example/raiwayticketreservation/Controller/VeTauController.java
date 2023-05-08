@@ -303,7 +303,7 @@ public class VeTauController {
     @Operation(summary = "Xác nhận trả vé tại nhà Ga",
             description = "Cập nhật thông tin vé trả",
             tags = "API Trả vé tại nhà Ga - NHAN_VIEN")
-    @PostMapping("/nhanvien/vestheomadatcho")
+    @PostMapping("/nhanvien/trave")
     public ResponseEntity xacNhanTraVe(@RequestBody List<VeTau> veTaus){
         if(veTaus != null) {
             veTaus.forEach(veTau -> {
