@@ -243,7 +243,7 @@ public class VeTauController {
             description = "Lấy danh sách vé theo mã đặt chỗ để load lên bảng vé tàu",
             tags = "API Quản lí vé - NHAN_VIEN")
     @PostMapping("/nhanvien/vestheomadatcho")
-    public ResponseEntity getVesTheoMaDatCho(@RequestBody String maDatCho) {
+    public ResponseEntity getVesTheoMaDatCho(@RequestParam String maDatCho) {
         Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(Long.valueOf(maDatCho));
         if(veTaus != null) {
             return new ResponseEntity<>(veTaus, HttpStatus.OK);
@@ -286,7 +286,7 @@ public class VeTauController {
                         .donGia(veTau.getDonGia())
                         .build();
                 cthds.add(cthd);
-                veTauService.capNhatTinhTrangVeTau(veTau.getMaVe(), SystemConstant.DA_THANH_TOAN);
+                veTauService.capNhatTinhTrangVeTau(veTau.getMaVe(), SystemConstant.DA_MUA);
             });
 
             cthdService.themCTHD(cthds);
