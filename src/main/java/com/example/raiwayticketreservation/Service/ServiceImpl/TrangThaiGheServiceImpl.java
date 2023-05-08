@@ -42,6 +42,11 @@ public class TrangThaiGheServiceImpl implements TrangThaiGheService {
     }
 
     @Override
+    public void xoaTrangThaiGheTheoMaVe(String maVe) {
+        trangThaiGheRepo.xoaTrangThaiGheByMaVe(maVe);
+    }
+
+    @Override
     public void capNhatThoiHanGiuGheTheoMaVe(String maVe) {
         trangThaiGheRepo.updateThoiHanGiuGheByMaVe(maVe);
     }

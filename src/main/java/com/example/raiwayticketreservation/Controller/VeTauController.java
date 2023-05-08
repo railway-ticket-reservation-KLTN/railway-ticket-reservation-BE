@@ -300,13 +300,16 @@ public class VeTauController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @Operation(summary = "Lấy danh sách vé theo mã đặt chỗ",
-            description = "Lấy danh sách vé theo mã đặt chỗ để thanh toán trả sau",
-            tags = "API Đặt vé trả sau - NHAN_VIEN")
+    @Operation(summary = "Xác nhận trả vé tại nhà Ga",
+            description = "Cập nhật thông tin vé trả",
+            tags = "API Trả vé tại nhà Ga - NHAN_VIEN")
     @PostMapping("/vestheomadatcho")
-    public ResponseEntity xacNhanTraVe(@RequestBody List<VeTau> veTaus) {
-
+    public ResponseEntity xacNhanTraVe(@RequestBody List<VeTau> veTaus){
         if(veTaus != null) {
+            veTaus.forEach(veTau -> {
+                veTauService.capNhatTinhTrangVeTau(veTau.getMaVe(), SystemConstant.TRA_VE);
+                trangThaiGheService.xoaTrangThaiGheTheoMaVe(veTau.getMaVe());
+            });
             return new ResponseEntity<>(veTaus, HttpStatus.OK);
         } return new ResponseEntity<>(ErrorResponse.builder()
                 .tenLoi("Lỗi hóa đơn")
