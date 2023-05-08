@@ -312,8 +312,8 @@ public class VeTauController {
             });
             return new ResponseEntity<>(veTaus, HttpStatus.OK);
         } return new ResponseEntity<>(ErrorResponse.builder()
-                .tenLoi("Lỗi hóa đơn")
-                .moTaLoi("Không tìm thấy hóa đơn vui lòng kiểm tra lại thông tin mã đặt chỗ").build(), HttpStatus.BAD_REQUEST);
+                .tenLoi("Lỗi vé tàu")
+                .moTaLoi("Không có vé tàu cần trả").build(), HttpStatus.BAD_REQUEST);
     }
 
 //    public void xuLiGiaHanVeTau() {
