@@ -12,11 +12,13 @@ public interface VeTauService {
     public List<VeTau> themVe(Set<VeTau> veTau);
     public Long getIDVeTau(VeTau veTau);
 
-    public VeTau getVeTheoMaVe(KiemTraVeRequest kiemTraVeRequest);
+    public VeTau getVeTheoMaVe(String  maVe);
 
     public VeTau getVeTauTheoID(Long Id);
 
     public void capNhatTrangThaiTinhTrangVeTau(Long maVeTau, String trangThai);
+
+    public void capNhatTinhTrangVeTau(String maVe, String tinhTrang);
 
     public Set<VeTau> getVeTauTheoMaKhachDat(Long maKhachDat);
 

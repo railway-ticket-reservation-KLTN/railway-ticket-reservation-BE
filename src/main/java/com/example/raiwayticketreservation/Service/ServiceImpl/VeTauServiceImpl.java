@@ -40,8 +40,8 @@ public class VeTauServiceImpl implements VeTauService {
     }
 
     @Override
-    public VeTau getVeTheoMaVe(KiemTraVeRequest kiemTraVeRequest) {
-        return veTauRepo.getVeTheoMaVe(kiemTraVeRequest.getMaVe());
+    public VeTau getVeTheoMaVe(String maVe) {
+        return veTauRepo.getVeTheoMaVe(maVe);
     }
 
     @Override
@@ -59,13 +59,18 @@ public class VeTauServiceImpl implements VeTauService {
     }
 
     @Override
+    public void capNhatTinhTrangVeTau(String maVe, String tinhTrang) {
+        veTauRepo.capNhatTinhTrangVeTauTheoMaVe(tinhTrang, maVe);
+    }
+
+    @Override
     public Set<VeTau> getVeTauTheoMaKhachDat(Long maKhachDat) {
         return veTauRepo.getVeTauTheoMaKhachDat(maKhachDat);
     }
 
     @Override
     public Set<VeTau> getVeTauByMaDatCho(Long maDatCho) {
-        return veTauRepo.getIdVeByMaDatCho(maDatCho.toString());
+        return veTauRepo.getVeByMaDatCho(maDatCho.toString());
     }
 
     private Timestamp tinhThoiHanGiuVe(int soPhutHetHan) {

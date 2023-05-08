@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -184,7 +185,7 @@ public class VeTauController {
             tags = "API Kiểm tra vé")
     @PostMapping("/kiemtrave")
     public ResponseEntity kiemTraVe(@RequestBody KiemTraVeRequest kiemTraVeRequest) throws JsonProcessingException {
-        VeTau veTau = veTauService.getVeTheoMaVe(kiemTraVeRequest);
+        VeTau veTau = veTauService.getVeTheoMaVe(kiemTraVeRequest.getMaVe());
         if(veTau == null) {
             return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi kiểm tra vé").moTaLoi("Không tìm thấy vé").build(), HttpStatus.BAD_REQUEST);
         } else {
@@ -236,6 +237,80 @@ public class VeTauController {
         return new ResponseEntity<>(ErrorResponse.builder()
                 .tenLoi("Lỗi hóa đơn")
                 .moTaLoi("Không tìm thấy thông tin hóa đơn của khách hàng, hãy kiểm tra lại mã hóa đơn vừa nhập").build(), HttpStatus.BAD_REQUEST);
+    }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Lấy danh sách vé theo mã đặt chỗ",
+            description = "Lấy danh sách vé theo mã đặt chỗ để load lên bảng vé tàu",
+            tags = "API Quản lí vé - NHAN_VIEN")
+    @PostMapping("/vestheomadatcho")
+    public ResponseEntity getVesTheoMaDatCho(@RequestBody String maDatCho) {
+        Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(Long.valueOf(maDatCho));
+        if(veTaus != null) {
+            return new ResponseEntity<>(veTaus, HttpStatus.OK);
+        } return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi hóa đơn")
+                .moTaLoi("Không tìm thấy hóa đơn vui lòng kiểm tra lại thông tin mã đặt chỗ").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Xác nhận đặt vé",
+            description = "Lưu dữ liệu khi khách hàng xác nhận thanh toán vé trả sau",
+            tags = "API Đặt vé trả sau - NHAN_VIEN")
+    @PostMapping("/datvetrasau")
+    public ResponseEntity xacNhanDatVe(@RequestBody List<VeTau> veTaus) {
+        try {
+            String maDatVe = "";
+            Random random = new Random();
+            int numRand = random.nextInt(999999999);
+            maDatVe = 1 + String.format("%09d", numRand);
+
+            LocalDate localDate = LocalDate.now();
+            Date ngayLap = Date.valueOf(localDate);
+
+            HoaDon hoaDon = HoaDon.builder()
+                    .hinhThucThanhToan(SystemConstant.TRA_SAU)
+                    .maDatVe(maDatVe)
+                    .ngayLap(ngayLap)
+                    .tinhTrang(SystemConstant.DA_THANH_TOAN)
+                    .trangThai(1)
+                    .khachDatVe(veTaus.get(0).getKhachDatVe())
+                    .build();
+
+            HoaDon hoaDonReturn = hoaDonService.themHoaDon(hoaDon);
+            Set<CTHD> cthds = new HashSet<>();
+
+            veTaus.forEach(veTau -> {
+                CTHD cthd = CTHD.builder()
+                        .veTau(veTau)
+                        .hoaDon(hoaDonReturn)
+                        .donGia(veTau.getDonGia())
+                        .build();
+                cthds.add(cthd);
+                veTauService.capNhatTinhTrangVeTau(veTau.getMaVe(), SystemConstant.DA_THANH_TOAN);
+            });
+
+            cthdService.themCTHD(cthds);
+            return new ResponseEntity<>(cthds, HttpStatus.OK);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(ErrorResponse.builder()
+                    .tenLoi("Lỗi thanh toán trả sau")
+                    .moTaLoi("Xử lí thanh toán đặt vé gặp lỗi").build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Lấy danh sách vé theo mã đặt chỗ",
+            description = "Lấy danh sách vé theo mã đặt chỗ để thanh toán trả sau",
+            tags = "API Đặt vé trả sau - NHAN_VIEN")
+    @PostMapping("/vestheomadatcho")
+    public ResponseEntity xacNhanTraVe(@RequestBody List<VeTau> veTaus) {
+
+        if(veTaus != null) {
+            return new ResponseEntity<>(veTaus, HttpStatus.OK);
+        } return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi hóa đơn")
+                .moTaLoi("Không tìm thấy hóa đơn vui lòng kiểm tra lại thông tin mã đặt chỗ").build(), HttpStatus.BAD_REQUEST);
     }
 
 //    public void xuLiGiaHanVeTau() {

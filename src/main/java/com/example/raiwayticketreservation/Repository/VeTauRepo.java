@@ -17,6 +17,7 @@ public interface VeTauRepo extends JpaRepository<VeTau, Long> {
     public Long getIDVeTau(String tenHanhKhach, String soGiayTo, Long maKhachDat, Long maHanhTrinh);
     @Query(value = "SELECT * FROM railwayticketreservationdb.vetau WHERE ma_ve = ?", nativeQuery = true)
     public VeTau getVeTheoMaVe(String maVe);
+
     @Query(value = "SELECT * FROM railwayticketreservationdb.vetau WHERE id = ?", nativeQuery = true)
     public VeTau getVeTheoId(Long id);
     @Query(value = "SELECT * FROM railwayticketreservationdb.vetau WHERE ma_khach_dat = ?", nativeQuery = true)
@@ -28,9 +29,16 @@ public interface VeTauRepo extends JpaRepository<VeTau, Long> {
             "WHERE (id = ?)", nativeQuery = true)
     public void capNhatTinhTrangVeTauTheoID (String tinhTrang, Long id);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE railwayticketreservationdb.vetau \n" +
+            "SET tinh_trang = ? \n" +
+            "WHERE (ma_ve = ?)", nativeQuery = true)
+    public void capNhatTinhTrangVeTauTheoMaVe (String tinhTrang, String maVe);
+
     @Query(value = "SELECT * FROM railwayticketreservationdb.vetau\n" +
             "    WHERE ma_dat_cho = ?", nativeQuery = true)
-    public Set<VeTau> getIdVeByMaDatCho(String maDatCho);
+    public Set<VeTau> getVeByMaDatCho(String maDatCho);
     @Modifying
     @Transactional
     @Query(value = "UPDATE railwayticketreservationdb.vetau SET tinh_trang = 'HET_HAN_THANH_TOAN'\n" +
