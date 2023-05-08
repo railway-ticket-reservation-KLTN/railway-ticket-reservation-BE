@@ -122,7 +122,7 @@ public class HanhTrinhTauController {
     @Operation(summary = "Cập nhật hành trình tàu",
             description = "Cập nhật hành trình tàu trên trang quản trị",
             tags = "API Quản lí hành trình - ADMIN")
-    @PostMapping("/admin/xoahanhtrinh")
+    @PostMapping("/admin/capnhathanhtrinh")
     public ResponseEntity capNhatHanhTrinh(HanhTrinh hanhTrinh) {
         if (hanhTrinh != null) {
             if (hanhTrinhService.capNhatHanhTrinh(hanhTrinh)) {
