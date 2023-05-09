@@ -1,6 +1,5 @@
 package com.example.raiwayticketreservation.Service;
 
-import com.example.raiwayticketreservation.Entity.NhanVien;
 import com.example.raiwayticketreservation.Entity.TaiKhoan;
 
 public interface TaiKhoanService {
@@ -9,4 +8,6 @@ public interface TaiKhoanService {
     public boolean xoaTaiKhoan(TaiKhoan taiKhoan);
 
     public boolean capNhatTaiKhoan(TaiKhoan taiKhoan);
+
+    public boolean kiemTraTaiKhoanNhanVienTonTai(TaiKhoan taiKhoan);
 }

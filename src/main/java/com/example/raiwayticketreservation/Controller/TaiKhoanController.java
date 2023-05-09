@@ -6,14 +6,10 @@ import com.example.raiwayticketreservation.Service.NhanVienService;
 import com.example.raiwayticketreservation.Service.TaiKhoanService;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1")
@@ -30,9 +26,21 @@ public class TaiKhoanController {
             tags = "API Quản lí tài khoản - ADMIN")
     @PostMapping("/admin/themtk")
     public ResponseEntity themTaiKhoan(@RequestBody TaiKhoan taiKhoan) {
-        NhanVien nhanVien = nhanVienService.themNhanVien(taiKhoan.getNhanVien());
-        TaiKhoan taiKhoanReturn = taiKhoanService.themTaiKhoan(taiKhoan);
-
+        NhanVien nhanVien = taiKhoan.getNhanVien();
+        TaiKhoan taiKhoanReturn = null;
+        if(!nhanVienService.kiemTraNhanVienTonTai(taiKhoan.getNhanVien())) {
+            nhanVien = nhanVienService.themNhanVien(taiKhoan.getNhanVien());
+        } else {
+            nhanVien.setId(nhanVienService.getIdNhanVien(nhanVien));
+        }
+        if(!taiKhoanService.kiemTraTaiKhoanNhanVienTonTai(taiKhoan))
+        {
+            taiKhoanReturn = taiKhoanService.themTaiKhoan(taiKhoan);
+        } else {
+            return new ResponseEntity<>(ErrorResponse.builder()
+                    .tenLoi("Lỗi thêm tài khoản")
+                    .moTaLoi("Nhân viên đã có tài khoản").build(), HttpStatus.BAD_REQUEST);
+        }
         taiKhoanReturn.setNhanVien(nhanVien);
 
         if(taiKhoanReturn != null) {

@@ -40,5 +40,13 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
         }
     }
 
+    @Override
+    public boolean kiemTraTaiKhoanNhanVienTonTai(TaiKhoan taiKhoan) {
+        if(taiKhoanRepo.kiemTraTaiKhoanTheoMaNhanVien(taiKhoan.getNhanVien().getId()) > 0) {
+            return true;
+        }
+        return false;
+    }
+
 
 }

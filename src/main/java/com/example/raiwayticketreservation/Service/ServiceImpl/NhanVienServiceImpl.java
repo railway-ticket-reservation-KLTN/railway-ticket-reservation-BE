@@ -16,4 +16,19 @@ public class NhanVienServiceImpl implements NhanVienService {
         return nhanVienRepo.save(nhanVien);
     }
 
+    @Override
+    public boolean kiemTraNhanVienTonTai(NhanVien nhanVien) {
+        if(nhanVienRepo.kiemTraNhanVienTonTai(nhanVien.getTenNhanVien(), nhanVien.getDiaChi()
+                , nhanVien.getSdt(), nhanVien.getViTri()) > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Long getIdNhanVien(NhanVien nhanVien) {
+        return nhanVienRepo.getIdNhanVien(nhanVien.getTenNhanVien(), nhanVien.getDiaChi()
+                , nhanVien.getSdt(), nhanVien.getViTri());
+    }
+
 }
