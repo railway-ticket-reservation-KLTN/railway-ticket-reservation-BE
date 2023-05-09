@@ -19,5 +19,7 @@ public interface HanhTrinhService{
 
     public boolean xoaHanhTrinh(List<HanhTrinh> hanhTrinhs);
 
+    public boolean kiemTraHanhTrinhTonTai(List<HanhTrinh> hanhTrinhs);
+
     public boolean capNhatHanhTrinh(HanhTrinh hanhTrinh);
 }

@@ -6,6 +6,7 @@ import com.example.raiwayticketreservation.Repository.HanhTrinhRepo;
 import com.example.raiwayticketreservation.Service.HanhTrinhService;
 import com.example.raiwayticketreservation.dtos.requests.KiemTraVeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -59,6 +60,17 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public boolean kiemTraHanhTrinhTonTai(List<HanhTrinh> hanhTrinhs) {
+        for (HanhTrinh hanhTrinh : hanhTrinhs) {
+            if(hanhTrinhRepo.kiemTraHanhTrinhTonTai(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), hanhTrinh.getNgayDi().toString(),
+                    hanhTrinh.getNgayDen().toString(), String.valueOf(hanhTrinh.getGioDi()),  String.valueOf(hanhTrinh.getGioDen()), hanhTrinh.getTau().getId()) > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
