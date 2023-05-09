@@ -31,8 +31,8 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Override
     public boolean capNhatTaiKhoan(TaiKhoan taiKhoan) {
         try {
-            taiKhoanRepo.capNhatTaiKhoan(taiKhoan.getLoaiTK(), taiKhoan.getTenTaiKhoan(),
-                    taiKhoan.getMatKhau(), taiKhoan.getNhanVien().getId(), taiKhoan.getId());
+            taiKhoanRepo.capNhatTaiKhoan(taiKhoan.getLoaiTK(), taiKhoan.getTenTaiKhoan(), taiKhoan.getMatKhau(),
+                    taiKhoan.getNhanVien().getId(), taiKhoan.getTrangThai(), taiKhoan.getId());
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

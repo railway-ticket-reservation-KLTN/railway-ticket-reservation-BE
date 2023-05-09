@@ -19,9 +19,9 @@ public interface TaiKhoanRepo extends JpaRepository<TaiKhoan, Long> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE railwayticketreservationdb.taikhoan \n" +
-            "SET loaitk = ?, ten_tai_khoan = ?, mat_khau = ?, ma_nhan_vien = ?, trang_thai = 0 \n" +
+            "SET loaitk = ?, ten_tai_khoan = ?, mat_khau = ?, ma_nhan_vien = ?, trang_thai = ? \n" +
             "WHERE (id = ?)", nativeQuery = true)
-    public void capNhatTaiKhoan(String loaiTK, String tenTK, String matKhau, Long maNV, Long id);
+    public void capNhatTaiKhoan(String loaiTK, String tenTK, String matKhau, Long maNV, int trangThai, Long id);
 
     @Query(value = "SELECT count(id) FROM railwayticketreservationdb.taikhoan " +
             "WHERE ma_nhan_vien = ?", nativeQuery = true)
