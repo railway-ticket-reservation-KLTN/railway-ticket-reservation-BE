@@ -1,6 +1,9 @@
 package com.example.raiwayticketreservation.jwt;
 
+import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,14 +21,17 @@ public class JWTController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/dangnhap")
-    public String getTokenForAuthenticatedUser(@RequestBody JWTAuthenticationRequest authRequest){
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
-        if (authentication.isAuthenticated()){
-            return jwtService.generateToken(authRequest.getUserName());
+    public ResponseEntity getTokenForAuthenticatedUser(@RequestBody JWTAuthenticationRequest authRequest){
+        try {
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
+            if (authentication.isAuthenticated()){
+                return new ResponseEntity(JWTAuthenticationResponse.builder().token(jwtService.generateToken(authRequest.getUserName())).build(), HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        else {
-            throw new UsernameNotFoundException("Tài khoản không hợp lệ");
-        }
+        return new ResponseEntity(ErrorResponse.builder()
+                .tenLoi("Lỗi đăng nhập").moTaLoi("Tài khoản không hợp lệ").build(), HttpStatus.UNAUTHORIZED);
     }
 }
