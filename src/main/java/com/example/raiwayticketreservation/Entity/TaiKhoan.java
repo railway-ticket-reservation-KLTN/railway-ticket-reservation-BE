@@ -16,7 +16,7 @@ public class TaiKhoan {
     @Column(columnDefinition = "VARCHAR(50)")
     private String tenTaiKhoan;
 
-    @Column(columnDefinition = "VARCHAR(50)")
+    @Column(columnDefinition = "VARCHAR(150)")
     private String matKhau;
 
     @Column(columnDefinition = "VARCHAR(50)")

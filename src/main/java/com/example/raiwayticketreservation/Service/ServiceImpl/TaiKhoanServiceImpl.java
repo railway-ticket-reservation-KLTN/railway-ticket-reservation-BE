@@ -1,19 +1,24 @@
 package com.example.raiwayticketreservation.Service.ServiceImpl;
 
-import com.example.raiwayticketreservation.Entity.NhanVien;
 import com.example.raiwayticketreservation.Entity.TaiKhoan;
 import com.example.raiwayticketreservation.Repository.TaiKhoanRepo;
 import com.example.raiwayticketreservation.Service.TaiKhoanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Autowired
-    TaiKhoanRepo taiKhoanRepo;
+    private TaiKhoanRepo taiKhoanRepo;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     public TaiKhoan themTaiKhoan(TaiKhoan taiKhoan) {
+        taiKhoan.setMatKhau(passwordEncoder.encode(taiKhoan.getMatKhau()));
         return taiKhoanRepo.save(taiKhoan);
     }
 
@@ -31,6 +36,7 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Override
     public boolean capNhatTaiKhoan(TaiKhoan taiKhoan) {
         try {
+            taiKhoan.setMatKhau(passwordEncoder.encode(taiKhoan.getMatKhau()));
             taiKhoanRepo.capNhatTaiKhoan(taiKhoan.getLoaiTK(), taiKhoan.getTenTaiKhoan(), taiKhoan.getMatKhau(),
                     taiKhoan.getNhanVien().getId(), taiKhoan.getTrangThai(), taiKhoan.getId());
             return true;

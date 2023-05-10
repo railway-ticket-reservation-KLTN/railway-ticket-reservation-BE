@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/admin")
 public class TaiKhoanController {
     @Autowired
     TaiKhoanService taiKhoanService;
@@ -24,7 +24,7 @@ public class TaiKhoanController {
     @Operation(summary = "Thêm tài khoản mới",
             description = "Thêm tài khoản mới vào hệ thống ở trang quản trị",
             tags = "API Quản lí tài khoản - ADMIN")
-    @PostMapping("/admin/themtk")
+    @PostMapping("/themtk")
     public ResponseEntity themTaiKhoan(@RequestBody TaiKhoan taiKhoan) {
         NhanVien nhanVien = taiKhoan.getNhanVien();
         TaiKhoan taiKhoanReturn = null;
@@ -55,7 +55,7 @@ public class TaiKhoanController {
     @Operation(summary = "Xóa tài khoản",
             description = "Cập nhật trạng thái tài khoản bằng 0 vào hệ thống ở trang quản trị",
             tags = "API Quản lí tài khoản - ADMIN")
-    @PostMapping("/admin/xoatk")
+    @PostMapping("/xoatk")
     public ResponseEntity xoaTaiKhoanTheoMa(@RequestBody TaiKhoan taiKhoan) {
         if(taiKhoanService.xoaTaiKhoan(taiKhoan)) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -69,7 +69,7 @@ public class TaiKhoanController {
     @Operation(summary = "Cập nhật tài khoản",
             description = "Cập nhật thông tin tài khoản vào hệ thống ở trang quản trị",
             tags = "API Quản lí tài khoản - ADMIN")
-    @PostMapping("/admin/capnhattk")
+    @PostMapping("/capnhattk")
     public ResponseEntity capNhatTaiKhoanTheoMa(@RequestBody TaiKhoan taiKhoan) {
         if(taiKhoanService.capNhatTaiKhoan(taiKhoan)) {
             return new ResponseEntity<>(HttpStatus.OK);
