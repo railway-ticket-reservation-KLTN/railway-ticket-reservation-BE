@@ -1,5 +1,8 @@
 package com.example.raiwayticketreservation.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,9 +35,12 @@ public class NhanVien {
     @OneToMany(mappedBy = "nhanVien", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonIgnore
     private Set<QuyDinh> quyDinhs;
 
-    @OneToOne(mappedBy = "nhanVien")
+    @JsonManagedReference(value = "nhanVien")
+    @OneToOne(mappedBy = "nhanVien", cascade = CascadeType.ALL)
+    @JsonIgnore
     private TaiKhoan taiKhoan;
 
     @ManyToOne

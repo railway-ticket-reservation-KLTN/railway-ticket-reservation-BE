@@ -1,12 +1,15 @@
 package com.example.raiwayticketreservation.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
-@Data
-@ToString
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "taikhoan")
 public class TaiKhoan {
     @Id
@@ -24,7 +27,10 @@ public class TaiKhoan {
 
     private int trangThai;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference("maNhanVien")
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "maNhanVien")
     private NhanVien nhanVien;
 }

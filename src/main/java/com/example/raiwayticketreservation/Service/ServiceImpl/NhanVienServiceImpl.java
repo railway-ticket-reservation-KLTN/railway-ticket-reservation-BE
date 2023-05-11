@@ -6,10 +6,17 @@ import com.example.raiwayticketreservation.Service.NhanVienService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NhanVienServiceImpl implements NhanVienService {
     @Autowired
     NhanVienRepo nhanVienRepo;
+
+    @Override
+    public List<NhanVien> getDanhSachNhanVien() {
+        return nhanVienRepo.findAll();
+    }
 
     @Override
     public NhanVien themNhanVien(NhanVien nhanVien) {
