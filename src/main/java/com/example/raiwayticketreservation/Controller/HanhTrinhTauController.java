@@ -159,4 +159,17 @@ public class HanhTrinhTauController {
                 .tenLoi("Lỗi cập nhật hành trình")
                 .moTaLoi("Không có hành trình để cập nhật").build(), HttpStatus.BAD_REQUEST);
     }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Lấy danh sách hành trình tàu",
+            description = "Lấy danh sách hành trình tàu trên trang quản trị",
+            tags = "API Quản lí hành trình - ADMIN")
+    @GetMapping("/admin/hanhtrinhs")
+    public ResponseEntity getDanhSachHanhTrinh() {
+        List<HanhTrinh> hanhTrinhs = hanhTrinhService.getDanhSachHanhTrinh();
+        if(hanhTrinhs.size() > 0) {
+            return new ResponseEntity<>(hanhTrinhs, HttpStatus.OK);
+        } else  return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi lấy danh sách hành trình")
+                .moTaLoi("Không có hành trình trong hệ thống").build(), HttpStatus.BAD_REQUEST);
+    }
 }

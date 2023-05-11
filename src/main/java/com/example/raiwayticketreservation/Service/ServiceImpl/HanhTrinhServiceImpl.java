@@ -20,6 +20,11 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
     private HanhTrinhRepo hanhTrinhRepo;
 
     @Override
+    public List<HanhTrinh> getDanhSachHanhTrinh() {
+        return hanhTrinhRepo.findAll();
+    }
+
+    @Override
     public List<HanhTrinh> getHanhTrinh(String gaDi, String gaDen, String ngayDi) {
         return hanhTrinhRepo.getHanhTrinhByGaDiGaDenNgayDiNgayDen(gaDi, gaDen, ngayDi);
     }

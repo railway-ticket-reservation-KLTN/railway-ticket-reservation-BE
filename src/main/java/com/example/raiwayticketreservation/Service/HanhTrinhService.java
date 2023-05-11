@@ -9,6 +9,7 @@ import java.util.Set;
 
 
 public interface HanhTrinhService{
+    public List<HanhTrinh> getDanhSachHanhTrinh();
     public List<HanhTrinh> getHanhTrinh(String gaDi, String gaDen, String ngayDi);
 
     public Long getIDHanhTrinh(HanhTrinh hanhTrinh);
