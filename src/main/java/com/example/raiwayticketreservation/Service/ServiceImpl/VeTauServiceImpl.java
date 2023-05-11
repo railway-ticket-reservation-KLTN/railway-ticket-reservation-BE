@@ -26,6 +26,11 @@ public class VeTauServiceImpl implements VeTauService {
     private VeTauRepo veTauRepo;
 
     @Override
+    public List<VeTau> getDanhSachVe() {
+        return veTauRepo.findAll();
+    }
+
+    @Override
     public List<VeTau> themVe(Set<VeTau> veTaus) {
         veTaus.forEach(veTau -> {
             veTau.setThoiGianGiuVe(tinhThoiHanGiuVe(3));

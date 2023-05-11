@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 public interface VeTauService {
+    public List<VeTau> getDanhSachVe();
     public List<VeTau> themVe(Set<VeTau> veTau);
     public Long getIDVeTau(VeTau veTau);
 

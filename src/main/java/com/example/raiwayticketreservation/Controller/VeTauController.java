@@ -317,6 +317,19 @@ public class VeTauController {
                 .moTaLoi("Không có vé tàu cần trả").build(), HttpStatus.BAD_REQUEST);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Get danh sách vé",
+            description = "Lấy tất cả vé có trong hệ thống",
+            tags = "API Quản lí vé - NHAN_VIEN")
+    @GetMapping("/nhanvien/dsve")
+    public ResponseEntity getDanhSachVe() {
+        List<VeTau> veTaus = veTauService.getDanhSachVe();
+        if(veTaus.size() > 0) {
+            return new ResponseEntity<>(veTaus, HttpStatus.OK);
+        } else return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi lấy danh sách vé tàu")
+                .moTaLoi("Không có vé tàu trong hệ thống").build(), HttpStatus.BAD_REQUEST);
+    }
 
 //    public void xuLiGiaHanVeTau() {
 //        veTauService.capNhatVeTauHetHanThanhToan();
