@@ -27,6 +27,4 @@ public class CTTauToa {
 
     @Column(columnDefinition = "VARCHAR(10)")
     private String soToa;
-
-    private Long maHanhTrinh;
 }
