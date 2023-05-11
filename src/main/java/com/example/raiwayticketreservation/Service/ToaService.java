@@ -6,5 +6,5 @@ import java.util.Set;
 
 public interface ToaService {
 
-    public Set<ToaResponse> getToasByHanhTrinhIDTauID(Long hanhTrinhID, Long tauID);
+    public Set<ToaResponse> getToasByTauID(Long tauID);
 }

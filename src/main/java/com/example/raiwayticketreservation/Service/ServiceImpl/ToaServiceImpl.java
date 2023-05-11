@@ -13,7 +13,7 @@ public class ToaServiceImpl implements ToaService {
     @Autowired
     private ToaRepo toaRepo;
     @Override
-    public Set<ToaResponse> getToasByHanhTrinhIDTauID(Long hanhTrinhID, Long tauID) {
-        return toaRepo.getToasByHanhTrinhIDTauID(hanhTrinhID, tauID);
+    public Set<ToaResponse> getToasByTauID(Long tauID) {
+        return toaRepo.getToasByTauID(tauID);
     }
 }

@@ -23,9 +23,9 @@ public class ToaController {
             description = "Khi Click chọn vào toa request tới API này để lấy ra danh sách toa theo tàu và theo hành trình",
             tags = "API Get danh sách toa")
     @PostMapping("/toas")
-    public ResponseEntity getToaTauBangHanhTrinhIDTauID(@RequestBody TimToaRequest timToaRequest) {
+    public ResponseEntity getToaTauBangTauID(@RequestBody TimToaRequest timToaRequest) {
         Set<ToaResponse> toaResponseSet;
-        toaResponseSet = toaService.getToasByHanhTrinhIDTauID(timToaRequest.getHanhTrinhID(), timToaRequest.getTauID());
+        toaResponseSet = toaService.getToasByTauID(timToaRequest.getTauID());
         if(toaResponseSet.size() == 0) {
             return new ResponseEntity(ErrorResponse.builder().tenLoi("Không tìm thấy toa").moTaLoi("Chưa có danh sách toa").build(), HttpStatus.BAD_REQUEST);
         } else return new ResponseEntity<>(toaResponseSet, HttpStatus.OK);

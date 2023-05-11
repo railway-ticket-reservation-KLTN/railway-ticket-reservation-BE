@@ -6,10 +6,10 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.util.Set;
-@NamedNativeQuery(name = "Toa.getToasByHanhTrinhIDTauID",
+@NamedNativeQuery(name = "Toa.getToasByTauID",
         query = "SELECT t.id as id, c.so_toa as soToa, tr.ten_tau as tenTau, t.mo_ta_toa as moTaToa, t.so_luong_ghe as soLuongGhe, t.ten_toa as tenToa\n" +
                 "FROM CTTauToa c, Toa t, Tau tr\n" +
-                "WHERE ma_toa = t.id AND ma_tau = tr.id AND c.ma_hanh_trinh = ? AND c.ma_tau = ?",
+                "WHERE ma_toa = t.id AND ma_tau = tr.id AND c.ma_tau = ?",
         resultSetMapping = "Mapping.ToaResponse")
 @SqlResultSetMapping(name = "Mapping.ToaResponse",
         classes = @ConstructorResult(targetClass = ToaResponse.class,

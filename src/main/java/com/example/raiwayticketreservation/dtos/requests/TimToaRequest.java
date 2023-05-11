@@ -4,6 +4,5 @@ import lombok.Data;
 
 @Data
 public class TimToaRequest {
-    private Long hanhTrinhID;
     private Long tauID;
 }

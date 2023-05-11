@@ -9,5 +9,5 @@ import java.util.Set;
 
 public interface ToaRepo extends JpaRepository<Toa, Long> {
     @Query(nativeQuery = true)
-    public Set<ToaResponse> getToasByHanhTrinhIDTauID (Long hanhTrinhID, Long tauID);
+    public Set<ToaResponse> getToasByTauID (Long tauID);
 }

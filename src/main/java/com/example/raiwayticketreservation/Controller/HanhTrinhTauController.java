@@ -2,7 +2,7 @@ package com.example.raiwayticketreservation.Controller;
 
 import com.example.raiwayticketreservation.Entity.HanhTrinh;
 import com.example.raiwayticketreservation.Service.HanhTrinhService;
-import com.example.raiwayticketreservation.Service.TauService;
+import com.example.raiwayticketreservation.Service.ToaService;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import com.example.raiwayticketreservation.dtos.requests.TimChuyenTauRequest;
 import com.example.raiwayticketreservation.dtos.responses.TimChuyenTauResponse;
@@ -22,7 +22,7 @@ public class HanhTrinhTauController {
     private HanhTrinhService hanhTrinhService;
 
     @Autowired
-    private TauService tauService;
+    private ToaService toaService;
 
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Tìm chuyến tàu",
@@ -36,7 +36,7 @@ public class HanhTrinhTauController {
             if(hanhTrinhSet != null) {
                 hanhTrinhSet.forEach(hanhTrinh -> {
                     Set toaTheoTaus = new HashSet<>();
-                    toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), hanhTrinh.getTau().getId()));
+                    toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinh.getTau().getId()));
                     hanhTrinh.getTau().setToas(toaTheoTaus);
                 });
                 return new ResponseEntity(hanhTrinhSet, HttpStatus.OK);
@@ -54,13 +54,13 @@ public class HanhTrinhTauController {
             if(hanhTrinhDiSet != null && hanhTrinhVeSet != null ) {
                 hanhTrinhDiSet.forEach(hanhTrinh -> {
                     Set toaTheoTaus = new HashSet<>();
-                    toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), hanhTrinh.getTau().getId()));
+                    toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinh.getTau().getId()));
                     hanhTrinh.getTau().setToas(toaTheoTaus);
                 });
 
                 hanhTrinhVeSet.forEach(hanhTrinh -> {
                     Set toaTheoTaus = new HashSet<>();
-                    toaTheoTaus.addAll(tauService.getToaTheoTauByHanhTrinhIDTauID(hanhTrinh.getId(), hanhTrinh.getTau().getId()));
+                    toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinh.getTau().getId()));
                     hanhTrinh.getTau().setToas(toaTheoTaus);
                 });
                 TimChuyenTauResponse timChuyenTauResponse = TimChuyenTauResponse.builder()
