@@ -65,12 +65,18 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
     @Override
     public boolean kiemTraHanhTrinhTonTai(List<HanhTrinh> hanhTrinhs) {
         for (HanhTrinh hanhTrinh : hanhTrinhs) {
-            if(hanhTrinhRepo.kiemTraHanhTrinhTonTai(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), hanhTrinh.getNgayDi().toString(),
-                    hanhTrinh.getNgayDen().toString(), String.valueOf(hanhTrinh.getGioDi()),  String.valueOf(hanhTrinh.getGioDen()), hanhTrinh.getTau().getId()) > 0) {
-                return false;
+            if (hanhTrinh.getId() == null) {
+                if (hanhTrinhRepo.kiemTraHanhTrinhTonTai(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), hanhTrinh.getNgayDi().toString(),
+                        hanhTrinh.getNgayDen().toString(), String.valueOf(hanhTrinh.getGioDi()), String.valueOf(hanhTrinh.getGioDen()), hanhTrinh.getTau().getId()) > 0) {
+                    return true;
+                } else return false;
+            } else if (hanhTrinh.getId() != null) {
+                if (hanhTrinhRepo.existsById(hanhTrinh.getId())) {
+                    return true;
+                } else return false;
             }
         }
-        return true;
+        return false;
     }
 
     @Override

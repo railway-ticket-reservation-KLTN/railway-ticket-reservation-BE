@@ -16,7 +16,7 @@ import java.text.ParseException;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/khachhang")
 public class GheController {
 
     @Autowired

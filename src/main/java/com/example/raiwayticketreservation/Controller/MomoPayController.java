@@ -35,7 +35,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "/v1/thanhtoan")
+@RequestMapping(value = "/v1/khachhang/thanhtoan")
 public class MomoPayController {
 
 	@Autowired

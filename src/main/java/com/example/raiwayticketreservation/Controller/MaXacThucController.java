@@ -20,7 +20,7 @@ import java.util.Random;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/khachhang")
 public class MaXacThucController {
     @Autowired
     private MaXacThucService maXacThucService;

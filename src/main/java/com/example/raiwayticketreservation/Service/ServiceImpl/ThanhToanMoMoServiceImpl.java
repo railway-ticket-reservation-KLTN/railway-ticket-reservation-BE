@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Service
 public class ThanhToanMoMoServiceImpl implements ThanhToanMoMoService {
-    final String THANH_TOAN_ENDPOINT_URl = "http://localhost:8080/v1/thanhtoan/thanhtoanmomo/{amount}/{orderId}";
+    final String THANH_TOAN_ENDPOINT_URl = "http://localhost:8080/v1/khachhang/thanhtoan/thanhtoanmomo/{amount}/{orderId}";
     RestTemplate restTemplate = new RestTemplate();
 
     @Override

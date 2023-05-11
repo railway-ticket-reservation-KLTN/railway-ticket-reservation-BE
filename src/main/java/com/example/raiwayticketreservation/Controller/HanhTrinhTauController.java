@@ -28,7 +28,7 @@ public class HanhTrinhTauController {
     @Operation(summary = "Tìm chuyến tàu",
             description = "Tìm chuyến tàu một chiều và khứ hồi",
             tags = "API Tìm vé")
-    @PostMapping("/hanhtrinhtau")
+    @PostMapping("/khachhang/hanhtrinhtau")
     public ResponseEntity getHanhTrinhTauByGaDiGaDenNgayDiNgayDen(@RequestBody TimChuyenTauRequest timChuyenTauRequest) throws ParseException {
 
         if (timChuyenTauRequest.getLoaiHanhTrinh().equals("MOT_CHIEU")) {
@@ -81,5 +81,82 @@ public class HanhTrinhTauController {
                 .moTaLoi("Không tìm thấy chuyến tàu")
                 .build();
         return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Thêm hành trình tàu",
+            description = "Thêm hành trình tàu trên trang quản trị",
+            tags = "API Quản lí hành trình - ADMIN")
+    @PostMapping("/admin/themhanhtrinh")
+    public ResponseEntity themHanhTrinhs(@RequestBody List<HanhTrinh> hanhTrinhs) {
+        if (hanhTrinhs.size() != 0) {
+            if(!hanhTrinhService.kiemTraHanhTrinhTonTai(hanhTrinhs)) {
+                List<HanhTrinh> hanhTrinhList = hanhTrinhService.themHanhTrinhs(hanhTrinhs);
+                return new ResponseEntity<>(hanhTrinhList, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(ErrorResponse.builder()
+                        .tenLoi("Lỗi thêm hành trình")
+                        .moTaLoi("Hành trình đã có trong hệ thống").build(), HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi thêm hành trình")
+                .moTaLoi("Không có hành trình để thêm").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Xóa hành trình tàu",
+            description = "Xóa hành trình tàu trên trang quản trị",
+            tags = "API Quản lí hành trình - ADMIN")
+    @PostMapping("/admin/xoahanhtrinh")
+    public ResponseEntity xoaHanhTrinhs(@RequestBody List<HanhTrinh> hanhTrinhs) {
+        if (hanhTrinhs.size() != 0) {
+            if(hanhTrinhService.kiemTraHanhTrinhTonTai(hanhTrinhs)) {
+                if(hanhTrinhService.xoaHanhTrinh(hanhTrinhs)) {
+                    return new ResponseEntity<>(HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(ErrorResponse.builder()
+                            .tenLoi("Lỗi xóa hành trình")
+                            .moTaLoi("Xóa hành trình gặp lỗi").build(), HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>(ErrorResponse.builder()
+                        .tenLoi("Lỗi xóa hành trình")
+                        .moTaLoi("Hành trình không tồn tại trong hệ thống").build(), HttpStatus.BAD_REQUEST);
+            }
+
+        }
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi xóa hành trình")
+                .moTaLoi("Không có hành trình để xóa").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Cập nhật hành trình tàu",
+            description = "Cập nhật hành trình tàu trên trang quản trị",
+            tags = "API Quản lí hành trình - ADMIN")
+    @PostMapping("/admin/capnhathanhtrinh")
+    public ResponseEntity capNhatHanhTrinh(@RequestBody HanhTrinh hanhTrinh) {
+        if (hanhTrinh != null) {
+            List<HanhTrinh> hanhTrinhs = new ArrayList<>();
+            hanhTrinhs.add(hanhTrinh);
+            if(hanhTrinhService.kiemTraHanhTrinhTonTai(hanhTrinhs)) {
+                if (hanhTrinhService.capNhatHanhTrinh(hanhTrinh)) {
+                    return new ResponseEntity(HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(ErrorResponse.builder()
+                            .tenLoi("Lỗi cập nhật hành trình")
+                            .moTaLoi("Xử lí cập nhật hành trình xảy ra lỗi").build(), HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>(ErrorResponse.builder()
+                        .tenLoi("Lỗi cập nhật hành trình")
+                        .moTaLoi("Hành trình không tồn tại trong hệ thống").build(), HttpStatus.BAD_REQUEST);
+            }
+
+        }
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi cập nhật hành trình")
+                .moTaLoi("Không có hành trình để cập nhật").build(), HttpStatus.BAD_REQUEST);
     }
 }

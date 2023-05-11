@@ -22,4 +22,5 @@ public interface HanhTrinhService{
     public boolean kiemTraHanhTrinhTonTai(List<HanhTrinh> hanhTrinhs);
 
     public boolean capNhatHanhTrinh(HanhTrinh hanhTrinh);
+
 }

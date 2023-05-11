@@ -20,11 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class RailwaySecurityConfig {
 
-    private static final String[] NV_SECURED_URLs = {"/nhanvien/**"};
+    private static final String[] NV_SECURED_URLs = {"/v1/nhanvien/**"};
 
-    private static final String[] ADMIN_SECURED_URLs = {"/admin/**"};
+    private static final String[] ADMIN_SECURED_URLs = {"/v1/admin/**"};
 
-    private static final String[] UN_SECURED_URLs = {"/v1/**"};
+    private static final String[] UN_SECURED_URLs = {"/v1/khachhang/**"};
 
     @Autowired
     private JWTAuthenticationFilter authenticationFilter;
