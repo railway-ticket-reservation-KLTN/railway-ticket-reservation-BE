@@ -17,4 +17,6 @@ public interface TaiKhoanService {
     public boolean kiemTraTaiKhoanNhanVienTonTai(TaiKhoan taiKhoan);
 
     public boolean kiemTraTaiKhoanTheoMa(TaiKhoan taiKhoan);
+
+    public boolean kiemTraTaiKhoanConHoatDong(TaiKhoan taiKhoan);
 }

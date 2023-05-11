@@ -29,6 +29,10 @@ public interface TaiKhoanRepo extends JpaRepository<TaiKhoan, Long> {
             "WHERE ma_nhan_vien = ?", nativeQuery = true)
     public int kiemTraTaiKhoanTheoMaNhanVien(Long maNhanVien);
 
+    @Query(value = "SELECT trang_thai FROM railwayticketreservationdb.taikhoan " +
+            "WHERE ten_tai_khoan = ?", nativeQuery = true)
+    public int getTrangThaiTheoTenTK(String tenTK);
+
     @Query(value = "SELECT * FROM railwayticketreservationdb.taikhoan\n" +
             "WHERE ten_tai_khoan = ?", nativeQuery = true)
     public Optional<TaiKhoan> timTaiKhoanTheoTenTaiKhoan(String tenTaiKhoan);
