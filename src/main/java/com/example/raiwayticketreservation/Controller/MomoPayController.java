@@ -172,26 +172,18 @@ public class MomoPayController {
                 cthds.add(cthd);
             });
             cthdService.themCTHD(cthds);
-
-
-
-			emailService.sendMessage(emailKhachDat, "Railway VN - Thanh toán vé thành công", "Kính gửi quý Khách hàng,\n" +
-					"\n" +
-					"Xin trân trọng cảm ơn quý khách đã lựa chọn sử dung dịch vụ của Railway VN\n" +
-					"Chúng tôi xin thông báo quý khách đã thực hiện đặt vé thành công với thông tin như sau:\n" +
-					"\n" +
-					"Mã đặt vé là: "+ maDatVe +"\n" +
-					"Tổng số vé: "+ veTaus.size() +"\n" +
-					"Tổng số tiền: "+  df.format(tongGia).replace(",", ".")  +"VNĐ\n" +
-					"\n"+
-					"Quý khách vui lòng vào trang Railway VN vào phần kiểm tra vé nhập các thông tin cần thiết để kiểm tra thông tin vé."+
-					"\n" +
-					"\n"+
-					"Đây là email gửi tự động. Xin vui lòng không trả lời email này.\n" +
-					"Quý khách có thể liên hệ với trung tâm hỗ trợ khách hàng 1900 0009 để được trợ giúp.\n" +
-					"Xin Trân trọng cảm ơn!\n" +
-					"\n" +
-					"Railway VN.");
+			df.format(tongGia).replace(",", ".");
+			Map<String, Object> variables = new HashMap<>();
+			variables.put("maDatVe", maDatVe);
+			variables.put("soVe", veTauList.size());
+			variables.put("tongTien", tongGia);
+			variables.put("veTaus", veTauList);
+			try {
+				emailService.guiVeTauMessage(emailKhachDat,
+						"Railway VN - Thanh toán vé thành công", variables);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 			return thanhToanResponse;
 		} else {
 			String maDatCho = String.valueOf(orderId);
@@ -208,23 +200,17 @@ public class MomoPayController {
 			for (int i = 0; i < veTauList.size(); i++) {
 				tongGia += veTauList.get(i).getDonGia();
 			}
-			emailService.sendMessage(emailKhachDat, "Railway VN - Thanh toán vé không thành công", "Kính gửi quý Khách hàng,\n" +
-					"\n" +
-					"Xin trân trọng cảm ơn quý khách đã lựa chọn sử dung dịch vụ của Railway VN\n" +
-					"Chúng tôi xin thông báo quý khách đã thực hiện đặt vé không thành công với thông tin như sau:\n" +
-					"\n" +
-					"Mã đặt chỗ là: "+ maDatCho +"\n" +
-					"Tổng số vé: "+ veTaus.size() +"\n" +
-					"Tổng số tiền: "+ df.format(tongGia).replace(",", ".") +" VNĐ\n" +
-					"\n"+
-					"Quý khách vui lòng đến trực tiếp nhà ga để thanh toán vé. Quý khách lưu ý vé chỉ được giữ trong vòng 24 giờ kể từ khi đặt vé."+
-					"\n" +
-					"\n"+
-					"Đây là email gửi tự động. Xin vui lòng không trả lời email này.\n" +
-					"Quý khách có thể liên hệ với trung tâm hỗ trợ khách hàng 1900 0009 để được trợ giúp.\n" +
-					"Xin Trân trọng cảm ơn!\n" +
-					"\n" +
-					"Railway VN.");
+			Map<String, Object> variables = new HashMap<>();
+			variables.put("maDatCho", maDatCho);
+			variables.put("soVe", veTauList.size());
+			variables.put("tongTien", tongGia);
+
+			try {
+				emailService.thanhToanVeKhongThanhCongMessage(emailKhachDat,
+						"Railway VN - Thanh toán vé không thành công", variables);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 			return thanhToanResponse;
 		}
 	}

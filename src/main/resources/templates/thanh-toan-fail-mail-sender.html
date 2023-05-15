@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gửi mã xác thực Email</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- use the font -->
+    <style>
+        * {
+            font-family: Helvetica;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center">
+    <a href='https://postimg.cc/xN3CWRSV' target='_blank'>
+        <img src='https://i.postimg.cc/xN3CWRSV/1-prev-ui-1.jpg' border='0' alt='logo'/>
+    </a>
+</div>
+
+<div id="text-body">
+    Xin trân trọng cảm ơn quý khách đã lựa chọn sử dụng dịch vụ của Railway VN
+    <br><br>
+    Chúng tôi xin thông báo quý khách đã thực hiện đặt vé không thành công với thông tin như sau:
+    <br><br>
+    Mã đặt chỗ là: <b th:text="${maDatCho}"></b> <br>
+    Tổng số vé: <b th:text="${soVe}"></b> <br>
+    Tổng số tiền: <b th:text="${tongTien}"></b>
+    <br><br>
+    Quý khách vui lòng đến trực tiếp nhà ga để thanh toán vé. Quý khách lưu ý vé chỉ được giữ trong vòng 24 giờ kể từ khi đặt vé.
+    <br><br>
+    Đây là email gửi tự động. Xin vui lòng không trả lời email này. <br><br>
+    Quý khách có thể liên hệ với trung tâm hỗ trợ khách hàng <b>1900 0009</b> để được trợ giúp.<br>
+    Xin Trân trọng cảm ơn!
+    <br><br>
+    <b>Railway VN.</b>
+</div>
+</body>
+</html>

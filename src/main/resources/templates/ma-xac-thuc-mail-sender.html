@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gửi mã xác thực Email</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- use the font -->
+    <style>
+        * {
+            font-family: Helvetica;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center">
+    <a href='https://postimg.cc/xN3CWRSV' target='_blank'>
+        <img src='https://i.postimg.cc/xN3CWRSV/1-prev-ui-1.jpg' border='0' alt='logo'/>
+    </a>
+</div>
+
+<div id="text-body">
+    Chúng tôi gửi mã xác thực trả vé với:
+    <br><br>
+    Mã xác thực là: <b><span th:text="${maXacThuc}"></span></b>
+    <br>
+    Quý khách vui lòng xác thực trong vòng 12 tiếng kể từ khi mã này được gửi.
+    <br><br>
+    Đây là email gửi tự động. Xin vui lòng không trả lời email này.
+    <br>
+    Quý khách có thể liên hệ với trung tâm hỗ trợ khách hàng <b>1900 0009</b> để được trợ giúp.
+    <br><br>
+    Xin Trân trọng cảm ơn!
+    <br><br>
+    <b>Railway VN</b>
+</div>
+</body>
+</html>

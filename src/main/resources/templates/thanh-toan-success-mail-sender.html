@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gửi mã xác thực Email</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous">
+    </script>
+    <style>
+        * {
+            font-family: Helvetica;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body style="font-size:20px">
+    <div style="text-align: center">
+        <a href='https://postimg.cc/xN3CWRSV' target='_blank'>
+            <img src='https://i.postimg.cc/xN3CWRSV/1-prev-ui-1.jpg' widht="200px" height="180px" alt='arrow'/>
+        </a>
+    </div>
+
+    <div id="text-body">
+        Xin trân trọng cảm ơn quý khách đã lựa chọn sử dụng dịch vụ của Railway VN
+        <br><br>
+        Chúng tôi xin thông báo quý khách đã thực hiện đặt vé thành công với thông tin như sau:
+        <br><br>
+        Mã đặt vé là: <b><span th:text="${maDatVe}"></span></b> <br>
+        Tổng số vé: <b><span th:text="${soVe}"></span></b> <br>
+        Tổng số tiền: <b><span th:text="${tongTien}"></span></b>
+        <br><br>
+
+        <div th:each="veTau:${veTaus}"
+             style="margin-bottom:10px; border: solid 1px black; width: 600px; border-radius: 10px; text-align:center">
+            <div class="row m-2">
+                <div class="col-sm-8">
+                        <h3 class="card-title">Thông tin hành trình</h3>
+                            <h4 style="font-size:25px">
+                                <span th:text="${veTau.hanhTrinh.gaDi}">Hà Nội</span>
+                                <img src='https://i.postimg.cc/yJDX7mm0/right-arrow.png' width="25px" alt='right-arrow'/>
+                                <span th:text="${veTau.hanhTrinh.gaDen}">Sài Gòn</span> <br>
+                            </h4>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label style="font-weight: bold;">Mã vé: </label>  <span id="maDatVe" th:text="${veTau.maVe}"></span><br>
+                                    <label style="font-weight: bold;">Tên tàu: </label> <span id="tenTau" th:text="${veTau.tenTau}"></span> <br>
+                                    <label style="font-weight: bold;">Ngày đi: </label> <span id="ngayDi" th:text="${veTau.hanhTrinh.ngayDi}"></span> <br>
+                                    <label style="font-weight: bold;">Giờ đi: </label> <span th:text="${veTau.hanhTrinh.gioDi}"></span> <br>
+                                    <label style="font-weight: bold;">Toa: </label> <span  th:text="${veTau.soToa}"></span> <br>
+                                    <label style="font-weight: bold;">Số ghế: </label> <span  th:text="${veTau.soGhe}"></span> <br>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label style="font-weight: bold;">Loại chỗ: </label> <span th:text="${veTau.loaiVe}"></span> <br>
+                                    <label style="font-weight: bold;">Tên hành khách: </label> <span id="tenHanhKhach" th:text="${veTau.tenHanhKhach}"></span> <br>
+                                    <label style="font-weight: bold;">Số giấy tờ: </label> <span id="soGiayTo" th:text="${veTau.soGiayTo}"></span> <br>
+                                    <label style="font-weight: bold;">Đối tượng: </label> <span th:text="${veTau.doiTuong}"></span> <br>
+                                    <label style="font-weight: bold;">Giá vé: </label> <span id="giaVe" th:text="${veTau.donGia}"></span>
+                                </div>
+                            </div>
+                </div>
+                <div class="col-sm-4" id="qrcode"
+                     style="border-top:dashed 1px black; text-align: center; line-height: 263px">
+                    <img class='barcode' src="https://api.qrserver.com/v1/create-qr-code/?data=Duy&amp;size=100x100"
+                         alt="" title="qrcode" width="100" height="100" />
+                </div>
+            </div>
+        </div>
+        Quý khách vui lòng vào trang <a style="text-decoration: none;
+    font-weight: bold;" href="#">Railway VN</a> vào phần kiểm tra vé nhập các thông tin cần thiết để kiểm tra thông tin vé.
+        <br><br>
+        Đây là email gửi tự động. Xin vui lòng không trả lời email này. <br><br>
+        Quý khách có thể liên hệ với trung tâm hỗ trợ khách hàng <b>1900 0009</b> để được trợ giúp.<br><br>
+        Xin trân trọng cảm ơn!
+        <br><br>
+        <b>Railway VN.</b>
+    </div>
+</body>
+</html>
