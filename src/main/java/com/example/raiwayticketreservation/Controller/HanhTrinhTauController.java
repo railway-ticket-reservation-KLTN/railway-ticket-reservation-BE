@@ -30,7 +30,6 @@ public class HanhTrinhTauController {
             tags = "API Tìm vé")
     @PostMapping("/khachhang/hanhtrinhtau")
     public ResponseEntity getHanhTrinhTauByGaDiGaDenNgayDiNgayDen(@RequestBody TimChuyenTauRequest timChuyenTauRequest) throws ParseException {
-
         if (timChuyenTauRequest.getLoaiHanhTrinh().equals("MOT_CHIEU")) {
             List<HanhTrinh> hanhTrinhSet = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
             if(hanhTrinhSet != null) {

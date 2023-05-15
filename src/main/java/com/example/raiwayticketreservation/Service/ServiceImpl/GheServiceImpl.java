@@ -100,10 +100,15 @@ public class GheServiceImpl implements GheService {
             List<TrangThaiGheResponse> trangThaiGhes = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(gheItem.getId(), gheRequest.getTenTau(), gheRequest.getNgayDi(), gheRequest.getSoToa());
             trangThaiGhes.forEach(trangThaiGheResponse -> {
                 Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-                if(trangThaiGheResponse.getTrangThai() != null
+                if(trangThaiGheResponse.getTrangThai().equals(SystemConstant.DAT_CHO)
                         &&  trangThaiGheResponse.getThoiHanGiuGhe().after(currentTime)
                         || trangThaiGheResponse.getTrangThai().equals(SystemConstant.DA_MUA)) {
+                    if( trangThaiGheResponse.getGaDi().equals(gheRequest.getGaDi())
+                            || trangThaiGheResponse.getGaDen().equals(gheRequest.getGaDen())
+                            || trangThaiGheResponse.getGioDi().before(gheRequest.getGioDi()))
+                    {
                         gheItem.setTrangThai(0);
+                    }
                 }
             });
         });

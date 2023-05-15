@@ -131,7 +131,7 @@ public class MomoPayController {
 			Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(orderId);
 			veTaus.forEach(veTau -> {
 				veTauService.capNhatTrangThaiTinhTrangVeTau(veTau.getId(), SystemConstant.DA_MUA);
-				trangThaiGheService.capNhatThoiHanGiuGheTheoMaVe(veTau.getMaVe());
+					trangThaiGheService.capNhatThoiHanGiuGheTheoMaVe(veTau.getMaVe());
 			});
 			Set<VeTau> veTauDaCapNhat = veTauService.getVeTauByMaDatCho(orderId);
 
