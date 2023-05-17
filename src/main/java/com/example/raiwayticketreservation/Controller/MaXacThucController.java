@@ -38,6 +38,9 @@ public class MaXacThucController {
     @Autowired
     private TrangThaiGheService trangThaiGheService;
 
+    @Autowired
+    private TauService tauService;
+
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Gửi mã xác thực",
             description = "Gửi mã xác thực qua email",
@@ -93,7 +96,9 @@ public class MaXacThucController {
                             .gioDi(veTauRequest.getGioDi())
                             .gioDen(veTauRequest.getGioDen())
                             .build();
-                    hanhTrinh.setId(hanhTrinhService.getIDHanhTrinh(hanhTrinh));
+
+                    Long maTau = tauService.getIdTauTheoTenTau(veTauRequest.getTenTau());
+                    hanhTrinh.setId(hanhTrinhService.getIDHanhTrinh(hanhTrinh, maTau));
                     VeTau veTau = VeTau.builder()
                             .tenHanhKhach(veTauRequest.getTenHanhKhach())
                             .soGiayTo(veTauRequest.getSoGiayTo())

@@ -30,13 +30,13 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
     }
 
     @Override
-    public Long getIDHanhTrinh(HanhTrinh hanhTrinh) {
+    public Long getIDHanhTrinh(HanhTrinh hanhTrinh, Long maTau) {
         String strNgayDi = hanhTrinh.getNgayDi().toString();
         String strNgayDen = hanhTrinh.getNgayDen().toString();
         String strGioDi = hanhTrinh.getGioDi().toString();
         String strGioDen = hanhTrinh.getGioDen().toString();
         return hanhTrinhRepo.getIdHanhTrinh(hanhTrinh.getGaDi(), hanhTrinh.getGaDen(), strNgayDi,
-                strNgayDen, strGioDi, strGioDen);
+                strNgayDen, strGioDi, strGioDen, maTau);
     }
 
     @Override

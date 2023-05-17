@@ -15,8 +15,8 @@ public interface HanhTrinhRepo extends JpaRepository<HanhTrinh, Long> {
     public List<HanhTrinh> getHanhTrinhByGaDiGaDenNgayDiNgayDen(String gaDi, String gaDen, String ngayDi);
     @Query(value = "SELECT id from railwayticketreservationdb.hanhtrinh \n" +
             "WHERE ga_di = ? AND ga_den = ? AND ngay_di = ? " +
-            "AND ngay_den = ? AND gio_di = ? AND gio_den = ?", nativeQuery = true)
-    public Long getIdHanhTrinh(String gaDi, String gaDen, String ngayDi, String ngayDen, String gioDi, String gioDen);
+            "AND ngay_den = ? AND gio_di = ? AND gio_den = ? AND ma_tau = ?", nativeQuery = true)
+    public Long getIdHanhTrinh(String gaDi, String gaDen, String ngayDi, String ngayDen, String gioDi, String gioDen, Long maTau);
 
     @Query(value = "SELECT * FROM railwayticketreservationdb.hanhtrinh WHERE id = ?", nativeQuery = true)
     public HanhTrinh getHanhTrinhByHanhTrinhID(Long hanhTrinhID);

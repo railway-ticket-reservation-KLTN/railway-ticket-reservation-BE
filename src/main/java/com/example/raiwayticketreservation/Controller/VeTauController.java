@@ -38,6 +38,9 @@ public class VeTauController {
     private KhachDatVeService khachDatVeService;
 
     @Autowired
+    private TauService tauService;
+
+    @Autowired
     private TrangThaiGheService trangThaiGheService;
 
     @Autowired
@@ -131,8 +134,10 @@ public class VeTauController {
                         .gioDen(veTau.getGioDen())
                         .build();
 
+                Long maTau = tauService.getIdTauTheoTenTau(veTau.getTenTau());
+
                 HanhTrinh hanhTrinhID = HanhTrinh.builder()
-                        .id(hanhTrinhService.getIDHanhTrinh(hanhTrinh))
+                        .id(hanhTrinhService.getIDHanhTrinh(hanhTrinh, maTau))
                         .gaDi(veTau.getGaDi())
                         .gaDen(veTau.getGaDen())
                         .ngayDi(ngayDi.toLocalDate())

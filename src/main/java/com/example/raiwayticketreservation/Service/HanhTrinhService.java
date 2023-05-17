@@ -12,7 +12,7 @@ public interface HanhTrinhService{
     public List<HanhTrinh> getDanhSachHanhTrinh();
     public List<HanhTrinh> getHanhTrinh(String gaDi, String gaDen, String ngayDi);
 
-    public Long getIDHanhTrinh(HanhTrinh hanhTrinh);
+    public Long getIDHanhTrinh(HanhTrinh hanhTrinh, Long maTau);
 
     public HanhTrinh getHanhTrinhTheoMaHanhTrinh(Long hanhTrinhID);
 
