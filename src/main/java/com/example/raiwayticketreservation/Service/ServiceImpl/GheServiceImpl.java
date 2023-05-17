@@ -47,40 +47,41 @@ public class GheServiceImpl implements GheService {
     public ResponseEntity datChoTam(TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
 
         List<TrangThaiGheResponse> trangThaiGheResponses = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(trangThaiGheRequest.getMaGhe(), trangThaiGheRequest.getTenTau(), trangThaiGheRequest.getNgayDi(), trangThaiGheRequest.getSoToa());
+        Ghe ghe = Ghe.builder().id(trangThaiGheRequest.getMaGhe()).build();
+        Date ngayDi =  Date.valueOf(trangThaiGheRequest.getNgayDi());
+        TrangThaiGhe trangThaiGhe = TrangThaiGhe.builder()
+                .ghe(ghe)
+                .gaDi(trangThaiGheRequest.getGaDi())
+                .gaDen(trangThaiGheRequest.getGaDen())
+                .ngayDi(ngayDi)
+                .tenTau(trangThaiGheRequest.getTenTau())
+                .soToa(trangThaiGheRequest.getSoToa())
+                .gioDen(trangThaiGheRequest.getGioDen())
+                .gioDi(trangThaiGheRequest.getGioDi())
+                .thoiHanGiuGhe(tinhThoiHanMaXacThuc(600))
+                .trangThai(trangThaiGheRequest.getTrangThai()).build();
 
-        if (kiemTraDatCho(trangThaiGheResponses, trangThaiGheRequest)) {
-            Ghe ghe = Ghe.builder().id(trangThaiGheRequest.getMaGhe()).build();
-            Date ngayDi =  Date.valueOf(trangThaiGheRequest.getNgayDi());
-            TrangThaiGhe trangThaiGhe = TrangThaiGhe.builder()
-                    .ghe(ghe)
-                    .gaDi(trangThaiGheRequest.getGaDi())
-                    .gaDen(trangThaiGheRequest.getGaDen())
-                    .ngayDi(ngayDi)
-                    .tenTau(trangThaiGheRequest.getTenTau())
-                    .soToa(trangThaiGheRequest.getSoToa())
-                    .gioDen(trangThaiGheRequest.getGioDen())
-                    .gioDi(trangThaiGheRequest.getGioDi())
-                    .thoiHanGiuGhe(tinhThoiHanMaXacThuc(600))
-                    .trangThai(trangThaiGheRequest.getTrangThai()).build();
-
-            trangThaiGheRepo.save(trangThaiGhe);
-            return new ResponseEntity(HttpStatus.OK);
-        } else
-            return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi đặt chỗ").moTaLoi("Chỗ đã được đặt").build(), HttpStatus.LOCKED);
+        trangThaiGheRepo.save(trangThaiGhe);
+        return new ResponseEntity(HttpStatus.OK);
+//        if (kiemTraDatCho(trangThaiGheResponses, trangThaiGheRequest)) {
+//
+//            return new ResponseEntity(HttpStatus.OK);
+//        } else
+//            return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi đặt chỗ").moTaLoi("Chỗ đã được đặt").build(), HttpStatus.LOCKED);
     }
 
-    public boolean kiemTraDatCho(List<TrangThaiGheResponse> trangThaiGheResponses, TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
-        for (int i = 0; i < trangThaiGheResponses.size(); i++) {
-            Time gioDiRequest = trangThaiGheRequest.getGioDi();
-            Time gioDenResponse = trangThaiGheResponses.get(i).getGioDen();
-            if (trangThaiGheRequest.getGaDi().equals(trangThaiGheResponses.get(i).getGaDi())
-                    || trangThaiGheRequest.getGaDen().equals(trangThaiGheResponses.get(i).getGaDen())
-                    || gioDiRequest.before(gioDenResponse)) {
-                return false;
-            }
-        }
-        return true;
-    }
+//    public boolean kiemTraDatCho(List<TrangThaiGheResponse> trangThaiGheResponses, TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
+//        for (int i = 0; i < trangThaiGheResponses.size(); i++) {
+//            Time gioDiRequest = trangThaiGheRequest.getGioDi();
+//            Time gioDenResponse = trangThaiGheResponses.get(i).getGioDen();
+//            if (trangThaiGheRequest.getGaDi().equals(trangThaiGheResponses.get(i).getGaDi())
+//                    || trangThaiGheRequest.getGaDen().equals(trangThaiGheResponses.get(i).getGaDen())
+//                    || gioDiRequest.before(gioDenResponse)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
     @Override
     public boolean xoaDatChoTam(TrangThaiGheRequest trangThaiGheRequest) {
@@ -103,9 +104,11 @@ public class GheServiceImpl implements GheService {
                 if(trangThaiGheResponse.getTrangThai().equals(SystemConstant.DAT_CHO)
                         &&  trangThaiGheResponse.getThoiHanGiuGhe().after(currentTime)
                         || trangThaiGheResponse.getTrangThai().equals(SystemConstant.DA_MUA)) {
+
                     if( trangThaiGheResponse.getGaDi().equals(gheRequest.getGaDi())
                             || trangThaiGheResponse.getGaDen().equals(gheRequest.getGaDen())
-                            || trangThaiGheResponse.getGioDi().before(gheRequest.getGioDi()))
+                            || trangThaiGheResponse.getGioDen().after(gheRequest.getGioDi())
+                            && trangThaiGheResponse.getNgayDi().toString().equals(gheRequest.getNgayDi()))
                     {
                         gheItem.setTrangThai(0);
                     }
