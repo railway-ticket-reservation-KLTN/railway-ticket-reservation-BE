@@ -245,7 +245,7 @@ public class VeTauController {
     @Operation(summary = "Lấy danh sách vé theo mã đặt chỗ",
             description = "Lấy danh sách vé theo mã đặt chỗ để load lên bảng vé tàu",
             tags = "API Quản lí vé - NHAN_VIEN")
-    @PostMapping("/nhanvien/vestheomadatcho")
+    @GetMapping("/nhanvien/vestheomadatcho")
     public ResponseEntity getVesTheoMaDatCho(@RequestParam String maDatCho) {
         Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(Long.valueOf(maDatCho));
         if(veTaus.size() > 0) {
