@@ -8,7 +8,7 @@ import java.util.Set;
 @Data
 @Builder
 public class ThanhToanResponse {
-    private Set<VeTau> veTauSet;
+    private Set<VeTau> veTaus;
     private String maDatCho;
     private String maDatVe;
 }

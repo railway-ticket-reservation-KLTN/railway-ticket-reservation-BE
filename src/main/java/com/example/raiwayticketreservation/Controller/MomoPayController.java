@@ -8,6 +8,7 @@ import com.example.raiwayticketreservation.Entity.VeTau;
 import com.example.raiwayticketreservation.Service.*;
 import com.example.raiwayticketreservation.constants.MoMoConstant;
 import com.example.raiwayticketreservation.constants.SystemConstant;
+import com.example.raiwayticketreservation.dtos.requests.HoanTatThanhToanInfoRequest;
 import com.example.raiwayticketreservation.dtos.responses.ThanhToanResponse;
 import com.example.raiwayticketreservation.utils.MomoEncoderUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -20,6 +21,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -117,10 +120,11 @@ public class MomoPayController {
 		JSONObject result = new JSONObject(resultJsonStr.toString());
 		return result.toMap();
 	}
-	@GetMapping("/trangthai")
-	public Object trangThaiThanhToan(@RequestParam String partnerCode, @RequestParam Long orderId, @RequestParam Long amount, @RequestParam String orderInfo,
-									 @RequestParam String orderType, @RequestParam String message, @RequestParam Long resultCode) {
+	@PostMapping("/trangthai")
+	public ResponseEntity trangThaiThanhToan(@RequestBody HoanTatThanhToanInfoRequest hoanTatThanhToanInfoRequest) {
 		final DecimalFormat df = new DecimalFormat("###,###,##0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+		Long orderId = Long.valueOf(hoanTatThanhToanInfoRequest.getOrderId());
+		Long resultCode = Long.valueOf(hoanTatThanhToanInfoRequest.getResultCode());
 		if(resultCode == 0) {
 			String maDatVe = "";
 			Random random = new Random();
@@ -131,18 +135,19 @@ public class MomoPayController {
 			Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(orderId);
 			veTaus.forEach(veTau -> {
 				veTauService.capNhatTrangThaiTinhTrangVeTau(veTau.getId(), SystemConstant.DA_MUA);
-					trangThaiGheService.capNhatThoiHanGiuGheTheoMaVe(veTau.getMaVe());
+				trangThaiGheService.capNhatThoiHanGiuGheTheoMaVe(veTau.getMaVe());
 			});
-			Set<VeTau> veTauDaCapNhat = veTauService.getVeTauByMaDatCho(orderId);
 
 			List<VeTau> veTauList = veTaus.stream().toList();
 			String emailKhachDat = veTauList.get(0).getKhachDatVe().getEmail();
 			Date ngayLap = veTauList.get(0).getNgayMua();
 			KhachDatVe khachDatVeID = KhachDatVe.builder().id(veTauList.get(0).getKhachDatVe().getId()).build();
 
+			Set<VeTau> veTauDaCapNhat = veTauService.getVeTauByMaDatCho(orderId);
+
 			ThanhToanResponse thanhToanResponse = ThanhToanResponse.builder()
 					.maDatVe(maDatVe)
-					.veTauSet(veTauDaCapNhat)
+					.veTaus(veTauDaCapNhat)
 					.build();
 
 			double tongGia = 0;
@@ -184,15 +189,15 @@ public class MomoPayController {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-			return thanhToanResponse;
+			return new ResponseEntity(thanhToanResponse, HttpStatus.OK);
 		} else {
-			String maDatCho = String.valueOf(orderId);
+			String maDatCho = String.valueOf(hoanTatThanhToanInfoRequest.getOrderId());
 			Set<VeTau> veTaus = veTauService.getVeTauByMaDatCho(orderId);
 
 			List<VeTau> veTauList = veTaus.stream().toList();
 			String emailKhachDat = veTauList.get(0).getKhachDatVe().getEmail();
 			ThanhToanResponse thanhToanResponse = ThanhToanResponse.builder()
-					.veTauSet(veTaus)
+					.veTaus(veTaus)
 					.maDatCho(maDatCho)
 					.build();
 			double tongGia = 0;
@@ -211,7 +216,7 @@ public class MomoPayController {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-			return thanhToanResponse;
+			return new ResponseEntity(thanhToanResponse, HttpStatus.OK);
 		}
 	}
 
