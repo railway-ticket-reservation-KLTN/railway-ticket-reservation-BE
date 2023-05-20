@@ -28,4 +28,5 @@ public class VeTauRequest {
     private String ngayDen;
     private Time gioDi;
     private Time gioDen;
+    private String tinhTrang;
 }

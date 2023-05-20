@@ -37,6 +37,11 @@ public class TrangThaiGheServiceImpl implements TrangThaiGheService {
     }
 
     @Override
+    public List<TrangThaiGhe> getTrangThaiGheByThongTinHanhTrinh(String gaDi, String gaDen, String ngayDi, int soToa, String trangThai) {
+        return trangThaiGheRepo.getTrangThaiGheByThongTinHanhTrinh(gaDi, gaDen, ngayDi, soToa, trangThai);
+    }
+
+    @Override
     public void xoaTrangThaiGheByID(Long id) {
         trangThaiGheRepo.deleteById(id);
     }

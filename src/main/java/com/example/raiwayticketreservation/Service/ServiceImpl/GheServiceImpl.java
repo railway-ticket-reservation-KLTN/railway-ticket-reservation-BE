@@ -45,7 +45,7 @@ public class GheServiceImpl implements GheService {
 
     @Override
     public ResponseEntity datChoTam(TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
-
+        int soGiayHetHan = 600;
         List<TrangThaiGheResponse> trangThaiGheResponses = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(trangThaiGheRequest.getMaGhe(), trangThaiGheRequest.getTenTau(), trangThaiGheRequest.getNgayDi(), trangThaiGheRequest.getSoToa());
         Ghe ghe = Ghe.builder().id(trangThaiGheRequest.getMaGhe()).build();
         Date ngayDi =  Date.valueOf(trangThaiGheRequest.getNgayDi());
@@ -58,11 +58,11 @@ public class GheServiceImpl implements GheService {
                 .soToa(trangThaiGheRequest.getSoToa())
                 .gioDen(trangThaiGheRequest.getGioDen())
                 .gioDi(trangThaiGheRequest.getGioDi())
-                .thoiHanGiuGhe(tinhThoiHanMaXacThuc(600))
+                .thoiHanGiuGhe(tinhThoiHanMaXacThuc(soGiayHetHan))
                 .trangThai(trangThaiGheRequest.getTrangThai()).build();
 
         trangThaiGheRepo.save(trangThaiGhe);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(soGiayHetHan, HttpStatus.OK);
 //        if (kiemTraDatCho(trangThaiGheResponses, trangThaiGheRequest)) {
 //
 //            return new ResponseEntity(HttpStatus.OK);
@@ -116,6 +116,11 @@ public class GheServiceImpl implements GheService {
             });
         });
         return dsGhe;
+    }
+
+    @Override
+    public int getSoGheTheoMaGhe(Long maGhe) {
+        return gheRepo.getSoGheByGheID(maGhe);
     }
 
     private Timestamp tinhThoiHanMaXacThuc(int soGiayHetHan) {

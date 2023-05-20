@@ -17,4 +17,6 @@ public interface GheService {
     public boolean xoaDatChoTam(TrangThaiGheRequest trangThaiGheRequest);
 
     public Set<Ghe> getGhesTheoMaToa(GheRequest gheRequest);
+
+    public int getSoGheTheoMaGhe(Long maGhe);
 }

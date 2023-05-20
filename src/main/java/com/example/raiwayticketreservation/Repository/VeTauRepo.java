@@ -26,7 +26,7 @@ public interface VeTauRepo extends JpaRepository<VeTau, Long> {
     @Transactional
     @Query(value = "UPDATE railwayticketreservationdb.vetau \n" +
             "SET tinh_trang = ? \n" +
-            "WHERE (id = ?)", nativeQuery = true)
+            "WHERE id = ?", nativeQuery = true)
     public void capNhatTinhTrangVeTauTheoID (String tinhTrang, Long id);
 
     @Modifying

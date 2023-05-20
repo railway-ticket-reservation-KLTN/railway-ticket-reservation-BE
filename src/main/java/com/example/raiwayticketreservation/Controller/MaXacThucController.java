@@ -6,6 +6,7 @@ import com.example.raiwayticketreservation.constants.SystemConstant;
 import com.example.raiwayticketreservation.dtos.requests.VeTauRequest;
 import com.example.raiwayticketreservation.dtos.requests.XacThucRequest;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
+import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,9 @@ public class MaXacThucController {
 
     @Autowired
     private TauService tauService;
+
+    @Autowired
+    private GheService gheService;
 
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Gửi mã xác thực",
@@ -110,14 +114,20 @@ public class MaXacThucController {
                             .soToa(veTauRequest.getSoToa())
                             .hanhTrinh(hanhTrinh)
                             .khachDatVe(xacThucRequest.getKhachDatVe())
+                            .tinhTrang(veTauRequest.getTinhTrang())
                             .build();
                     veTau.setId(veTauService.getIDVeTau(veTau));
                     veTauService.capNhatTrangThaiTinhTrangVeTau(veTau.getId(), SystemConstant.TRA_VE);
                     veTaus.add(veTau);
-                    Long trangThaiGheId = trangThaiGheService
-                            .getIdTrangThaiGhe(veTauRequest.getGaDi(), veTauRequest.getGaDen(), veTauRequest.getNgayDi().toString(),
-                                    veTauRequest.getMaGhe(), veTauRequest.getSoToa(), SystemConstant.DA_MUA);
-                    trangThaiGheService.xoaTrangThaiGheByID(trangThaiGheId);
+                    List<TrangThaiGhe> trangThaiGheResponseList = trangThaiGheService
+                            .getTrangThaiGheByThongTinHanhTrinh(veTauRequest.getGaDi(), veTauRequest.getGaDen(), veTauRequest.getNgayDi().toString(),
+                                    veTauRequest.getSoToa(), SystemConstant.DA_MUA);
+
+                    trangThaiGheResponseList.forEach(trangThaiGheResponse -> {
+                        if(gheService.getSoGheTheoMaGhe(trangThaiGheResponse.getGhe().getId()) == veTauRequest.getSoGhe()) {
+                            trangThaiGheService.xoaTrangThaiGheByID(trangThaiGheResponse.getId());
+                        }
+                    });
                 });
                 if(veTaus.size() != 0) {
                     return new ResponseEntity<>(veTaus, HttpStatus.OK);

@@ -17,4 +17,8 @@ public interface GheRepo extends JpaRepository<Ghe, Long> {
     @Query(value = "SELECT * FROM railwayticketreservationdb.ghe\n" +
             "WHERE ma_toa = ?", nativeQuery = true)
     public Set<Ghe> getDsGheTheoMaToa(Long maToa);
+
+    @Query(value = "SELECT so_ghe FROM railwayticketreservationdb.ghe\n" +
+            "WHERE id = ?", nativeQuery = true)
+    public int getSoGheByGheID(Long gheId);
 }

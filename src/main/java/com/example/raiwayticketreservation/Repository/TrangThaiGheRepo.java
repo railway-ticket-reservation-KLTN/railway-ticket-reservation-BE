@@ -11,6 +11,12 @@ import java.util.Date;
 import java.util.List;
 
 public interface TrangThaiGheRepo extends JpaRepository <TrangThaiGhe, Long> {
+    @Query(value = "SELECT * FROM railwayticketreservationdb.trangthaighe\n" +
+            "WHERE ga_di = ? AND ga_den = ? AND ngay_di = ? " +
+            "AND so_toa = ? AND trang_thai = ?", nativeQuery = true)
+    public List<TrangThaiGhe> getTrangThaiGheByThongTinHanhTrinh(String gaDi, String gaDen, String ngayDi, int soToa, String trangThai);
+
+
     @Query(value = "SELECT id FROM railwayticketreservationdb.trangthaighe\n" +
             "WHERE ga_di = ? AND ga_den = ? AND ngay_di = ? " +
             "AND ma_ghe = ? AND so_toa = ? AND trang_thai = ?", nativeQuery = true)

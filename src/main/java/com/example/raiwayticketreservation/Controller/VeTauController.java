@@ -238,7 +238,7 @@ public class VeTauController {
         }
         return new ResponseEntity<>(ErrorResponse.builder()
                 .tenLoi("Lỗi hóa đơn")
-                .moTaLoi("Không tìm thấy thông tin hóa đơn của khách hàng, hãy kiểm tra lại mã hóa đơn vừa nhập").build(), HttpStatus.BAD_REQUEST);
+                .moTaLoi("Không tìm thấy thông tin hóa đơn của khách hàng, hãy kiểm tra lại mã đặt vé vừa nhập").build(), HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")

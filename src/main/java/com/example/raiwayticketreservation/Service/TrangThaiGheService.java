@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.Service;
 
+import com.example.raiwayticketreservation.Entity.TrangThaiGhe;
 import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
 import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 
@@ -17,6 +18,8 @@ public interface TrangThaiGheService {
     public void xoaTrangThaiGheTheoMaVe(String maVe);
 
     public void capNhatThoiHanGiuGheTheoMaVe(String maVe);
+    public List<TrangThaiGhe> getTrangThaiGheByThongTinHanhTrinh(String gaDi, String gaDen, String ngayDi, int soToa, String trangThai);
+
 //
 //    public void xoaTrangThaiGheDaHetHan();
 }
