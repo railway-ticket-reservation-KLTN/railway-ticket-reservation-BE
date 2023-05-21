@@ -42,4 +42,9 @@ public class Ghe {
     @JoinColumn(name = "maToa")
 //    @JsonIgnore
     private Toa toa;
+
+    @ManyToOne
+    @JoinColumn(name = "maTau")
+    @JsonIgnore
+    private Tau tau;
 }

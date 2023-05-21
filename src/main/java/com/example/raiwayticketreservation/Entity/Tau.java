@@ -30,4 +30,8 @@ public class Tau {
 
     @OneToMany(mappedBy = "tau")
     private Set<CTTauToa> toas;
+
+    @OneToMany(mappedBy = "tau")
+    @JsonIgnore
+    private Set<Ghe> ghes;
 }

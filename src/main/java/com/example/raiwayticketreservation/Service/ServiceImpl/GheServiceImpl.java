@@ -5,6 +5,7 @@ import com.example.raiwayticketreservation.Entity.TrangThaiGhe;
 import com.example.raiwayticketreservation.Repository.GheRepo;
 import com.example.raiwayticketreservation.Repository.TrangThaiGheRepo;
 import com.example.raiwayticketreservation.Service.GheService;
+import com.example.raiwayticketreservation.Service.TauService;
 import com.example.raiwayticketreservation.constants.SystemConstant;
 import com.example.raiwayticketreservation.dtos.requests.GheRequest;
 import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
@@ -37,6 +38,9 @@ public class GheServiceImpl implements GheService {
 
     @Autowired
     private TrangThaiGheRepo trangThaiGheRepo;
+
+    @Autowired
+    private TauService tauService;
 
     @Override
     public Set<GheResponse> getGheTheoToaID(Long id) {
@@ -96,7 +100,8 @@ public class GheServiceImpl implements GheService {
 
     @Override
     public Set<Ghe> getGhesTheoMaToa(GheRequest gheRequest) {
-        Set<Ghe> dsGhe = gheRepo.getDsGheTheoMaToa(gheRequest.getMaToa());
+        Long idTau = tauService.getIdTauTheoTenTau(gheRequest.getTenTau());
+        Set<Ghe> dsGhe = gheRepo.getDsGheTheoMaToa(gheRequest.getMaToa(), idTau);
         dsGhe.forEach(gheItem -> {
             List<TrangThaiGheResponse> trangThaiGhes = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(gheItem.getId(), gheRequest.getTenTau(), gheRequest.getNgayDi(), gheRequest.getSoToa());
             trangThaiGhes.forEach(trangThaiGheResponse -> {
