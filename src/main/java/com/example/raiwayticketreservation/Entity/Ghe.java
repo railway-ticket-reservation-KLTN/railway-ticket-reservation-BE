@@ -40,6 +40,6 @@ public class Ghe {
 
     @ManyToOne
     @JoinColumn(name = "maToa")
-    @JsonIgnore
+//    @JsonIgnore
     private Toa toa;
 }
