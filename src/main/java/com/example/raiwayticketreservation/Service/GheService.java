@@ -19,4 +19,6 @@ public interface GheService {
     public Set<Ghe> getGhesTheoMaToa(GheRequest gheRequest);
 
     public int getSoGheTheoMaGhe(Long maGhe);
+
+    public Set<Ghe> getDsGheTheoMaToaSoToa(Long maToa, Long maTau, int soToa);
 }

@@ -101,7 +101,7 @@ public class GheServiceImpl implements GheService {
     @Override
     public Set<Ghe> getGhesTheoMaToa(GheRequest gheRequest) {
         Long idTau = tauService.getIdTauTheoTenTau(gheRequest.getTenTau());
-        Set<Ghe> dsGhe = gheRepo.getDsGheTheoMaToa(gheRequest.getMaToa(), idTau);
+        Set<Ghe> dsGhe = gheRepo.getDsGheTheoMaToaSoToa(gheRequest.getMaToa(), idTau, gheRequest.getSoToa());
         dsGhe.forEach(gheItem -> {
             List<TrangThaiGheResponse> trangThaiGhes = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(gheItem.getId(), gheRequest.getTenTau(), gheRequest.getNgayDi(), gheRequest.getSoToa());
             trangThaiGhes.forEach(trangThaiGheResponse -> {
@@ -127,6 +127,12 @@ public class GheServiceImpl implements GheService {
     public int getSoGheTheoMaGhe(Long maGhe) {
         return gheRepo.getSoGheByGheID(maGhe);
     }
+
+    @Override
+    public Set<Ghe> getDsGheTheoMaToaSoToa(Long maToa, Long maTau, int soToa) {
+        return gheRepo.getDsGheTheoMaToaSoToa(maToa, maTau, soToa);
+    }
+
 
     private Timestamp tinhThoiHanMaXacThuc(int soGiayHetHan) {
         Calendar calendar = Calendar.getInstance();

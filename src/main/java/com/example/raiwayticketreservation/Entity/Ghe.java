@@ -32,6 +32,8 @@ public class Ghe {
     @Column(columnDefinition = "NVARCHAR(100)")
     private String loaiGhe;
 
+    private int toaSo;
+
     private int trangThai;
 
     @OneToMany(mappedBy = "ghe")
