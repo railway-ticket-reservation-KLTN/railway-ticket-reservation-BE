@@ -12,6 +12,7 @@ import java.util.Date;
 @Data
 @Builder
 public class VeTauRequest {
+    private String maVe;
     private String tenHanhKhach;
     private String soGiayTo;
     private double donGia;
