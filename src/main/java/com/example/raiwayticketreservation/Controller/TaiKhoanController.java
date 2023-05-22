@@ -61,17 +61,24 @@ public class TaiKhoanController {
             description = "Cập nhật trạng thái tài khoản bằng 0 vào hệ thống ở trang quản trị",
             tags = "API Quản lí tài khoản - ADMIN")
     @PostMapping("/xoatk")
-    public ResponseEntity xoaTaiKhoanTheoMa(@RequestBody TaiKhoan taiKhoan) {
-        if(taiKhoanService.kiemTraTaiKhoanTheoMa(taiKhoan)) {
-            if(taiKhoanService.xoaTaiKhoan(taiKhoan)) {
-                return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity xoaTaiKhoanTheoMa(@RequestBody List<TaiKhoan> taiKhoans) {
+        if(taiKhoans.size() > 0) {
+            for (TaiKhoan taiKhoan:taiKhoans) {
+                if(taiKhoanService.kiemTraTaiKhoanTheoMa(taiKhoan)) {
+                    if(taiKhoanService.xoaTaiKhoan(taiKhoan)) {
+                        return new ResponseEntity<>(HttpStatus.OK);
+                    }
+                    return new ResponseEntity<>(ErrorResponse.builder()
+                            .tenLoi("Lỗi xóa tài khoản")
+                            .moTaLoi("Xử lí xóa tài khoản gặp lỗi").build(), HttpStatus.BAD_REQUEST);
+                } else return new ResponseEntity<>(ErrorResponse.builder()
+                        .tenLoi("Lỗi xóa tài khoản")
+                        .moTaLoi("Tài khoản không tồn tại").build(), HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(ErrorResponse.builder()
+        }
+        return new ResponseEntity<>(ErrorResponse.builder()
                     .tenLoi("Lỗi xóa tài khoản")
-                    .moTaLoi("Xử lí xóa tài khoản gặp lỗi").build(), HttpStatus.BAD_REQUEST);
-        } else return new ResponseEntity<>(ErrorResponse.builder()
-                .tenLoi("Lỗi xóa tài khoản")
-                .moTaLoi("Tài khoản không tồn tại").build(), HttpStatus.BAD_REQUEST);
+                    .moTaLoi("Không có tài khoản để xóa").build(), HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
