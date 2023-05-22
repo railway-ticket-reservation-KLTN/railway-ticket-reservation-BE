@@ -1,6 +1,6 @@
 package com.example.raiwayticketreservation.dtos.responses;
 
-import com.example.raiwayticketreservation.Entity.NhanVien;
+import com.example.raiwayticketreservation.entities.NhanVien;
 import lombok.Builder;
 import lombok.Data;
 

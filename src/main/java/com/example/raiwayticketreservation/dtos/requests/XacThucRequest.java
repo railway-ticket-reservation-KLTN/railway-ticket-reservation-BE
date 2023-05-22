@@ -1,7 +1,6 @@
 package com.example.raiwayticketreservation.dtos.requests;
 
-import com.example.raiwayticketreservation.Entity.KhachDatVe;
-import com.example.raiwayticketreservation.Entity.VeTau;
+import com.example.raiwayticketreservation.entities.KhachDatVe;
 import lombok.Data;
 
 import java.util.Set;

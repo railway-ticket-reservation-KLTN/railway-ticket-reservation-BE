@@ -1,7 +1,7 @@
 package com.example.raiwayticketreservation.jwt;
 
-import com.example.raiwayticketreservation.Entity.TaiKhoan;
-import com.example.raiwayticketreservation.Service.TaiKhoanService;
+import com.example.raiwayticketreservation.entities.TaiKhoan;
+import com.example.raiwayticketreservation.service.TaiKhoanService;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

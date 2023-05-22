@@ -1,6 +1,6 @@
 package com.example.raiwayticketreservation.security;
 
-import com.example.raiwayticketreservation.Repository.TaiKhoanRepo;
+import com.example.raiwayticketreservation.repository.TaiKhoanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

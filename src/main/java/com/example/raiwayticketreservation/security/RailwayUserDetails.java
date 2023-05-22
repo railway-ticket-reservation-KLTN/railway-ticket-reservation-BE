@@ -1,6 +1,6 @@
 package com.example.raiwayticketreservation.security;
 
-import com.example.raiwayticketreservation.Entity.TaiKhoan;
+import com.example.raiwayticketreservation.entities.TaiKhoan;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
