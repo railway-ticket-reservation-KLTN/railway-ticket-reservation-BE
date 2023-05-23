@@ -24,7 +24,7 @@ public class RailwaySecurityConfig {
 
     private static final String[] ADMIN_SECURED_URLs = {"/v1/admin/**"};
 
-    private static final String[] UN_SECURED_URLs = {"/v1/khachhang/**", "/v1/dangnhap", "/favicon.ico", "/error"};
+    private static final String[] UN_SECURED_URLs = {"/v1/khachhang/**", "/v1/dangnhap", "/favicon.ico", "/error", "/swagger-ui/**", "/v3/api-docs/**"};
 
     @Autowired
     private JWTAuthenticationFilter authenticationFilter;
