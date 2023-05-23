@@ -10,20 +10,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class GenerateQRCode {
-//    public static BufferedImage generateQRCodeImage(String details) throws IOException {
-//        try {
-//            ByteArrayOutputStream outputStream = QRCode
-//                    .from(details)
-//                    .withSize(500, 500)
-//                    .stream();
-//            ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-//            return ImageIO.read(inputStream);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            return new BufferedImage(500, 500, 500);
-//        }
-//    }
-
     public static byte[] generateQRCode(String qrContent, int width, int height) {
         try {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();

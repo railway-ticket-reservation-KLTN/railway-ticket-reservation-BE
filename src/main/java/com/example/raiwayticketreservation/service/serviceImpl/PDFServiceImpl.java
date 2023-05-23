@@ -7,10 +7,8 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import org.librepdf.openpdf.fonts.Liberation;
 import org.springframework.stereotype.Service;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,37 +18,84 @@ import java.util.List;
 public class PDFServiceImpl implements PDFService {
 
     @Override
-    public ByteArrayInputStream taoPDFFile(List<VeTauRequest> veTauList) {
+    public ByteArrayInputStream taoPDFFile(List<VeTauRequest> veTauList) throws IOException {
+        FontFactory.register("D:\\KLTN-2022-2023\\raiway-ticket-reservation\\raiway-ticket-reservation\\src\\main\\resources\\static\\font-times-new-roman.ttf");
+        FontFactory.register("D:\\KLTN-2022-2023\\raiway-ticket-reservation\\raiway-ticket-reservation\\src\\main\\resources\\static\\times new roman bold.ttf");
+        FontFactory.register("D:\\KLTN-2022-2023\\raiway-ticket-reservation\\raiway-ticket-reservation\\src\\main\\resources\\static\\times new roman italic.ttf");
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Document document = new Document();
         PdfWriter.getInstance(document, outputStream);
+        document.setPageSize(new Rectangle(265.0f, 425.0f));
         document.open();
-
-        for (VeTauRequest veTau : veTauList) {
+        for (VeTauRequest veTau: veTauList) {
             String TONG_CONG_TY_DUONG_SAT_VIET_NAM = "TỔNG CÔNG TY ĐƯỜNG SẮT VIỆT NAM";
-            Font tongctyFont = FontFactory.getFont(String.valueOf(Liberation.SERIF_BOLD), 12);
+            Font tongctyFont = FontFactory.getFont("Times New Roman", 9);
             Paragraph tongctyPara = new Paragraph(TONG_CONG_TY_DUONG_SAT_VIET_NAM, tongctyFont);
             tongctyPara.setAlignment(Element.ALIGN_CENTER);
             document.add(tongctyPara);
 
+
+            String thongTinQRCode = new StringBuilder().append(veTau.getMaVe()).append(", ")
+                    .append(veTau.getTenTau()).append(", ")
+                    .append(veTau.getSoGhe()).append(", ")
+                    .append(veTau.getSoToa()).append(", ")
+                    .append(veTau.getGaDi()).append(", ")
+                    .append(veTau.getGaDen()).append(", ")
+                    .append(veTau.getNgayDi()).append(", ")
+                    .append(veTau.getGioDi()).append(", ")
+                    .append(veTau.getDonGia()).append(", ")
+                    .append(veTau.getTenHanhKhach()).append(", ")
+                    .append(veTau.getSoGiayTo()).append(", ")
+                    .append(veTau.getLoaiVe()).append(", ")
+                    .append(veTau.getDoiTuong()).append(", ")
+                    .toString();
+
+            byte[] qrCodeImage =  GenerateQRCode.generateQRCode(thongTinQRCode, 100, 100);
+
+            Image image = Image.getInstance(qrCodeImage);
+
+            //Tạo bảng QR
+            PdfPTable qrTable = new PdfPTable(1);
+            qrTable.setHorizontalAlignment(Element.ALIGN_CENTER);
+            qrTable.setWidths(new float[]{15.0f});
+
+
+
+            //QR Cell
+            PdfPCell imageCell = new PdfPCell(image);
+            imageCell.setBorder(Rectangle.NO_BORDER);
+            imageCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+            qrTable.addCell(imageCell);
+            document.add(qrTable);
+
             String THE_LEN_TAU_HOA = "THẺ LÊN TÀU HỎA";
-            Font theLenTauFont = FontFactory.getFont(String.valueOf(Liberation.SERIF_BOLD), 15);
+            Font theLenTauFont = FontFactory.getFont("Times New Roman", 12);
             Paragraph theLenTauPara = new Paragraph(THE_LEN_TAU_HOA, theLenTauFont);
             theLenTauPara.setAlignment(Element.ALIGN_CENTER);
             document.add(theLenTauPara);
 
+            String BOARDING_PASS = "BOARDING PASS";
+            Font boardingFont = FontFactory.getFont("Times New Roman", 8);
+            Paragraph boardingPara = new Paragraph(BOARDING_PASS, boardingFont);
+            boardingPara.setAlignment(Element.ALIGN_CENTER);
+            document.add(boardingPara);
+
             String MA_VE = "Mã vé: " + veTau.getMaVe();
-            Font maVeFont = FontFactory.getFont(String.valueOf(Liberation.SERIF), 12);
+            Font maVeFont = FontFactory.getFont("Times New Roman", 7);
             Paragraph maVePara = new Paragraph(MA_VE, maVeFont);
             maVePara.setAlignment(Element.ALIGN_CENTER);
             document.add(maVePara);
 
             //Tạo bảng Ga
-            Font gaTableHeaderFont = FontFactory.getFont(String.valueOf(Liberation.SERIF), 10);
             PdfPTable gaTable = new PdfPTable(3);
             gaTable.setHorizontalAlignment(Element.ALIGN_CENTER);
-            gaTable.setWidths(new float[]{6.0f, 8.0f, 6.0f});
+            gaTable.setWidths(new float[]{15.0f, 8.0f, 15.0f});
+
+            Font gaTableHeaderFont = FontFactory.getFont("Times New Roman", 9);
             PdfPCell gaHcell = new PdfPCell();
+            gaHcell.setHorizontalAlignment(Element.ALIGN_CENTER);
             gaHcell.setBorder(Rectangle.NO_BORDER);
 
             //Ga table header
@@ -63,9 +108,10 @@ public class PDFServiceImpl implements PDFService {
             gaHcell.setPhrase(new Phrase("Ga đến", gaTableHeaderFont));
             gaTable.addCell(gaHcell);
 
-            Font gaTableRowFont = FontFactory.getFont(String.valueOf(Liberation.SERIF_BOLD), 12);
+            Font gaTableRowFont = FontFactory.getFont("Times New Roman", 10);
             //Thêm Ga table row
             PdfPCell gaRCell = new PdfPCell();
+            gaRCell.setHorizontalAlignment(Element.ALIGN_CENTER);
             gaRCell.setBorder(Rectangle.NO_BORDER);
             gaRCell.setPhrase(new Phrase(veTau.getGaDi(), gaTableRowFont));
             gaTable.addCell(gaRCell);
@@ -79,11 +125,11 @@ public class PDFServiceImpl implements PDFService {
             document.add(gaTable);
 
             //Tạo bảng thông tin vé
-            Font thongTinVeTableInDamFont = FontFactory.getFont(String.valueOf(Liberation.SERIF_BOLD), 13);
-            Font thongTinVeTableChuThuongFont = FontFactory.getFont(String.valueOf(Liberation.SERIF), 13);
+            Font thongTinVeTableInDamFont = FontFactory.getFont("Times New Roman", 8);
+            Font thongTinVeTableChuThuongFont = FontFactory.getFont("Times New Roman", 8);
             PdfPTable thongTinVeTable = new PdfPTable(2);
             thongTinVeTable.setHorizontalAlignment(Element.ALIGN_LEFT);
-            thongTinVeTable.setWidths(new float[]{6.0f, 6.0f});
+            thongTinVeTable.setWidths(new float[]{15.0f, 15.0f});
             PdfPCell thongTinVecell = new PdfPCell();
             thongTinVecell.setBorder(Rectangle.NO_BORDER);
 
@@ -116,7 +162,7 @@ public class PDFServiceImpl implements PDFService {
             //Loại vé
             thongTinVecell.setPhrase(new Phrase("Loại vé/Ticket: ", thongTinVeTableInDamFont));
             thongTinVeTable.addCell(thongTinVecell);
-            thongTinVecell.setPhrase(new Phrase(veTau.getLoaiVe(), thongTinVeTableChuThuongFont));
+            thongTinVecell.setPhrase(new Phrase(veTau.getDoiTuong(), thongTinVeTableChuThuongFont));
             thongTinVeTable.addCell(thongTinVecell);
 
             //Họ tên
@@ -139,7 +185,7 @@ public class PDFServiceImpl implements PDFService {
 
             document.add(thongTinVeTable);
 
-            Font ghichuFont = FontFactory.getFont(String.valueOf(Liberation.SERIF_ITALIC), 13);
+            Font ghichuFont = FontFactory.getFont("Times New Roman", 8);
             String GHI_CHU_TIENG_VIET = "Ghi chú: Thẻ lên tàu hỏa không phải là hóa đơn GTGT và không có giá trị thanh toán.";
             Paragraph ghiChuTiengVietPara = new Paragraph(GHI_CHU_TIENG_VIET, ghichuFont);
             document.add(ghiChuTiengVietPara);
@@ -151,12 +197,7 @@ public class PDFServiceImpl implements PDFService {
             String LUU_Y_TIENG_VIET = "Để đảm bảo quyền lợi, quý khách vui lòng mang theo thẻ lên tàu cũng với giấy tờ tùy thân trong suốt hành trình.";
             Paragraph luuYTiengVietPara = new Paragraph(LUU_Y_TIENG_VIET, ghichuFont);
             document.add(luuYTiengVietPara);
-
-            String DUONG_PHAN_CACH= "----------------------------------------------------------------------------";
-            Paragraph phanCachPara = new Paragraph(DUONG_PHAN_CACH, thongTinVeTableChuThuongFont);
-            document.add(phanCachPara);
         }
-
         document.close();
         return new ByteArrayInputStream(outputStream.toByteArray());
     }
@@ -170,7 +211,7 @@ public class PDFServiceImpl implements PDFService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Document document = new Document();
         PdfWriter.getInstance(document, outputStream);
-        document.setPageSize(new Rectangle(265.0f, 850.0f));
+        document.setPageSize(new Rectangle(265.0f, 425.0f));
         document.open();
 
         String TONG_CONG_TY_DUONG_SAT_VIET_NAM = "TỔNG CÔNG TY ĐƯỜNG SẮT VIỆT NAM";
