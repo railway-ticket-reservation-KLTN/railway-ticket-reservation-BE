@@ -115,6 +115,7 @@ public class TaiKhoanController {
                         .tenTaiKhoan(taiKhoan.getTenTaiKhoan())
                         .matKhau(taiKhoan.getMatKhau())
                         .loaiTK(taiKhoan.getLoaiTK())
+                        .trangThai(taiKhoan.getTrangThai())
                         .build();
                 nhanViens.forEach(nhanVien -> {
                     if(nhanVien.getId().equals(taiKhoan.getNhanVien().getId())) {
