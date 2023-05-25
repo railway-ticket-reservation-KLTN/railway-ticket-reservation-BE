@@ -164,8 +164,8 @@ public class HanhTrinhTauController {
             description = "Lấy danh sách hành trình tàu trên trang quản trị",
             tags = "API Quản lí hành trình - ADMIN")
     @GetMapping("/admin/hanhtrinhs")
-    public ResponseEntity getDanhSachHanhTrinh() {
-        List<HanhTrinh> hanhTrinhs = hanhTrinhService.getDanhSachHanhTrinh();
+    public ResponseEntity getDanhSachHanhTrinhNgayHienTai() {
+        List<HanhTrinh> hanhTrinhs = hanhTrinhService.getDanhSachHanhTrinhTheoNgayHienTai();
         if(hanhTrinhs.size() > 0) {
             return new ResponseEntity<>(hanhTrinhs, HttpStatus.OK);
         } else  return new ResponseEntity<>(ErrorResponse.builder()

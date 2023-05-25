@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,9 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
     private HanhTrinhRepo hanhTrinhRepo;
 
     @Override
-    public List<HanhTrinh> getDanhSachHanhTrinh() {
-        return hanhTrinhRepo.findAll();
+    public List<HanhTrinh> getDanhSachHanhTrinhTheoNgayHienTai() {
+        LocalDate date = LocalDate.now();
+        return hanhTrinhRepo.getDanhSachHanhTrinhCuaNgayHienTai(date.toString());
     }
 
     @Cacheable
