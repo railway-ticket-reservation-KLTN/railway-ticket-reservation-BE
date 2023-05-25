@@ -8,6 +8,7 @@ import com.example.raiwayticketreservation.dtos.requests.TimChuyenTauRequest;
 import com.example.raiwayticketreservation.dtos.responses.TimChuyenTauResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

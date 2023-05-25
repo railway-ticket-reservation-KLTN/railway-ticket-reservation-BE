@@ -51,7 +51,7 @@ public class PDFServiceImpl implements PDFService {
                     .append(veTau.getDoiTuong()).append(", ")
                     .toString();
 
-            byte[] qrCodeImage =  GenerateQRCode.generateQRCode(thongTinQRCode, 100, 100);
+            byte[] qrCodeImage =  GenerateQRCode.generateQRCode(thongTinQRCode, 90, 90);
 
             Image image = Image.getInstance(qrCodeImage);
 

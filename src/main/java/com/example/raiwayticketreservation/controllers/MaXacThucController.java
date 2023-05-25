@@ -60,7 +60,7 @@ public class MaXacThucController {
             Map<String, Object> maXacThucMap = new HashMap<>();
             maXacThucMap.put("maXacThuc", maXacThuc);
             emailService.guiMaXacThucMessage(khachDatVe.getEmail(),
-                    "Railway VN - Gửi mã xác thực emai", maXacThucMap);
+                    "Railway VN - Gửi mã xác thực trả vé", maXacThucMap);
             maXacThucService.themMaXacThuc(khachDatVeResult, maXacThuc);
             return new ResponseEntity("Mã xác thực đã được gửi đến hộp thư của bạn.", HttpStatus.OK);
         } else

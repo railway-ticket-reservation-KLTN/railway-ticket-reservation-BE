@@ -4,12 +4,15 @@ import com.example.raiwayticketreservation.entities.HanhTrinh;
 import com.example.raiwayticketreservation.repository.HanhTrinhRepo;
 import com.example.raiwayticketreservation.service.HanhTrinhService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = {"hanhTrinhs"})
 public class HanhTrinhServiceImpl implements HanhTrinhService {
     @Autowired
     private HanhTrinhRepo hanhTrinhRepo;
@@ -19,6 +22,7 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
         return hanhTrinhRepo.findAll();
     }
 
+    @Cacheable
     @Override
     public List<HanhTrinh> getHanhTrinh(String gaDi, String gaDen, String ngayDi) {
         return hanhTrinhRepo.getHanhTrinhByGaDiGaDenNgayDiNgayDen(gaDi, gaDen, ngayDi);
