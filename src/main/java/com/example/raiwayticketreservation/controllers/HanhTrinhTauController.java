@@ -165,7 +165,7 @@ public class HanhTrinhTauController {
             tags = "API Quản lí hành trình - ADMIN")
     @GetMapping("/admin/hanhtrinhs")
     public ResponseEntity getDanhSachHanhTrinhNgayHienTai() {
-        List<HanhTrinh> hanhTrinhs = hanhTrinhService.getDanhSachHanhTrinhTheoNgayHienTai();
+        List<HanhTrinh> hanhTrinhs = hanhTrinhService.getDanhSachHanhTrinh();
         if(hanhTrinhs.size() > 0) {
             return new ResponseEntity<>(hanhTrinhs, HttpStatus.OK);
         } else  return new ResponseEntity<>(ErrorResponse.builder()

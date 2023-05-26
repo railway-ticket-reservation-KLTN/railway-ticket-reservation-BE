@@ -19,9 +19,8 @@ public class HanhTrinhServiceImpl implements HanhTrinhService {
     private HanhTrinhRepo hanhTrinhRepo;
 
     @Override
-    public List<HanhTrinh> getDanhSachHanhTrinhTheoNgayHienTai() {
-        LocalDate date = LocalDate.now();
-        return hanhTrinhRepo.getDanhSachHanhTrinhCuaNgayHienTai(date.toString());
+    public List<HanhTrinh> getDanhSachHanhTrinh() {
+        return hanhTrinhRepo.findAll();
     }
 
     @Cacheable

@@ -6,7 +6,7 @@ import java.util.List;
 
 
 public interface HanhTrinhService{
-    public List<HanhTrinh> getDanhSachHanhTrinhTheoNgayHienTai();
+    public List<HanhTrinh> getDanhSachHanhTrinh();
     public List<HanhTrinh> getHanhTrinh(String gaDi, String gaDen, String ngayDi);
 
     public Long getIDHanhTrinh(HanhTrinh hanhTrinh, Long maTau);

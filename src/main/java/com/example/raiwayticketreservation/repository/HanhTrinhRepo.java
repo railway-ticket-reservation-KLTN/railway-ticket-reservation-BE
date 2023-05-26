@@ -26,10 +26,6 @@ public interface HanhTrinhRepo extends JpaRepository<HanhTrinh, Long> {
             "AND ngay_den = ? AND gio_di = ? AND gio_den = ? AND ma_tau = ?", nativeQuery = true)
     public int kiemTraHanhTrinhTonTai(String gaDi, String gaDen, String ngayDi,
                                       String ngayDen, String gioDi, String gioDen, Long idTau);
-    @Query(value = "SELECT * FROM railwayticketreservationdb.hanhtrinh " +
-            "WHERE ngay_di = ? ", nativeQuery = true)
-    public List<HanhTrinh> getDanhSachHanhTrinhCuaNgayHienTai(String ngayHienTai);
-
     @Modifying
     @Transactional
     @Query(value = "UPDATE railwayticketreservationdb.hanhtrinh\n" +
