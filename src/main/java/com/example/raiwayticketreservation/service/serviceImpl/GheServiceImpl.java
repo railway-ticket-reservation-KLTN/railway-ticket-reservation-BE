@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.service.serviceImpl;
 
+import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import com.example.raiwayticketreservation.entities.Ghe;
 import com.example.raiwayticketreservation.entities.TrangThaiGhe;
 import com.example.raiwayticketreservation.repository.GheRepo;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -44,42 +46,49 @@ public class GheServiceImpl implements GheService {
     @Override
     public ResponseEntity datChoTam(TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
         int soGiayHetHan = 600;
-        List<TrangThaiGheResponse> trangThaiGheResponses = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(trangThaiGheRequest.getMaGhe(), trangThaiGheRequest.getTenTau(), trangThaiGheRequest.getNgayDi(), trangThaiGheRequest.getSoToa());
-        Ghe ghe = Ghe.builder().id(trangThaiGheRequest.getMaGhe()).build();
-        Date ngayDi =  Date.valueOf(trangThaiGheRequest.getNgayDi());
-        TrangThaiGhe trangThaiGhe = TrangThaiGhe.builder()
-                .ghe(ghe)
-                .gaDi(trangThaiGheRequest.getGaDi())
-                .gaDen(trangThaiGheRequest.getGaDen())
-                .ngayDi(ngayDi)
-                .tenTau(trangThaiGheRequest.getTenTau())
-                .soToa(trangThaiGheRequest.getSoToa())
-                .gioDen(trangThaiGheRequest.getGioDen())
-                .gioDi(trangThaiGheRequest.getGioDi())
-                .thoiHanGiuGhe(tinhThoiHanMaXacThuc(soGiayHetHan))
-                .trangThai(trangThaiGheRequest.getTrangThai()).build();
+        List<TrangThaiGheResponse> trangThaiGheResponses = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(trangThaiGheRequest.getMaGhe(),
+                trangThaiGheRequest.getTenTau(), trangThaiGheRequest.getNgayDi(), trangThaiGheRequest.getSoToa());
+        if(kiemTraDatCho(trangThaiGheResponses, trangThaiGheRequest)) {
+            Ghe ghe = Ghe.builder().id(trangThaiGheRequest.getMaGhe()).build();
+            Date ngayDi =  Date.valueOf(trangThaiGheRequest.getNgayDi());
+            TrangThaiGhe trangThaiGhe = TrangThaiGhe.builder()
+                    .ghe(ghe)
+                    .gaDi(trangThaiGheRequest.getGaDi())
+                    .gaDen(trangThaiGheRequest.getGaDen())
+                    .ngayDi(ngayDi)
+                    .tenTau(trangThaiGheRequest.getTenTau())
+                    .soToa(trangThaiGheRequest.getSoToa())
+                    .gioDen(trangThaiGheRequest.getGioDen())
+                    .gioDi(trangThaiGheRequest.getGioDi())
+                    .thoiHanGiuGhe(tinhThoiHanMaXacThuc(soGiayHetHan))
+                    .trangThai(trangThaiGheRequest.getTrangThai()).build();
 
-        trangThaiGheRepo.save(trangThaiGhe);
-        return new ResponseEntity(soGiayHetHan, HttpStatus.OK);
-//        if (kiemTraDatCho(trangThaiGheResponses, trangThaiGheRequest)) {
-//
-//            return new ResponseEntity(HttpStatus.OK);
-//        } else
-//            return new ResponseEntity(ErrorResponse.builder().tenLoi("Lỗi đặt chỗ").moTaLoi("Chỗ đã được đặt").build(), HttpStatus.LOCKED);
+            trangThaiGheRepo.save(trangThaiGhe);
+            return new ResponseEntity(soGiayHetHan, HttpStatus.OK);
+        } else return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi đặt chỗ")
+                .moTaLoi("Ghế đã được đặt").build(), HttpStatus.BAD_REQUEST);
     }
 
-//    public boolean kiemTraDatCho(List<TrangThaiGheResponse> trangThaiGheResponses, TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
-//        for (int i = 0; i < trangThaiGheResponses.size(); i++) {
-//            Time gioDiRequest = trangThaiGheRequest.getGioDi();
-//            Time gioDenResponse = trangThaiGheResponses.get(i).getGioDen();
-//            if (trangThaiGheRequest.getGaDi().equals(trangThaiGheResponses.get(i).getGaDi())
-//                    || trangThaiGheRequest.getGaDen().equals(trangThaiGheResponses.get(i).getGaDen())
-//                    || gioDiRequest.before(gioDenResponse)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
+    public boolean kiemTraDatCho(List<TrangThaiGheResponse> trangThaiGheResponses, TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
+        for (TrangThaiGheResponse trangThaiGheResponse : trangThaiGheResponses) {
+            Time gioDiRequest = trangThaiGheRequest.getGioDi();
+            Time gioDenResponse = trangThaiGheResponse.getGioDen();
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            if (trangThaiGheResponse.getTrangThai().equals(SystemConstant.DAT_CHO)
+                    && trangThaiGheResponse.getThoiHanGiuGhe().after(currentTime)
+                    || trangThaiGheResponse.getTrangThai().equals(SystemConstant.DA_MUA)) {
+
+                if (trangThaiGheResponse.getGaDi().equals(trangThaiGheRequest.getGaDi())
+                        || trangThaiGheResponse.getGaDen().equals(trangThaiGheRequest.getGaDen())
+                        || gioDenResponse.after(gioDiRequest)
+                        && trangThaiGheResponse.getNgayDi().toString().equals(trangThaiGheRequest.getNgayDi())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     @Override
     public boolean xoaDatChoTam(TrangThaiGheRequest trangThaiGheRequest) {
@@ -109,7 +118,12 @@ public class GheServiceImpl implements GheService {
                             || trangThaiGheResponse.getGioDen().after(gheRequest.getGioDi())
                             && trangThaiGheResponse.getNgayDi().toString().equals(gheRequest.getNgayDi()))
                     {
-                        gheItem.setTrangThai(0);
+                        if(trangThaiGheResponse.getTrangThai().equals(SystemConstant.DA_MUA)){
+                            gheItem.setTrangThai(0);
+                        } else if (trangThaiGheResponse.getTrangThai().equals(SystemConstant.DAT_CHO)) {
+                        gheItem.setTrangThai(2);
+
+                        }
                     }
                 }
             });
