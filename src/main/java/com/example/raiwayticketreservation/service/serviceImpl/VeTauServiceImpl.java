@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -70,6 +71,21 @@ public class VeTauServiceImpl implements VeTauService {
     @Override
     public Set<VeTau> getVeTauByMaDatCho(Long maDatCho) {
         return veTauRepo.getVeByMaDatCho(maDatCho.toString());
+    }
+
+    @Override
+    public int getTongSoVeBanTrongThangHienTai() {
+        return veTauRepo.getSoVeBanTrongThang();
+    }
+
+    @Override
+    public double getDoanhThuBanVeTrongThangHienTai() {
+        return veTauRepo.getDoanhThuBanTrongThang();
+    }
+
+    @Override
+    public List<Map<String, Object>> getDoanhThuTheoTungThangTrongNam() {
+        return veTauRepo.getDoanhThuTheoTungThangONamHienTai();
     }
 
     private Timestamp tinhThoiHanGiuVe(int soPhutHetHan) {

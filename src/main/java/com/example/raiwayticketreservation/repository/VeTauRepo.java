@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface VeTauRepo extends JpaRepository<VeTau, Long> {
@@ -44,4 +46,20 @@ public interface VeTauRepo extends JpaRepository<VeTau, Long> {
             "WHERE  TIMESTAMPDIFF(MINUTE, thoi_gian_giu_ve, NOW()) >=0 " +
             "AND tinh_trang = 'CHUA_THANH_TOAN'", nativeQuery = true)
     public void capNhatVeHetHan();
+
+    @Query(value = "SELECT count(*) as so_ve_ban_trong_thang FROM railwayticketreservationdb.vetau  \n" +
+            "WHERE MONTH(ngay_mua) = MONTH(CURRENT_DATE())\n" +
+            "AND YEAR(ngay_mua) = YEAR(CURRENT_DATE()) AND tinh_trang = 'DA_MUA';", nativeQuery = true)
+    public int getSoVeBanTrongThang();
+
+    @Query(value = "SELECT SUM(don_gia) as doanh_thu FROM railwayticketreservationdb.vetau  \n" +
+            "WHERE MONTH(ngay_mua) = MONTH(CURRENT_DATE())\n" +
+            "AND YEAR(ngay_mua) = YEAR(CURRENT_DATE()) AND tinh_trang = 'DA_MUA';", nativeQuery = true)
+    public double getDoanhThuBanTrongThang();
+
+    @Query(value = "SELECT MONTH(ngay_mua) as thang, sum(don_gia) as doanh_thu FROM railwayticketreservationdb.vetau \n" +
+            "WHERE MONTH(ngay_mua) = MONTH(CURRENT_DATE())\n" +
+            "AND YEAR(ngay_mua) = YEAR(CURRENT_DATE()) AND tinh_trang = 'DA_MUA'\n" +
+            "GROUP BY thang;", nativeQuery = true)
+    public List<Map<String, Object>> getDoanhThuTheoTungThangONamHienTai();
 }

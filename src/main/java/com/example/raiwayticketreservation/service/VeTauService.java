@@ -3,6 +3,7 @@ package com.example.raiwayticketreservation.service;
 import com.example.raiwayticketreservation.entities.VeTau;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface VeTauService {
@@ -21,6 +22,12 @@ public interface VeTauService {
     public Set<VeTau> getVeTauTheoMaKhachDat(Long maKhachDat);
 
     public Set<VeTau> getVeTauByMaDatCho(Long maDatCho);
+
+    public int getTongSoVeBanTrongThangHienTai();
+
+    public double getDoanhThuBanVeTrongThangHienTai();
+
+    public List<Map<String, Object>> getDoanhThuTheoTungThangTrongNam();
 
 //    public void capNhatVeTauHetHanThanhToan();
 }
