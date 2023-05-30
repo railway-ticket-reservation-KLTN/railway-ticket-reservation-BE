@@ -29,5 +29,13 @@ public interface VeTauService {
 
     public List<Map<String, Object>> getDoanhThuTheoTungThangTrongNam();
 
+    public int getSoVeBanTheoNam(int nam);
+
+    public double getDoanhThuBanTheoNam(int nam);
+
+    public int getSoVeBanTheoNamThang(int nam, int thang);
+
+    public double getDoanhThuBanTheoNamThang(int nam, int thang);
+
 //    public void capNhatVeTauHetHanThanhToan();
 }

@@ -88,6 +88,26 @@ public class VeTauServiceImpl implements VeTauService {
         return veTauRepo.getDoanhThuTheoTungThangONamHienTai();
     }
 
+    @Override
+    public int getSoVeBanTheoNam(int nam) {
+        return veTauRepo.getSoVeBanTheoNam(nam);
+    }
+
+    @Override
+    public double getDoanhThuBanTheoNam(int nam) {
+        return veTauRepo.getDoanhThuBanTheoNam(nam);
+    }
+
+    @Override
+    public int getSoVeBanTheoNamThang(int nam, int thang) {
+        return veTauRepo.getSoVeBanTheoThangVaNam(nam, thang);
+    }
+
+    @Override
+    public double getDoanhThuBanTheoNamThang(int nam, int thang) {
+        return veTauRepo.getDoanhThuBanTheoThangVaNam(nam, thang);
+    }
+
     private Timestamp tinhThoiHanGiuVe(int soPhutHetHan) {
         Calendar calendar =Calendar.getInstance();
         calendar.add(Calendar.MINUTE, soPhutHetHan);

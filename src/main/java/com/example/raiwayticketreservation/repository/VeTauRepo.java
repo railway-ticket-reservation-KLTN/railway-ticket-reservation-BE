@@ -58,8 +58,26 @@ public interface VeTauRepo extends JpaRepository<VeTau, Long> {
     public double getDoanhThuBanTrongThang();
 
     @Query(value = "SELECT MONTH(ngay_mua) as thang, sum(don_gia) as doanh_thu FROM railwayticketreservationdb.vetau \n" +
-            "WHERE MONTH(ngay_mua) = MONTH(CURRENT_DATE())\n" +
-            "AND YEAR(ngay_mua) = YEAR(CURRENT_DATE()) AND tinh_trang = 'DA_MUA'\n" +
+            "WHERE tinh_trang = 'DA_MUA'\n" +
             "GROUP BY thang;", nativeQuery = true)
     public List<Map<String, Object>> getDoanhThuTheoTungThangONamHienTai();
+
+    @Query(value = "SELECT count(id) as so_ve FROM railwayticketreservationdb.vetau  \n" +
+            "WHERE YEAR(ngay_mua) = ? " +
+            "AND tinh_trang = 'DA_MUA';", nativeQuery = true)
+    public int getSoVeBanTheoNam(int nam);
+
+    @Query(value = "SELECT sum(don_gia) as doanh_thu FROM railwayticketreservationdb.vetau \n" +
+            "WHERE YEAR(ngay_mua) = ? AND tinh_trang = 'DA_MUA'", nativeQuery = true)
+    public double getDoanhThuBanTheoNam(int nam);
+
+    @Query(value = "SELECT count(id) as so_ve FROM railwayticketreservationdb.vetau  \n" +
+            "WHERE YEAR(ngay_mua) = ? AND MONTH(ngay_mua) = ? " +
+            "AND tinh_trang = 'DA_MUA'", nativeQuery = true)
+    public int getSoVeBanTheoThangVaNam(int nam, int thang);
+
+    @Query(value = "SELECT sum(don_gia) as doanh_thu FROM railwayticketreservationdb.vetau \n" +
+            "WHERE YEAR(ngay_mua) = ? AND MONTH(ngay_mua) = ? " +
+            "AND tinh_trang = 'DA_MUA'", nativeQuery = true)
+    public double getDoanhThuBanTheoThangVaNam(int nam, int thang);
 }

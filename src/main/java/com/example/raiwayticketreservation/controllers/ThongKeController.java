@@ -1,15 +1,14 @@
 package com.example.raiwayticketreservation.controllers;
 
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
+import com.example.raiwayticketreservation.dtos.responses.ThongKeTheoNamReponse;
+import com.example.raiwayticketreservation.dtos.responses.ThongKeTheoNamThangResponse;
 import com.example.raiwayticketreservation.service.VeTauService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -58,5 +57,44 @@ public class ThongKeController {
         } else return new ResponseEntity<>(ErrorResponse.builder()
                 .tenLoi("Không có doanh thu trong năm")
                 .moTaLoi("Không có doanh thu trong năm này").build(), HttpStatus.NOT_FOUND);
+    }
+
+    @Operation(summary = "Get dữ liệu thống kê theo năm",
+            description = "Get số vé bán, doanh thu theo năm để thống kê ở trang quản trị",
+            tags = "API Thống kê - ADMIN")
+    @GetMapping("/thongketheonam")
+    public ResponseEntity thongKeTheoNam(@RequestParam int nam) {
+        int soVe = veTauService.getSoVeBanTheoNam(nam);
+        double doanhThu = veTauService.getDoanhThuBanTheoNam(nam);
+        if(soVe > 0 && doanhThu > 0) {
+            ThongKeTheoNamReponse thongKeData = ThongKeTheoNamReponse.builder()
+                    .nam(nam)
+                    .soVe(soVe)
+                    .doanhThu(doanhThu)
+                    .build();
+            return new ResponseEntity<>(thongKeData, HttpStatus.OK);
+        } else return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi thống kê theo năm")
+                .moTaLoi("Không có dữ liệu thống kê trong năm " + nam).build(), HttpStatus.NOT_FOUND);
+    }
+
+    @Operation(summary = "Get doanh thu đã bán theo năm",
+            description = "Get doanh thu bán theo năm để thống kê ở trang quản trị",
+            tags = "API Thống kê - ADMIN")
+    @GetMapping("/thongketheonamthang")
+    public ResponseEntity thongKeTheoNamThang(@RequestParam int nam, @RequestParam int thang) {
+        int soVe = veTauService.getSoVeBanTheoNamThang(nam, thang);
+        double doanhThu = veTauService.getDoanhThuBanTheoNamThang(nam, thang);
+        if(soVe > 0 && doanhThu > 0) {
+            ThongKeTheoNamThangResponse thongKeData = ThongKeTheoNamThangResponse.builder()
+                    .nam(nam)
+                    .thang(thang)
+                    .soVe(soVe)
+                    .doanhThu(doanhThu)
+                    .build();
+            return new ResponseEntity(thongKeData, HttpStatus.OK);
+        }else return new ResponseEntity<>(ErrorResponse.builder()
+                .tenLoi("Lỗi thống kê theo năm")
+                .moTaLoi("Không có dữ liệu thống kê trong tháng " + thang + " năm " + nam).build(), HttpStatus.NOT_FOUND);
     }
 }
