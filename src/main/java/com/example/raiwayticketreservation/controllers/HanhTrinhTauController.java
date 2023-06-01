@@ -34,11 +34,14 @@ public class HanhTrinhTauController {
         if (timChuyenTauRequest.getLoaiHanhTrinh().equals("MOT_CHIEU")) {
             List<HanhTrinh> hanhTrinhSet = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getNgayDi());
             if(hanhTrinhSet != null) {
-                hanhTrinhSet.forEach(hanhTrinh -> {
-                    Set toaTheoTaus = new HashSet<>();
-                    toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinh.getTau().getId()));
-                    hanhTrinh.getTau().setToas(toaTheoTaus);
-                });
+                Set toaTheoTaus = new HashSet<>();
+                toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinhSet.get(0).getTau().getId()));
+                hanhTrinhSet.get(0).getTau().setToas(toaTheoTaus);
+//                hanhTrinhSet.forEach(hanhTrinh -> {
+//                    Set toaTheoTaus = new HashSet<>();
+//                    toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinh.getTau().getId()));
+//                    hanhTrinh.getTau().setToas(toaTheoTaus);
+//                });
                 return new ResponseEntity(hanhTrinhSet, HttpStatus.OK);
             } else {
                 ErrorResponse errorResponse = ErrorResponse.builder()
@@ -52,17 +55,22 @@ public class HanhTrinhTauController {
             List<HanhTrinh> hanhTrinhVeSet = hanhTrinhService.getHanhTrinh(timChuyenTauRequest.getGaDen(), timChuyenTauRequest.getGaDi(), timChuyenTauRequest.getNgayVe());
 
             if(hanhTrinhDiSet != null && hanhTrinhVeSet != null ) {
-                hanhTrinhDiSet.forEach(hanhTrinh -> {
-                    Set toaTheoTaus = new HashSet<>();
-                    toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinh.getTau().getId()));
-                    hanhTrinh.getTau().setToas(toaTheoTaus);
-                });
-
-                hanhTrinhVeSet.forEach(hanhTrinh -> {
-                    Set toaTheoTaus = new HashSet<>();
-                    toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinh.getTau().getId()));
-                    hanhTrinh.getTau().setToas(toaTheoTaus);
-                });
+                Set toaTheoTaus = new HashSet<>();
+                toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinhDiSet.get(0).getTau().getId()));
+                hanhTrinhDiSet.get(0).getTau().setToas(toaTheoTaus);
+//                hanhTrinhDiSet.forEach(hanhTrinh -> {
+//                    Set toaTheoTaus = new HashSet<>();
+//                    toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinh.getTau().getId()));
+//                    hanhTrinh.getTau().setToas(toaTheoTaus);
+//                });
+                Set toaTheoTauVes = new HashSet<>();
+                toaTheoTauVes.addAll(toaService.getToasByTauID(hanhTrinhVeSet.get(0).getTau().getId()));
+                hanhTrinhVeSet.get(0).getTau().setToas(toaTheoTaus);
+//                hanhTrinhVeSet.forEach(hanhTrinh -> {
+//                    Set toaTheoTaus = new HashSet<>();
+//                    toaTheoTaus.addAll(toaService.getToasByTauID(hanhTrinh.getTau().getId()));
+//                    hanhTrinh.getTau().setToas(toaTheoTaus);
+//                });
                 TimChuyenTauResponse timChuyenTauResponse = TimChuyenTauResponse.builder()
                         .hanhTrinhDi(hanhTrinhDiSet)
                         .hanhTrinhVe(hanhTrinhVeSet)

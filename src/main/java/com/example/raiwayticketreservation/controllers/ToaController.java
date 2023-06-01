@@ -32,23 +32,37 @@ public class ToaController {
             tags = "API Get danh sách toa")
     @PostMapping("/toas")
     public ResponseEntity getToaTauBangTauID(@RequestBody TimToaRequest timToaRequest) {
+
         Long maTau = timToaRequest.getTauID();
         Set<ToaResponseProjection> toaResponseSet = toaService.getToasByTauID(maTau);
         List<ToaResponseWithGhe> toaResponseWithGhes = new ArrayList<>();
         toaResponseSet.forEach(toaResponse -> {
+            ToaResponseWithGhe toaResponseWithGhe = new ToaResponseWithGhe();
             Long maToa = toaResponse.getMaToa();
             int soToa = Integer.parseInt(toaResponse.getSoToa());
-            ToaResponseWithGhe toaResponseWithGhe = ToaResponseWithGhe.builder()
-                    .maToa(maToa)
-                    .tenToa(toaResponse.getTenToa())
-                    .soToa(String.valueOf(soToa))
-                    .tenTau(toaResponse.getTenTau())
-                    .moTaToa(toaResponse.getMoTaToa())
-                    .soLuongGhe(toaResponse.getSoLuongGhe())
-                    .ghes(gheService.getDsGheTheoMaToaSoToa(maToa, maTau, soToa))
-                    .build();
+            if(toaResponseWithGhes.size() == 0) {
+                toaResponseWithGhe = ToaResponseWithGhe.builder()
+                        .maToa(maToa)
+                        .tenToa(toaResponse.getTenToa())
+                        .soToa(String.valueOf(soToa))
+                        .tenTau(toaResponse.getTenTau())
+                        .moTaToa(toaResponse.getMoTaToa())
+                        .soLuongGhe(toaResponse.getSoLuongGhe())
+                        .ghes(gheService.getDsGheTheoMaToaSoToa(maToa, maTau, soToa))
+                        .build();
+            } else {
+                toaResponseWithGhe = ToaResponseWithGhe.builder()
+                        .maToa(maToa)
+                        .tenToa(toaResponse.getTenToa())
+                        .soToa(String.valueOf(soToa))
+                        .tenTau(toaResponse.getTenTau())
+                        .moTaToa(toaResponse.getMoTaToa())
+                        .soLuongGhe(toaResponse.getSoLuongGhe())
+                        .build();
+            }
             toaResponseWithGhes.add(toaResponseWithGhe);
         });
+
         if(toaResponseWithGhes.size() == 0) {
             return new ResponseEntity(ErrorResponse.builder().tenLoi("Không tìm thấy toa").moTaLoi("Chưa có danh sách toa").build(), HttpStatus.BAD_REQUEST);
         } else return new ResponseEntity<>(toaResponseWithGhes, HttpStatus.OK);

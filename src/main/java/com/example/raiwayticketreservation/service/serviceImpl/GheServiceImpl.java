@@ -123,7 +123,6 @@ public class GheServiceImpl implements GheService {
                             gheItem.setTrangThai(0);
                         } else if (trangThaiGheResponse.getTrangThai().equals(SystemConstant.DAT_CHO)) {
                         gheItem.setTrangThai(2);
-
                         }
                     }
                 }
