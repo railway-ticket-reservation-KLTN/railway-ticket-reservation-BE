@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.repository;
 
+import com.example.raiwayticketreservation.dtos.interfaceDTO.TrangThaiGheResponseProjection;
 import com.example.raiwayticketreservation.entities.TrangThaiGhe;
 import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 import jakarta.transaction.Transactional;
@@ -21,8 +22,13 @@ public interface TrangThaiGheRepo extends JpaRepository <TrangThaiGhe, Long> {
             "AND ma_ghe = ? AND so_toa = ? AND trang_thai = ?", nativeQuery = true)
     public Long getIdByTrangThaiGheRequest(String gaDi, String gaDen, String ngayDi, Long maGhe, int soToa, String trangThai);
 
-    @Query(nativeQuery = true)
-    public List<TrangThaiGheResponse> getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(Long maGhe, String tenTau, String ngayDi, int soToa);
+    @Query(value = "SELECT id, ga_den as gaden, ga_di as gaDi, " +
+            "trang_thai as trangThai, ma_ghe as maGhe, " +
+            "ngay_di as ngayDi, gio_di as gioDi, gio_den as gioDen, " +
+            "ten_tau as tenTau, so_toa as soToa, thoi_han_giu_ghe as thoiHanGiuGhe" +
+            " FROM trangthaighe t" +
+            " WHERE ma_ghe = ? AND ten_tau = ? AND ngay_di = ? AND so_toa = ?", nativeQuery = true)
+    public List<TrangThaiGheResponseProjection> getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(Long maGhe, String tenTau, String ngayDi, int soToa);
 
     @Modifying
     @Transactional

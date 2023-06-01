@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.controllers;
 
+import com.example.raiwayticketreservation.dtos.interfaceDTO.ToaResponseProjection;
 import com.example.raiwayticketreservation.entities.ToaResponseWithGhe;
 import com.example.raiwayticketreservation.service.GheService;
 import com.example.raiwayticketreservation.service.ToaService;
@@ -32,7 +33,7 @@ public class ToaController {
     @PostMapping("/toas")
     public ResponseEntity getToaTauBangTauID(@RequestBody TimToaRequest timToaRequest) {
         Long maTau = timToaRequest.getTauID();
-        Set<ToaResponse> toaResponseSet = toaService.getToasByTauID(maTau);
+        Set<ToaResponseProjection> toaResponseSet = toaService.getToasByTauID(maTau);
         List<ToaResponseWithGhe> toaResponseWithGhes = new ArrayList<>();
         toaResponseSet.forEach(toaResponse -> {
             Long maToa = toaResponse.getMaToa();

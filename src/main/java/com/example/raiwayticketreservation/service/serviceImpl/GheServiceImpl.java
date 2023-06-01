@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.service.serviceImpl;
 
+import com.example.raiwayticketreservation.dtos.interfaceDTO.TrangThaiGheResponseProjection;
 import com.example.raiwayticketreservation.dtos.responses.ErrorResponse;
 import com.example.raiwayticketreservation.entities.Ghe;
 import com.example.raiwayticketreservation.entities.TrangThaiGhe;
@@ -46,7 +47,7 @@ public class GheServiceImpl implements GheService {
     @Override
     public ResponseEntity datChoTam(TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
         int soGiayHetHan = 600;
-        List<TrangThaiGheResponse> trangThaiGheResponses = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(trangThaiGheRequest.getMaGhe(),
+        List<TrangThaiGheResponseProjection> trangThaiGheResponses = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(trangThaiGheRequest.getMaGhe(),
                 trangThaiGheRequest.getTenTau(), trangThaiGheRequest.getNgayDi(), trangThaiGheRequest.getSoToa());
         if(kiemTraDatCho(trangThaiGheResponses, trangThaiGheRequest)) {
             Ghe ghe = Ghe.builder().id(trangThaiGheRequest.getMaGhe()).build();
@@ -70,8 +71,8 @@ public class GheServiceImpl implements GheService {
                 .moTaLoi("Ghế đã được đặt").build(), HttpStatus.BAD_REQUEST);
     }
 
-    public boolean kiemTraDatCho(List<TrangThaiGheResponse> trangThaiGheResponses, TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
-        for (TrangThaiGheResponse trangThaiGheResponse : trangThaiGheResponses) {
+    public boolean kiemTraDatCho(List<TrangThaiGheResponseProjection> trangThaiGheResponses, TrangThaiGheRequest trangThaiGheRequest) throws ParseException {
+        for (TrangThaiGheResponseProjection trangThaiGheResponse : trangThaiGheResponses) {
             Time gioDiRequest = trangThaiGheRequest.getGioDi();
             Time gioDenResponse = trangThaiGheResponse.getGioDen();
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
@@ -106,7 +107,7 @@ public class GheServiceImpl implements GheService {
         Long idTau = tauService.getIdTauTheoTenTau(gheRequest.getTenTau());
         Set<Ghe> dsGhe = gheRepo.getDsGheTheoMaToaSoToa(gheRequest.getMaToa(), idTau, gheRequest.getSoToa());
         dsGhe.forEach(gheItem -> {
-            List<TrangThaiGheResponse> trangThaiGhes = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(gheItem.getId(), gheRequest.getTenTau(), gheRequest.getNgayDi(), gheRequest.getSoToa());
+            List<TrangThaiGheResponseProjection> trangThaiGhes = trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(gheItem.getId(), gheRequest.getTenTau(), gheRequest.getNgayDi(), gheRequest.getSoToa());
             trangThaiGhes.forEach(trangThaiGheResponse -> {
                 Timestamp currentTime = new Timestamp(System.currentTimeMillis());
                 if(trangThaiGheResponse.getTrangThai().equals(SystemConstant.DAT_CHO)

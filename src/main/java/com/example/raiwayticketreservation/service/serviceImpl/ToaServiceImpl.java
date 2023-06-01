@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.service.serviceImpl;
 
+import com.example.raiwayticketreservation.dtos.interfaceDTO.ToaResponseProjection;
 import com.example.raiwayticketreservation.repository.ToaRepo;
 import com.example.raiwayticketreservation.service.ToaService;
 import com.example.raiwayticketreservation.dtos.responses.ToaResponse;
@@ -13,7 +14,7 @@ public class ToaServiceImpl implements ToaService {
     @Autowired
     private ToaRepo toaRepo;
     @Override
-    public Set<ToaResponse> getToasByTauID(Long tauID) {
+    public Set<ToaResponseProjection> getToasByTauID(Long tauID) {
         return toaRepo.getToasByTauID(tauID);
     }
 }

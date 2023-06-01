@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.service.serviceImpl;
 
+import com.example.raiwayticketreservation.dtos.interfaceDTO.TrangThaiGheResponseProjection;
 import com.example.raiwayticketreservation.entities.TrangThaiGhe;
 import com.example.raiwayticketreservation.repository.TrangThaiGheRepo;
 import com.example.raiwayticketreservation.service.TrangThaiGheService;
@@ -17,7 +18,7 @@ public class TrangThaiGheServiceImpl implements TrangThaiGheService {
     @Autowired
     private TrangThaiGheRepo trangThaiGheRepo;
     @Override
-    public List<TrangThaiGheResponse> getTrangThaiGhesByMaGheTenTauNgayDi(TrangThaiGheRequest trangThaiGheRequest) {
+    public List<TrangThaiGheResponseProjection> getTrangThaiGhesByMaGheTenTauNgayDi(TrangThaiGheRequest trangThaiGheRequest) {
         return trangThaiGheRepo.getTrangThaiGhesBangMaGheTenTauNgayDiSoToa(trangThaiGheRequest.getMaGhe(),
                 trangThaiGheRequest.getTenTau(), trangThaiGheRequest.getNgayDi(),
                 trangThaiGheRequest.getSoToa());

@@ -1,5 +1,6 @@
 package com.example.raiwayticketreservation.service;
 
+import com.example.raiwayticketreservation.dtos.interfaceDTO.TrangThaiGheResponseProjection;
 import com.example.raiwayticketreservation.entities.TrangThaiGhe;
 import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
 import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
@@ -7,7 +8,7 @@ import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 import java.util.List;
 
 public interface TrangThaiGheService {
-    public List<TrangThaiGheResponse> getTrangThaiGhesByMaGheTenTauNgayDi(TrangThaiGheRequest trangThaiGheRequest);
+    public List<TrangThaiGheResponseProjection> getTrangThaiGhesByMaGheTenTauNgayDi(TrangThaiGheRequest trangThaiGheRequest);
     public void capNhatTrangThaiGhe(String maVeTau, String trangThai, Long id);
 
     public Long getIdTrangThaiGhe(String gaDi, String gaDen, String ngayDi, Long maGhe, int soToa, String trangThai);
