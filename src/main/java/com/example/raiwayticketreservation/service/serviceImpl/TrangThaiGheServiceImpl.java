@@ -8,8 +8,10 @@ import com.example.raiwayticketreservation.dtos.requests.TrangThaiGheRequest;
 import com.example.raiwayticketreservation.dtos.responses.TrangThaiGheResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -54,11 +56,11 @@ public class TrangThaiGheServiceImpl implements TrangThaiGheService {
         trangThaiGheRepo.updateThoiHanGiuGheByMaVe(maVe);
     }
 
-//    @Override
-//    @Scheduled(cron = "0 */1 * * * *")
-//    public void xoaTrangThaiGheDaHetHan() {
-//        LocalDateTime dt = LocalDateTime.now();
-//        log.info("Thời gian xóa trạng thái ghế: " + dt);
-//        trangThaiGheRepo.xoaTrangThaiGheDaHetHan();
-//    }
+    @Override
+    @Scheduled(cron = "0 */1 * * * *")
+    public void xoaTrangThaiGheDaHetHan() {
+        LocalDateTime dt = LocalDateTime.now();
+        log.info("Thời gian xóa trạng thái ghế: " + dt);
+        trangThaiGheRepo.xoaTrangThaiGheDaHetHan();
+    }
 }

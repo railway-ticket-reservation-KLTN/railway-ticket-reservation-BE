@@ -333,7 +333,7 @@ public class VeTauController {
                 .moTaLoi("Không có vé tàu trong hệ thống").build(), HttpStatus.BAD_REQUEST);
     }
 
-//    public void xuLiGiaHanVeTau() {
-//        veTauService.capNhatVeTauHetHanThanhToan();
-//    }
+    public void xuLiGiaHanVeTau() {
+        veTauService.capNhatVeTauHetHanThanhToan();
+    }
 }

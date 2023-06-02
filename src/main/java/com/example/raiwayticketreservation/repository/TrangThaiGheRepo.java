@@ -53,7 +53,6 @@ public interface TrangThaiGheRepo extends JpaRepository <TrangThaiGhe, Long> {
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM railwayticketreservationdb.trangthaighe\n" +
-            "WHERE  trang_thai = 'DAT_CHO' AND  TIMESTAMPDIFF(HOUR, thoi_han_giu_ghe, NOW()) >= 0 " +
-            "OR trang_thai = 'DA_MUA' AND TIMESTAMPDIFF(HOUR, thoi_han_giu_ghe, NOW()) >= 0", nativeQuery = true)
+            "WHERE  trang_thai = 'DAT_CHO' AND  TIMESTAMPDIFF(MINUTES, thoi_han_giu_ghe, NOW()) >= 0 ", nativeQuery = true)
     public void xoaTrangThaiGheDaHetHan();
 }

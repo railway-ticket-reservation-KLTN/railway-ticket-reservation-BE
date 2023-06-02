@@ -37,5 +37,5 @@ public interface VeTauService {
 
     public double getDoanhThuBanTheoNamThang(int nam, int thang);
 
-//    public void capNhatVeTauHetHanThanhToan();
+    public void capNhatVeTauHetHanThanhToan();
 }

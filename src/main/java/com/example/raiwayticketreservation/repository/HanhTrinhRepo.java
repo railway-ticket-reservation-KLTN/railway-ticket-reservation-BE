@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface HanhTrinhRepo extends JpaRepository<HanhTrinh, Long> {
     @Query(value = "SELECT * FROM railwayticketreservationdb.hanhtrinh " +
-            "WHERE ga_di = ? AND ga_den = ? AND ngay_di = ?",
+            "WHERE ga_di = ? AND ga_den = ? AND ngay_di = ? ",
             nativeQuery = true)
     public List<HanhTrinh> getHanhTrinhByGaDiGaDenNgayDiNgayDen(String gaDi, String gaDen, String ngayDi);
     @Query(value = "SELECT id from railwayticketreservationdb.hanhtrinh \n" +

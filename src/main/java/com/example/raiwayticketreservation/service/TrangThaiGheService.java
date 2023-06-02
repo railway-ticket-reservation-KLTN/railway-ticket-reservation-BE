@@ -20,6 +20,6 @@ public interface TrangThaiGheService {
     public void capNhatThoiHanGiuGheTheoMaVe(String maVe);
     public List<TrangThaiGhe> getTrangThaiGheByThongTinHanhTrinh(String gaDi, String gaDen, String ngayDi, int soToa, String trangThai);
 
-//
-//    public void xoaTrangThaiGheDaHetHan();
+
+    public void xoaTrangThaiGheDaHetHan();
 }
