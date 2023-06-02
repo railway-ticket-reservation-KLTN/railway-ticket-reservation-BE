@@ -2,9 +2,9 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://kltndb.cerb6rornbsn.ap-southeast-1.rds.amazonaws.com:3306/railwayticketreservationdb
-    username: admin
-    password: 123456789
+    url: jdbc:mysql://containers-us-west-131.railway.app:6437/railwayticketreservationdb
+    username: root
+    password: PUvkRUkS9tumpUAakgiH
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: true
